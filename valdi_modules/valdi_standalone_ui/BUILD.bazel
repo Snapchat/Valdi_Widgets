@@ -1,0 +1,33 @@
+load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
+
+valdi_module(
+    name = "valdi_standalone_ui",
+    srcs = glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+    ]) + [
+        "tsconfig.json",
+    ],
+    android_output_target = "debug",
+    ios_module_name = "SCCValdiStandaloneUi",
+    ios_output_target = "debug",
+    res = glob([
+        "res/**/*.jpeg",
+        "res/**/*.jpg",
+        "res/**/*.png",
+        "res/**/*.svg",
+        "res/**/*.ttf",
+        "res/**/*.webp",
+    ]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//valdi_modules/widgets",
+        "//valdi_modules/navigation",
+        "//valdi_modules/navigation_internal",
+        "@valdi//src/valdi_modules/src/valdi/file_system",
+        "@valdi//src/valdi_modules/src/valdi/foundation",
+        "@valdi//src/valdi_modules/src/valdi/valdi_core",
+        "@valdi//src/valdi_modules/src/valdi/valdi_standalone",
+        "@valdi//src/valdi_modules/src/valdi/valdi_tsx",
+    ],
+)

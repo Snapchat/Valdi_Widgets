@@ -1,0 +1,85 @@
+# No bzlmod yet
+common --noenable_bzlmod
+
+common --bes_instance_name=client
+common --enable_platform_specific_config
+
+# Disable workers for repo fetching to prevent OOM
+common --experimental_worker_for_repo_fetching=off
+
+# android configuration
+# Expose AndroidResourceInfo provider to Kotlin rules
+common --experimental_google_legacy_api=true
+common --experimental_enable_android_migration_apis=true
+common --incompatible_java_common_parameters=false
+
+## Disable sandboxing for macs, both laptops and in CI; the performance hit is much too high.
+build:macos --spawn_strategy=local
+build:linux --sandbox_writable_path=/var/tmp
+
+# common cc configuration
+build --cxxopt=-std=c++20
+build --cxxopt=-Wno-ambiguous-reversed-operator
+build --cxxopt=-D_LIBCPP_ENABLE_CXX20_REMOVED_TYPE_TRAITS
+build --host_cxxopt=-std=c++20
+
+## we need to disable this due to a bug in bazel
+## see https://github.com/bazelbuild/bazel/issues/12381
+build --incompatible_use_specific_tool_files=false
+build --incompatible_enable_cc_toolchain_resolution
+
+# iOS and Apple cc changes and hacks
+## For Objective-C source files
+build --per_file_copt=.*\.mm\$@-std=c++20
+build --host_per_file_copt=.*\.mm\$@-std=c++20
+build --ios_minimum_os=12.0
+
+## TODO: (dchapp) this is currently needed otherwise -O0 and -DDEBUG=1 get passed to compilations of .mm/.m for production flavor builds
+build --experimental_objc_fastbuild_options=""
+## HACK inject this in the default toolchain which is only used on macos until we switch to bazel_toolchains
+build:macos --copt=-fvisibility=hidden
+
+# java configuration
+## Disable some java checks for now, djinni generates code that errors out
+build --javacopt=-XepDisableAllChecks
+build --java_runtime_version=11
+build --tool_java_runtime_version=17
+
+build --flag_alias=snap_flavor=@snap_platforms//flavors:snap_flavor
+build --snap_flavor=client_development
+
+# This affects the aar target.
+build --define client_repo_arm64=true
+
+build --android_crosstool_top="@snap_client_toolchains//:android_crosstool"
+build --define=android_dexmerger_tool=d8_dexmerger
+build --define=android_incremental_dexing_tool=d8_dexbuilder
+build --define=android_standalone_dexing_tool=d8_compat_dx
+build --incremental_dexing
+
+# Disable 3rd party libs warnings
+build --per_file_copt=external/com_github_grpc_grpc/.*\$@-Wno-everything
+build --per_file_copt=external/snap_protobuf/.*\$@-Wno-everything
+build --per_file_copt=external/boringssl/.*\$@-Wno-everything
+build --per_file_copt=external/com_github_google_flatbuffers/.*\$@-Wno-everything
+
+# Enable persistent worker for Valdi compilation
+build --strategy=ValdiCompile=worker
+
+## Disable sandboxing for macs, both laptops and in CI; the performance hit is much too high.
+build:macos --spawn_strategy=local
+build:linux --sandbox_writable_path=/var/tmp
+
+# Disable disk cache to save disk space
+build --disk_cache=""
+
+# common build configuration
+build --experimental_generate_json_trace_profile
+# enable grpc log
+build --remote_grpc_log=/tmp/snap_client_grpc.log
+build --experimental_reuse_sandbox_directories
+
+# Valdi Open Source Flags
+build --define=open_source_build=true
+
+build --android_crosstool_top="@snap_client_toolchains//:android_crosstool"

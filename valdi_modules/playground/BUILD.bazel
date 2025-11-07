@@ -1,0 +1,35 @@
+load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
+load("@valdi//bzl/valdi:valdi_application.bzl", "valdi_application")
+
+valdi_application(
+    name = "app",
+    root_component_path = "PlaygroundApp@playground/src/PlaygroundApp",
+    title = "Valdi Playground",
+    deps = [":playground"],
+)
+
+valdi_module(
+    name = "playground",
+    srcs = glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+    ]) + [
+        "tsconfig.json",
+    ],
+    res = glob([
+        "res/**/*.jpeg",
+        "res/**/*.jpg",
+        "res/**/*.png",
+        "res/**/*.svg",
+        "res/**/*.webp",
+    ]),
+    ios_module_name = "VLPlayground",
+    ios_output_target = "release",
+    android_output_target = "release",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//valdi_modules/widgets",
+        "@valdi//src/valdi_modules/src/valdi/valdi_core",
+        "@valdi//src/valdi_modules/src/valdi/valdi_tsx",
+    ],
+)

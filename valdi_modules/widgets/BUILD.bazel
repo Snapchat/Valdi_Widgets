@@ -1,0 +1,38 @@
+load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
+
+valdi_module(
+    name = "widgets",
+    srcs = glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "test/**/*.ts",
+        "test/**/*.tsx",
+    ]) + [
+        "tsconfig.json",
+    ],
+    android_output_target = "release",
+    ids_yaml = "ids.yaml",
+    ios_module_name = "SCCatalog",
+    ios_output_target = "release",
+    res = glob([
+        "res/**/*.jpeg",
+        "res/**/*.jpg",
+        "res/**/*.png",
+        "res/**/*.svg",
+        "res/**/*.ttf",
+        "res/**/*.webp",
+    ]),
+    single_file_codegen = False,
+    visibility = ["//visibility:public"],
+    deps = [
+        "@valdi//src/valdi_modules/src/valdi/bridge_observables",
+        "@valdi//src/valdi_modules/src/valdi/coreutils",
+        "@valdi//src/valdi_modules/src/valdi/foundation",
+        "@valdi//src/valdi_modules/src/valdi/jasmine",
+        "@valdi//src/valdi_modules/src/valdi/valdi_core",
+        "@valdi//src/valdi_modules/src/valdi/valdi_rxjs",
+        "@valdi//src/valdi_modules/src/valdi/valdi_standalone",
+        "@valdi//src/valdi_modules/src/valdi/valdi_test",
+        "@valdi//src/valdi_modules/src/valdi/valdi_tsx",
+    ],
+)

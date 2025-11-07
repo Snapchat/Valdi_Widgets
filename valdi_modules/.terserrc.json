@@ -1,0 +1,15 @@
+{
+  "ecma": "ES2016",
+  "safari10": true,
+  "mangle": {
+    "toplevel": true,
+    "keep_classnames": true
+  },
+  "compress": {
+    "keep_classnames": true
+  },
+  "sourceMap": {
+    "content": "inline",
+    "url": "inline"
+  }
+}
