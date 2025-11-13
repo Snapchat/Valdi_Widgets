@@ -11,7 +11,10 @@ import { PickerView } from './PickerView';
 
 /**
  * @ViewModel
- * @ExportModel
+ * @ExportModel({
+ *  ios: 'SCCPickerActionSheetViewModel',
+ *  android: 'com.snap.valdi.widgets.PickerActionSheetViewModel'
+ * })
  */
 export interface PickerActionSheetViewModel {
   /** Sheet title */
@@ -26,7 +29,10 @@ export interface PickerActionSheetViewModel {
 
 /**
  * @Component
- * @ExportModel
+ * @ExportModel({
+ *  ios: 'SCCPickerActionSheet',
+ *  android: 'com.snap.valdi.widgets.PickerActionSheet'
+ * })
  */
 export class PickerActionSheet extends StatefulComponent<PickerActionSheetViewModel, {}, {}> {
   override onCreate(): void {

@@ -5,7 +5,7 @@
  * Please get approval from #ux-platform-support before using custom color in your code.
  * @ExportModel({
  *  ios: 'SCCCustomColor',
- *  android: 'com.snap.valdi.foundation.CustomColor'
+ *  android: 'com.snap.valdi.widgets.CustomColor'
  * })
  */
 export interface CustomColor {

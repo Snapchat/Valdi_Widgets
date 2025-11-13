@@ -22,7 +22,6 @@ valdi_module(
         "res/**/*.ttf",
         "res/**/*.webp",
     ]),
-    single_file_codegen = False,
     visibility = ["//visibility:public"],
     deps = [
         "@valdi//src/valdi_modules/src/valdi/bridge_observables",

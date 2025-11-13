@@ -42,7 +42,7 @@ export const forceColorPalette = (palette: ColorPalette): void => {
   updateColorPalette(palette);
 };
 
-// @ExportFunction({ios: 'SCInitializeSemanticColorsTheme', android: 'com.snap.valdi.InitializeSemanticColorsTheme'})
+// @ExportFunction({ios: 'SCInitializeSemanticColorsTheme', android: 'com.snap.valdi.widgets.InitializeSemanticColorsTheme'})
 export function setTheme(theme: string, systemDarkModeEnabled: boolean): void {
   global.theme = theme;
   updateColorPalette(paletteFromTheme(theme, systemDarkModeEnabled));

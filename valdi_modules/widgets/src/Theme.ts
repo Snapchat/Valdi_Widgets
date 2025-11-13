@@ -3,7 +3,7 @@ import { alwaysDark, alwaysLight, SemanticColor } from './styles/semanticColors'
 /**
  * @ExportEnum({
  *  ios: 'Theme',
- *  android: 'dev.valdi.Theme'
+ *  android: 'com.snap.valdi.widgets.Theme'
  * })
  *
  * Supported theme types.

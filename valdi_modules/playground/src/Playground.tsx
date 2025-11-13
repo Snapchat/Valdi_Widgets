@@ -26,7 +26,7 @@ declare const runtime: ValdiRuntime;
  * @Context
  * @ExportModel({
  *  ios: 'SCCPlaygroundContext',
- *  android: 'com.snap.playground.PlaygroundContext'
+ *  android: 'com.snap.valdi.widgets.PlaygroundContext'
  * })
  */
 export interface PlaygroundContext {
@@ -42,7 +42,7 @@ interface PlaygroundState {
  * @Component
  * @ExportModel({
  *  ios: 'SCCPlaygroundView',
- *  android: 'com.snap.playground.PlaygroundView'
+ *  android: 'com.snap.valdi.widgets.PlaygroundView'
  * })
  */
 export class Playground extends StatefulComponent<{}, PlaygroundState, PlaygroundContext> {
