@@ -6,20 +6,20 @@ import { Playground } from './Playground';
 
 /**
  * @ViewModel
- * @ExportModel({ ios: 'ValdiStartViewComponentViewModel', android: 'com.snap.valdi.helloworld.StartViewComponentViewModel'})
+ * @ExportModel({ ios: 'ValdiStartViewComponentViewModel', android: 'com.snap.playground.StartViewComponentViewModel'})
  */
 export interface StartComponentViewModel {}
 
 /**
  * @Context
- * @ExportModel({ios: 'ValdiStartViewComponentContext', android: 'com.snap.valdi.helloworld.StartViewComponentContext'})
+ * @ExportModel({ios: 'ValdiStartViewComponentContext', android: 'com.snap.playground.StartViewComponentContext'})
  */
 export interface StartComponentContext {
 }
 
 /**
  * @Component
- * @ExportModel({ios: 'ValdiStartView', android: 'com.snap.valdi.helloworld.StartView'})
+ * @ExportModel({ios: 'ValdiStartView', android: 'com.snap.playground.StartView'})
  */
 export class PlaygroundApp extends Component<
   StartComponentViewModel,
