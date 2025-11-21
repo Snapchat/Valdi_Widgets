@@ -1,10 +1,9 @@
-import { CustomColor, customColorToRgbaString } from 'widgets/src/components/util/CustomColor';
+import { customColorToRgbaString } from 'widgets/src/components/util/CustomColor';
 import 'jasmine/src/jasmine';
 
-describe('customcolorToRgbaStringTest', () => {
-  it('should convert a Color object to an rgba string', () => {
-    const color: CustomColor = { red: 255, green: 255, blue: 255, alpha: 0.1 };
-    const result = customColorToRgbaString(color);
-    expect(result).toBe('rgba(255, 255, 255, 0.1)');
+describe('CustomColor', () => {
+  it('converts to rgba string', () => {
+    const rgba = customColorToRgbaString({ red: 10, green: 20, blue: 30, alpha: 0.5 });
+    expect(rgba).toBe('rgba(10, 20, 30, 0.5)');
   });
 });
