@@ -9,7 +9,7 @@ const styles = {
     width: '24',
     height: '24',
     borderRadius: '50%',
-    borderColor: SemanticColor.Flat.PURE_BLACK,
+    borderColor: SemanticColor.Flat.PURE_WHITE,
     alignItems: 'center',
     justifyContent: 'center',
   }),
