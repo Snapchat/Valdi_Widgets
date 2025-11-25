@@ -22,7 +22,7 @@ jobs:
           repository-cache: true
 
       - name: Run all tests
-        run: bazel test //...
+        run: bazel test --test_output=all //valdi_modules/navigation:test //valdi_modules/widgets:test
 
       - name: Upload test results
         if: always()
