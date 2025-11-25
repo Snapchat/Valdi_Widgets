@@ -5,7 +5,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # # Replace to http_archive once the git repo is public.
 git_repository(
     name = "valdi",
-    remote = "git@github.com:Snapchat/Valdi.git",
+    remote = "https://github.com/Snapchat/Valdi.git",
     branch = "main",
 )
 
