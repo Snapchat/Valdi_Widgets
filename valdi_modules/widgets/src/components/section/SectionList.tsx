@@ -341,6 +341,7 @@ export class SectionList extends Component<SectionListViewModel> implements Defe
       return;
     }
 
+    // scheduleRender() used for batch deferred-item refresh; prefer viewModel-driven update when feasible (see AGENTS.md).
     this.renderer.batchUpdates(() => {
       for (const section of this.items.all()) {
         section.scheduleRender();

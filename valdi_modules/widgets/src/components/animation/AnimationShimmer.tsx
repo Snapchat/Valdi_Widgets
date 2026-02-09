@@ -159,8 +159,10 @@ export class AnimationShimmer extends Component<AnimationShimmerViewModel> {
   private stageTimeout(): Promise<void> {
     return new Promise(resolve => {
       clearTimeout(this.animationTimeout);
-      this.animationTimeout = setTimeout(() => {
-        resolve();
+      this.animationTimeout = this.setTimeoutDisposable(() => {
+        if (!this.animationDestroyed) {
+          resolve();
+        }
       }, AnimationShimmer.stageDurationMs);
     });
   }
