@@ -1,18 +1,17 @@
 workspace(name = "valdi_widgets")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-# # Replace to http_archive once the git repo is public.
-git_repository(
+# Valdi release beta-0.0.2 (https://github.com/Snapchat/Valdi/releases)
+http_archive(
     name = "valdi",
-    remote = "https://github.com/Snapchat/Valdi.git",
-    branch = "main",
+    strip_prefix = "Valdi-beta-0.0.2",
+    url = "https://github.com/Snapchat/Valdi/archive/refs/tags/beta-0.0.2.tar.gz",
 )
 
-#local_repository(
-#    name = "valdi",
-#    path = "../Valdi",
-#)
+# For local development:
+# local_repository(name = "valdi", path = "/path/to/Valdi")
 
 load("@valdi//bzl:workspace_prepare.bzl", "valdi_prepare_workspace")
 

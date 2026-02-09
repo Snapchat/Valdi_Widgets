@@ -5,6 +5,8 @@ on:
     branches: [main]
   push:
     branches: [main]
+  release:
+    types: [published, prereleased]
 
 jobs:
   test:
@@ -22,7 +24,7 @@ jobs:
           repository-cache: true
 
       - name: Run all tests
-        run: bazel test --test_output=all //valdi_modules/navigation:test //valdi_modules/widgets:test
+        run: bazel test --test_output=all //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test //valdi_modules/navigation_internal:test //valdi_modules/playground:test
 
       - name: Upload test results
         if: always()
