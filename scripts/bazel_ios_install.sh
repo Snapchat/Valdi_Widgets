@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# This script builds //apps/helloworld:hello_world_ios using Bazel and then runs it
-# on a currently-booted simulator
+# This script builds //valdi_modules/playground:app_ios and installs it
+# on the currently-booted iOS Simulator
 
 set -o errexit  # Exit on most errors (see the manual)
 set -o nounset  # Disallow expansion of unset variables

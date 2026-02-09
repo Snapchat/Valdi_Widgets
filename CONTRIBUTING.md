@@ -1,6 +1,6 @@
 # Contributing to Valdi Widgets
 
-Thank you for your interest in Valdi. We welcome community contributions and appreciate your time and effort in helping improve the project. Before getting started, please take a moment to review these guidelines.
+Thank you for your interest in Valdi Widgets. We welcome community contributions and appreciate your time and effort in helping improve the project. Before getting started, please take a moment to review these guidelines.
 
 ## 1. [Code of Conduct](./CODE_OF_CONDUCT.md)
 
@@ -14,13 +14,18 @@ We welcome contributions in various forms, including:
 - Documentation improvements
 - Tests and performance optimizations
 
-If you would like to add new features, please reach out to the Valdi team on [Discord](https://discord.gg/uJyNEeYX2U) to discuss. 
+If you would like to add new features, please reach out to the Valdi community on [Discord](https://discord.gg/uJyNEeYX2U) to discuss. 
 
 To contribute, follow these steps:
 
 - **Fork** the repository and create a new branch.
 - **Make your changes**, ensuring they align with our coding standards (§4 below).
-- **Run tests** to ensure your changes do not break existing functionality.
+- **Run tests** to ensure your changes do not break existing functionality:
+
+  ```bash
+  bazel test //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test //valdi_modules/navigation_internal:test //valdi_modules/playground:test
+  ```
+
 - **Submit a pull request (PR)** with a clear description of the changes.
 - A maintainer will review your PR, suggest any necessary changes, and merge it once approved.
 
@@ -37,8 +42,8 @@ docs: Update README with new installation steps
 By submitting a contribution, you represent and warrant that:
 
 - It is your original work, or you have sufficient rights to submit it.
-- You grant the Valdi maintainers and users the right to use, modify, and distribute it under the MIT license (see LICENSE file); and
-- To the extent your contribution is covered by patents, you grant a perpetual, worldwide, non-exclusive, royalty-free, irrevocable license to the Valdi maintainers and users to make, use, sell, offer for sale, import, and otherwise transfer your contribution as part of the project.
+- You grant the Valdi Widgets maintainers and users the right to use, modify, and distribute it under the MIT license (see LICENSE file); and
+- To the extent your contribution is covered by patents, you grant a perpetual, worldwide, non-exclusive, royalty-free, irrevocable license to the Valdi Widgets maintainers and users to make, use, sell, offer for sale, import, and otherwise transfer your contribution as part of the project.
 
 We do not require a Contributor License Agreement (CLA). However, by contributing, you agree to license your submission under terms compatible with the MIT License and to grant the patent rights described above. If your contribution includes third-party code, you are responsible for ensuring it is MIT-compatible and properly attributed.
 

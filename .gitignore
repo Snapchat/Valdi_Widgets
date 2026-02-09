@@ -1,5 +1,4 @@
 *.DS_Store
 
 bazel-*
-# Added by Snap Cursor Rules extension
 .cursor/rules/remote

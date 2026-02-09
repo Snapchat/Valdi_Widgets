@@ -8,10 +8,10 @@ Valdi Widgets provides reusable UI widgets, styles, and patterns for apps built 
 
 ### This Repo (Valdi Widgets)
 
-- **`valdi_modules/`** – Valdi modules (widgets, navigation, valdi_standalone_ui, playground app)
-- **`WORKSPACE`** – Depends on Valdi via `http_archive` (e.g. release `beta-0.0.2`)
-- **Build**: Bazel; run tests with `bazel test //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test`
-- **Docs**: `.cursor/rules/` (Cursor rules copied from Valdi), this file
+- **`valdi_modules/`** – Valdi modules (widgets, navigation, valdi_standalone_ui, navigation_internal, playground)
+- **`WORKSPACE`** – Depends on Valdi via `http_archive` (e.g. `beta-0.0.2`)
+- **Build**: Bazel; tests: `bazel test //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test //valdi_modules/navigation_internal:test //valdi_modules/playground:test`
+- **Docs**: `AGENTS.md` (this file), `.cursor/rules/` (typescript-tsx, bazel, testing), `README.md`
 
 The rest of this guide describes **Valdi** patterns so AI assistants don’t suggest React or wrong APIs when editing TypeScript/TSX in `valdi_modules/`.
 
