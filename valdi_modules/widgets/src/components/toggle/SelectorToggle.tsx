@@ -3,7 +3,7 @@ import { setTimeoutInterruptible } from 'valdi_core/src/SetTimeout';
 import { Style } from 'valdi_core/src/Style';
 import { View } from 'valdi_tsx/src/NativeTemplateElements';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
-import res from '../../../res';
+import res from 'widgets/res';
 
 const OUTER_INACTIVE_COLOR = SemanticColor.Icon.SECONDARY;
 const INNER_INACTIVE_COLOR = SemanticColor.Background.SURFACE;

@@ -1,14 +1,12 @@
 # Testing Rules
 
-**Applies to**: Test files in `**/test/`, `**/*.spec.ts`, `**/*.test.ts`
+**Applies to**: Test files in `**/test/**/*.ts`, `**/*Test.ts`
 
 ## Overview
 
-Valdi Widgets uses the same testing approach as Valdi: Jasmine for TypeScript/component tests.
+Valdi Widgets uses Jasmine for TypeScript/component tests. Test files live in `test/` directories within each module and are named `*Test.ts` (e.g., `CoreButtonTest.ts`, `EmojiLabelTest.ts`).
 
 ## Test Framework
-
-### Jasmine for TypeScript Tests
 
 ```typescript
 import 'jasmine/src/jasmine';
@@ -19,7 +17,7 @@ describe('MyComponent', () => {
     const component = new MyComponent();
     expect(component).toBeDefined();
   });
-  
+
   it('should handle state updates', () => {
     const component = new MyStatefulComponent();
     component.setState({ count: 1 });
@@ -28,31 +26,64 @@ describe('MyComponent', () => {
 });
 ```
 
-Test files use `.spec.ts` and live under `test/` in each module.
-
 ## Running Tests
 
 ```bash
-# Run Valdi Widgets tests
+# Run all widget tests
 bazel test //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test //valdi_modules/navigation_internal:test
 
-# With output
+# With output on failure
 bazel test //valdi_modules/...:test --test_output=errors
+
+# Single module
+bazel test //valdi_modules/widgets:test
 ```
 
 ## Test Conventions
 
-- `*.spec.ts` or `*.test.ts` for unit tests
-- `test/` directory per module
-- Test file should mirror source file name
+- **Naming**: `*Test.ts` (e.g., `CoreButtonTest.ts`, `SliderTest.ts`)
+- **Location**: `test/` subdirectory mirroring `src/` structure
+- **Framework**: Jasmine (`describe`, `it`, `expect`, `beforeEach`, `afterEach`)
 
-## Important
+## Test Structure
 
-1. **Test behavior, not implementation**
-2. **Isolate tests** – Each test independent
-3. **Mock dependencies** when appropriate
-4. **Use this.setTimeoutDisposable()** in component code; avoid raw setTimeout/setInterval in tests when testing components
+```typescript
+describe('ComponentName', () => {
+  beforeEach(() => {
+    // Setup
+  });
+
+  afterEach(() => {
+    // Cleanup
+  });
+
+  it('should do something specific', () => {
+    // Arrange
+    const component = new MyComponent();
+    // Act
+    component.doSomething();
+    // Assert
+    expect(component.result).toBe(expected);
+  });
+});
+```
+
+## Testing State
+
+```typescript
+it('should update state correctly', () => {
+  const component = new MyStatefulComponent();
+  component.setState({ count: 1 });
+  expect(component.state.count).toBe(1);
+});
+```
+
+## Important Testing Principles
+
+1. **Test behavior, not implementation** – Focus on what the component does, not how
+2. **Isolate tests** – Each test should be independent
+3. **Use `this.setTimeoutDisposable()`** in component code; avoid raw `setTimeout`/`setInterval` in components
 
 ## More Information
 
-- Valdi testing: https://github.com/Snapchat/Valdi
+- Valdi: https://github.com/Snapchat/Valdi

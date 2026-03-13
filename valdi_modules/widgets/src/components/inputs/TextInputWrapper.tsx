@@ -6,8 +6,8 @@ import { RenderedElementUtils } from 'valdi_core/src/utils/RenderedElementUtils'
 import { ElementFrame } from 'valdi_tsx/src/Geometry';
 import { EditTextBeginEvent, EditTextEndEvent } from 'valdi_tsx/src/NativeTemplateElements';
 import { Spacing } from 'widgets/src/styles/spacing';
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
-import { ScrollViewSubscription } from '../scroll/ScrollViewSubscription';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
+import { ScrollViewSubscription } from 'widgets/src/components/scroll/ScrollViewSubscription';
 import { ScrollWithKeyboard, ScrollWithKeyboardMode } from './ScrollWithKeyboard';
 import { TextInputHandler } from './TextInputHandler';
 

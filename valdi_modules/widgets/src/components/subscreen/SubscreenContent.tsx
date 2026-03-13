@@ -1,6 +1,6 @@
 import { Component } from 'valdi_core/src/Component';
-import { BLANK_INSETS, Insets } from '../util/Insets';
-import { WithInsets } from '../util/WithInsets';
+import { BLANK_INSETS, Insets } from 'widgets/src/components/util/Insets';
+import { WithInsets } from 'widgets/src/components/util/WithInsets';
 import { Subscreen } from './Subscreen';
 
 export interface SubscreenContentViewModel {

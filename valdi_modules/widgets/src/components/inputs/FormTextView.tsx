@@ -10,7 +10,7 @@ import {
 } from 'valdi_tsx/src/NativeTemplateElements';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
-import { FocusableComponentRef } from '../util/FocusableComponentRef';
+import { FocusableComponentRef } from 'widgets/src/components/util/FocusableComponentRef';
 import { ScrollWithKeyboard } from './ScrollWithKeyboard';
 import { TextViewWrapper } from './TextViewWrapper';
 

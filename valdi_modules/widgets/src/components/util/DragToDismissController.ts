@@ -1,5 +1,5 @@
 import { ScrollEvent, ScrollDragEndEvent } from 'valdi_tsx/src/GestureEvents';
-import { ScrollViewListener } from '../scroll/ScrollViewListener';
+import { ScrollViewListener } from 'widgets/src/components/scroll/ScrollViewListener';
 
 export class DragToDismissController implements ScrollViewListener {
   // The current drag session is eligible to trigger a dismiss on end

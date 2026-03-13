@@ -19,6 +19,7 @@ import { TabsHeader } from 'widgets/src/components/tabs/TabsHeader'
 import { TabsCoordinator} from 'widgets/src/components/tabs/TabsCoordinator'
 import { convertToTabItems} from 'widgets/src/components/tabs/TabsItemWithTitle'
 import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
+import { WidgetsCatalog } from './WidgetsCatalog';
 
 declare const runtime: ValdiRuntime;
 
@@ -36,7 +37,8 @@ export interface PlaygroundContext {
  * Internal state of the component.
  */
 interface PlaygroundState {
-  theme: string
+  theme: string;
+  showCatalog: boolean;
 }
 /**
  * @Component
@@ -47,7 +49,8 @@ interface PlaygroundState {
  */
 export class Playground extends StatefulComponent<{}, PlaygroundState, PlaygroundContext> {
   state: PlaygroundState = {
-    theme: ThemeLight
+    theme: ThemeLight,
+    showCatalog: false,
   };
 
   onCreate(): void {
@@ -89,6 +92,23 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
 
   onRender() {
     { setTheme(this.state.theme, false) }
+    if (this.state.showCatalog) {
+      <view backgroundColor={SemanticColor.Background.SUBSCREEN} height='100%'>
+        <layout flexDirection='row' alignItems='center' padding='12 16'>
+          <CoreButton
+            text='← Back'
+            coloring={CoreButtonColoring.PRIMARY}
+            sizing={CoreButtonSizing.SMALL}
+            onTap={() => this.setState({ showCatalog: false })}
+          />
+          <label font={TextStyleFont.TITLE_3} value='Widgets Catalog' margin='0 0 0 12' />
+        </layout>
+        <scroll height='100%'>
+          <WidgetsCatalog context={{}} />
+        </scroll>
+      </view>;
+      return;
+    }
     <view backgroundColor={SemanticColor.Background.SUBSCREEN}>
     <TabsHeader tabsItemsArray={this.tabs} tabsCoordinator={this.tabsCoordinator}/>
     <TabsContent tabsCoordinator={this.tabsCoordinator} scrollViewHandler={this.scrollViewHandler} />
@@ -162,6 +182,15 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
               })}
             </scroll>
           </Section>
+          <Section title='Widgets Catalog'>
+            <CoreButton
+              text='Browse Widgets Catalog'
+              coloring={CoreButtonColoring.PRIMARY}
+              sizing={CoreButtonSizing.LARGE}
+              onTap={() => this.setState({ showCatalog: true })}
+            />
+          </Section>
+          <SectionSeparator />
           <Section title='The Errors'>
             <CoreButton
               text='Throw Uncaught Exception'

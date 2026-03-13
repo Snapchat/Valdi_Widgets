@@ -1,5 +1,5 @@
 import { Component } from 'valdi_core/src/Component';
-import { RenderFunction } from '../RenderFunction';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
 import { MeasuredComponentSize } from './MeasureCache';
 
 interface ViewModel {

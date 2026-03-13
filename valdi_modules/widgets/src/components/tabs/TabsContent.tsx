@@ -10,8 +10,8 @@ import { Layout, ScrollView, View } from 'valdi_tsx/src/NativeTemplateElements';
 import { linearGradient } from 'widgets/src/styles/gradients';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { clamp } from 'foundation/src/number';
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
-import { ScrollViewSubscription } from '../scroll/ScrollViewSubscription';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
+import { ScrollViewSubscription } from 'widgets/src/components/scroll/ScrollViewSubscription';
 import { TabsCoordinator, TabsCoordinatorItems } from './TabsCoordinator';
 
 export enum TabsContentLoading {

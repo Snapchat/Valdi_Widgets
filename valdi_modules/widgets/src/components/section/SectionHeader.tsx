@@ -7,7 +7,7 @@ import { Subscreen } from 'widgets/src/components/subscreen/Subscreen';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { Spacing } from 'widgets/src/styles/spacing';
-import { RenderFunction } from '../RenderFunction';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
 import { SectionHeaderActionButton } from './header/SectionHeaderActionButton';
 
 export interface ISectionActionButton {

@@ -1,4 +1,4 @@
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
 
 /**
  * Depending on context in which the valdi view is rendered, it may make sense to change the auto-scroll behaviour

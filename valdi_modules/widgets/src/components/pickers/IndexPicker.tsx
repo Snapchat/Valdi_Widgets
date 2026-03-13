@@ -17,8 +17,10 @@ export class IndexPicker extends Component<IndexPickerViewModel, {}> {
     const labels = viewModel.labels;
     const index = clamp(viewModel.index ?? 0, 0, labels.length - 1);
     <custom-view
-      iosClass='SCValdiIndexPicker'
+      iosClass='SCWidgetsIndexPicker'
+      macosClass='SCWidgetsMacOSIndexPicker'
       androidClass='com.snap.valdi.views.ValdiIndexPicker'
+      webClass='SCWidgetsIndexPickerWeb'
       onChange={viewModel.onChange}
       index={index}
       labels={labels}
