@@ -46,12 +46,13 @@ valdi_modules/<module_name>/
     index.ts
     <MainEntry>.ts     # or .tsx; may import from <Name>.d.ts
     <Name>.d.ts        # @ExportModule API for native (optional for view-only polyglot)
-  android/             # valdi_android_library srcs
-    src/main/java/.../...Impl.kt   # @RegisterValdiModule factory + impl
+  android/             # valdi_android_library srcs — flat directory, no deep nesting
+    ...Impl.kt         # @RegisterValdiModule factory + impl (or @RegisterAttributesBinder for custom views)
   ios/                 # objc_library srcs
     ...Impl.m          # VALDI_REGISTER_MODULE() factory + impl
-  web/                 # optional; web_deps filegroup
-    *.ts
+  web/                 # optional; web_deps plain JS filegroup (NOT ts_project)
+    src/
+      ...Web.js        # CommonJS; exports.webPolyglotViews = { ClassName: factory }
 ```
 
 ## Importing polyglot modules (consumers)

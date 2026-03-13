@@ -20,7 +20,7 @@ bazel build --config=web //valdi_modules/playground:playground_export_npm
 
 ## Valdi Dependency
 
-- Valdi is loaded via `http_archive` in WORKSPACE (release tag, e.g. `beta-0.0.2`).
+- Valdi is loaded via `git_repository` in WORKSPACE pointing at the bleeding edge of `github.com/Snapchat/Valdi` (update the `commit` SHA to pick up new changes).
 - For local development: use `local_repository(name = "valdi", path = "/path/to/Valdi")` in WORKSPACE.
 - Valdi build rules live in `@valdi//bzl/valdi/`.
 
@@ -40,6 +40,24 @@ valdi_module(
 )
 ```
 
+## Per-Component Filegroups (widgets pattern)
+
+All component filegroups must live in the **same BUILD.bazel package** as the `valdi_module` — never in sub-packages. The Valdi compiler treats Bazel packages as module boundaries, so sub-packages break cross-component imports.
+
+```python
+filegroup(
+    name = "button",
+    srcs = glob(["src/components/button/**/*.ts", "src/components/button/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+valdi_module(
+    name = "my_module",
+    srcs = [":button", ":pickers", ...] + glob(["src/*.ts"]) + ["tsconfig.json"],
+    ...
+)
+```
+
 ## Polyglot Module (Native + Web)
 
 ```python
@@ -49,7 +67,7 @@ load("@valdi//bzl/valdi:valdi_android_library.bzl", "valdi_android_library")
 # Android: attribute binders, annotated with @RegisterAttributesBinder
 valdi_android_library(
     name = "my_module_android",
-    srcs = glob(["android/**/*.kt"]),
+    srcs = glob(["android/*.kt"]),  # flat android/ dir, no deep nesting
     deps = ["@valdi//valdi:valdi_java"],
 )
 
@@ -62,11 +80,11 @@ objc_library(
     deps = ["@valdi//valdi:valdi_ios"],
 )
 
-# Web: compiled by ts_project (NOT valdi compiler); exports webPolyglotViews
-ts_project(
+# Web: plain JS filegroup (NOT ts_project — ts_project causes TS5055 on exec-platform)
+# File must export `webPolyglotViews` for auto-registration.
+filegroup(
     name = "my_module_web",
-    srcs = glob(["web/**/*.ts"]),
-    tsconfig = "web/tsconfig.json",
+    srcs = ["web/src/MyModuleWeb.js"],
 )
 
 valdi_module(
@@ -79,7 +97,7 @@ valdi_module(
 )
 ```
 
-See `valdi_modules/share/` for a full working example. See `.cursor/rules/polyglot-module.md` for details.
+See `valdi_modules/widgets/` for a full working example. See `.cursor/rules/polyglot-module.md` and `.cursor/rules/web-polyglot.md` for details.
 
 ## Conventions
 

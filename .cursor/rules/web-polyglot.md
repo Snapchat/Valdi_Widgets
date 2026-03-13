@@ -1,46 +1,41 @@
 # Web Polyglot Entry Rules
 
-**Applies to**: `**/web/**/*.ts` files in Valdi modules (web polyglot implementations).
+**Applies to**: `**/web/**/*.js` files in Valdi modules (web polyglot implementations).
 
 ## Overview
 
-Web polyglot entry files export view factories that are auto-registered with the `WebViewClassRegistry` at bundle time. Any file in `web_deps` that exports a `webPolyglotViews` record is automatically discovered by `RegisterNativeModules.js` — no extra BUILD configuration or manual module loader interaction is needed.
+Web polyglot entry files export view factories that are auto-registered with the `WebViewClassRegistry` at bundle time. Any file in `web_deps` that exports a `webPolyglotViews` object is automatically discovered by `RegisterNativeModules.js` — no extra BUILD configuration or manual module loader interaction is needed.
+
+## CRITICAL: Use plain `.js`, NOT TypeScript
+
+**Do not use `ts_project` for `web_deps`.** The Valdi compiler's exec-platform build hits a TS5055 error ("Cannot write file … because it would overwrite input file") when `ts_project` is used in `web_deps`. Write web polyglot files as plain JavaScript (`.js`).
 
 ## Export Convention
 
-Export a `webPolyglotViews` record mapping class names to factory functions:
+Export a `webPolyglotViews` object mapping class names to factory functions:
 
-```typescript
-export const webPolyglotViews: Record<string, (container: HTMLElement) => void> = {
-  MyCustomViewClass: createMyViewFactory(),
+```javascript
+exports.webPolyglotViews = {
+  MyCustomViewClass: function(container) {
+    // Build DOM content inside container
+    const el = document.createElement('div');
+    container.appendChild(el);
+  },
 };
 ```
 
 Each key must match the `webClass` attribute used in `<custom-view webClass="MyCustomViewClass">`.
 
-## Factory Function Pattern
-
-A factory receives an `HTMLElement` container and populates it with DOM content:
-
-```typescript
-function createMyViewFactory(): (container: HTMLElement) => void {
-  return (container: HTMLElement) => {
-    // Build DOM content inside container
-    const element = document.createElement('div');
-    container.appendChild(element);
-  };
-}
-```
-
 ## BUILD.bazel Wiring
 
-The `web/` directory is compiled by `ts_project` (not the Valdi compiler) and wired in via `web_deps`:
+Use a plain `filegroup` — **not** `ts_project`:
 
 ```python
-ts_project(
+# CORRECT — plain JS filegroup
+filegroup(
     name = "my_module_web",
-    srcs = glob(["web/**/*.ts", "web/**/*.d.ts"]),
-    tsconfig = "web/tsconfig.json",
+    srcs = ["web/src/MyModuleWeb.js"],
+    visibility = ["//visibility:public"],
 )
 
 valdi_module(
@@ -50,11 +45,19 @@ valdi_module(
 )
 ```
 
-That's it — any file in the `ts_project` that exports `webPolyglotViews` will be auto-registered.
+```python
+# WRONG — ts_project causes TS5055 on exec-platform
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+ts_project(name = "my_module_web", ...)  # ❌
+```
 
 ## Key Constraints
 
-- Web entry files are standard TypeScript compiled by `tsc`, not the Valdi compiler
-- Do NOT use Valdi imports (`valdi_core/`, `valdi_tsx/`) in `web/` files — they run in the browser, not the Valdi runtime
-- Do NOT manually call `globalThis.moduleLoader.resolveRequire()` — the build system handles registration
-- The `tsconfig.json` in `web/` should target `DOM` + `ES2020` with `module: "commonjs"`
+- Write web entry files as **plain JavaScript** (CommonJS `exports.webPolyglotViews = {...}`)
+- Do NOT use Valdi imports (`valdi_core/`, `valdi_tsx/`) in web files — they run in the browser, not the Valdi runtime
+- Do NOT self-register by calling `registerWebPolyglotViewClassOrThrow` — registration is handled by the generated `RegisterNativeModules.js`
+- Web factories are currently **mount-time only** — attribute updates after mount are not dispatched to web factories (Valdi framework limitation; tracked in plans)
+
+## Example
+
+See `valdi_modules/widgets/web/src/WidgetsWeb.js` for a working implementation.
