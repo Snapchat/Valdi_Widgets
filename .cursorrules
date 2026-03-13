@@ -1,0 +1,51 @@
+# Valdi Widgets - Cursor Rules
+
+## ⚠️ Open Source Project
+
+This is an open source project. Never commit secrets, API keys, or proprietary information.
+
+## 🚨 CRITICAL: This is NOT React!
+
+Valdi uses TSX/JSX syntax but is **fundamentally different from React**.
+
+**Common AI mistakes:**
+- ❌ Suggesting `useState`, `useEffect`, `useContext` (don't exist!)
+- ❌ Functional components (don't exist!)
+- ❌ `this.props` (should be `this.viewModel`)
+- ❌ `markNeedsRender()`, `onMount()`, `onUpdate()` (wrong names/don't exist!)
+- ❌ `return <view />` (onRender() returns void — JSX is a statement)
+
+**Correct Valdi:**
+- ✅ `class MyComponent extends StatefulComponent`
+- ✅ `state = {}` + `this.setState()`
+- ✅ `this.viewModel` for props
+- ✅ `onCreate()`, `onViewModelUpdate()`, `onDestroy()` lifecycle
+
+## 📁 Context-Specific Rules
+
+Cursor automatically loads additional rules based on where you're working:
+
+| Working In | See |
+|-----------|-----|
+| TypeScript/TSX components | `.cursor/rules/typescript-tsx.md` |
+| Bazel files | `.cursor/rules/bazel.md` |
+| Tests | `.cursor/rules/testing.md` |
+| Polyglot modules (android/, ios/, web/) | `.cursor/rules/polyglot-module.md` |
+| `<custom-view>` in TSX | `.cursor/rules/custom-view.md` |
+| Web polyglot (web/**/*.ts) | `.cursor/rules/web-polyglot.md` |
+
+**→ Check `.cursor/rules/README.md` for the full list**
+
+## Quick Commands
+
+```bash
+bazel build //valdi_modules/playground:app_macos   # Build macOS app
+bazel test //valdi_modules/widgets:test             # Run widget tests
+bazel test //valdi_modules/...:test                 # Run all tests
+./scripts/bazel_web_serve.sh                        # Serve web playground
+```
+
+## More Information
+
+- **Repo guide**: `/AGENTS.md`
+- **Valdi framework**: https://github.com/Snapchat/Valdi

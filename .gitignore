@@ -2,3 +2,6 @@
 
 bazel-*
 .cursor/rules/remote
+
+# Web playground dev server dependencies
+valdi_modules/playground/web_app/node_modules/

@@ -1,17 +1,396 @@
 load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
+load("@valdi//bzl/valdi:valdi_android_library.bzl", "valdi_android_library")
+
+# Web polyglot implementations (DatePicker, TimePicker, IndexPicker, EmojiLabel).
+# Plain JS — no ts_project needed, avoids the exec-platform valdi_tsx_web TS5055 issue.
+# The build system's generate_register_native_modules picks up .js files and checks
+# for webPolyglotViews exports to register custom view factories.
+filegroup(
+    name = "widgets_web",
+    srcs = ["web/src/WidgetsWeb.js"],
+    visibility = ["//visibility:public"],
+)
+
+# Android attribute binders for polyglot custom views (IndexPicker, DatePicker, TimePicker).
+# Uses @RegisterAttributesBinder for auto-discovery at runtime.
+# NOTE: The corresponding view classes (ValdiIndexPicker, ValdiDatePicker, ValdiTimePicker)
+# live in @valdi//valdi:valdi_java and are already available transitively — only the
+# binders need to be here for the discovery mechanism to work.
+# TODO: Once these binders are removed from ValdiViewLoaderManager in the Valdi repo and
+# the valdi_java manual-registration is dropped, this becomes the sole source of truth.
+valdi_android_library(
+    name = "widgets_android",
+    srcs = glob(["android/*.kt"]),
+    deps = ["@valdi//valdi:valdi_java"],
+)
+
+# iOS native views for polyglot custom views (IndexPicker, DatePicker, TimePicker, EmojiLabel).
+# SCValdiIndexPicker, SCValdiDatePicker, SCValdiTimePicker, SCValdiLabel are compiled here.
+# NOTE: These same classes currently exist in @valdi//valdi:valdi_ios. Once they are removed
+# from that target, this objc_library becomes the sole provider and duplicate-symbol issues
+# are resolved. Until then, avoid linking both in the same binary.
+objc_library(
+    name = "widgets_ios_impl",
+    srcs = glob(["ios/**/*.m"]),
+    hdrs = glob(["ios/**/*.h"]),
+    sdk_frameworks = ["UIKit"],
+    deps = [
+        "@valdi//valdi:valdi_ios",
+        "@valdi//valdi_core:valdi_core_objc",
+    ],
+)
+
+# macOS native views for polyglot custom views (DatePicker, TimePicker, IndexPicker, EmojiLabel).
+# Uses AppKit (NSDatePicker, NSPopUpButton, NSTextField) via SCWidgetsMacOS* classes.
+objc_library(
+    name = "widgets_macos_impl",
+    srcs = glob(["macos/**/*.m"]),
+    hdrs = glob(["macos/**/*.h"]),
+    sdk_frameworks = ["Cocoa"],
+    deps = ["@valdi//valdi:valdi_macos"],
+)
+
+# Per-component filegroups — named targets for each widget component.
+# NOTE: All filegroups must live in this top-level BUILD.bazel (same Bazel package as
+# valdi_module:widgets). Sub-packages would cause the Valdi compiler to treat each
+# component as a separate module, breaking cross-component imports.
+
+filegroup(
+    name = "animation",
+    srcs = glob(["src/components/animation/**/*.ts", "src/components/animation/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "button",
+    srcs = glob(["src/components/button/**/*.ts", "src/components/button/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "card",
+    srcs = glob(["src/components/card/**/*.ts", "src/components/card/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "cell",
+    srcs = glob(["src/components/cell/**/*.ts", "src/components/cell/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "dragdrop",
+    srcs = glob(["src/components/dragdrop/**/*.ts", "src/components/dragdrop/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "grid",
+    srcs = glob(["src/components/grid/**/*.ts", "src/components/grid/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "image",
+    srcs = glob(["src/components/image/**/*.ts", "src/components/image/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "indexview",
+    srcs = glob(["src/components/indexview/**/*.ts", "src/components/indexview/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "inputs",
+    srcs = glob(["src/components/inputs/**/*.ts", "src/components/inputs/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "pageview",
+    srcs = glob(["src/components/pageview/**/*.ts", "src/components/pageview/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "pickers",
+    srcs = glob(["src/components/pickers/**/*.ts", "src/components/pickers/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "refresh",
+    srcs = glob(["src/components/refresh/**/*.ts", "src/components/refresh/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "rules",
+    srcs = glob(["src/components/rules/**/*.ts", "src/components/rules/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "scroll",
+    srcs = glob(["src/components/scroll/**/*.ts", "src/components/scroll/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "section",
+    srcs = glob(["src/components/section/**/*.ts", "src/components/section/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "sheet",
+    srcs = glob(["src/components/sheet/**/*.ts", "src/components/sheet/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "slider",
+    srcs = glob(["src/components/slider/**/*.ts", "src/components/slider/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "subscreen",
+    srcs = glob(["src/components/subscreen/**/*.ts", "src/components/subscreen/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "tabs",
+    srcs = glob(["src/components/tabs/**/*.ts", "src/components/tabs/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "text",
+    srcs = glob(["src/components/text/**/*.ts", "src/components/text/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "toggle",
+    srcs = glob(["src/components/toggle/**/*.ts", "src/components/toggle/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "tooltip",
+    srcs = glob(["src/components/tooltip/**/*.ts", "src/components/tooltip/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "util",
+    srcs = glob(["src/components/util/**/*.ts", "src/components/util/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "styles",
+    srcs = glob(["src/styles/**/*.ts", "src/styles/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+# Per-component test filegroups
+filegroup(
+    name = "animation_tests",
+    srcs = glob(["test/components/animation/**/*.ts", "test/components/animation/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "button_tests",
+    srcs = glob(["test/components/button/**/*.ts", "test/components/button/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "card_tests",
+    srcs = glob(["test/components/card/**/*.ts", "test/components/card/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "cell_tests",
+    srcs = glob(["test/components/cell/**/*.ts", "test/components/cell/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "grid_tests",
+    srcs = glob(["test/components/grid/**/*.ts", "test/components/grid/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "image_tests",
+    srcs = glob(["test/components/image/**/*.ts", "test/components/image/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "indexview_tests",
+    srcs = glob(["test/components/indexview/**/*.ts", "test/components/indexview/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "inputs_tests",
+    srcs = glob(["test/components/inputs/**/*.ts", "test/components/inputs/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "pageview_tests",
+    srcs = glob(["test/components/pageview/**/*.ts", "test/components/pageview/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "refresh_tests",
+    srcs = glob(["test/components/refresh/**/*.ts", "test/components/refresh/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "rules_tests",
+    srcs = glob(["test/components/rules/**/*.ts", "test/components/rules/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "scroll_tests",
+    srcs = glob(["test/components/scroll/**/*.ts", "test/components/scroll/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "section_tests",
+    srcs = glob(["test/components/section/**/*.ts", "test/components/section/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "sheet_tests",
+    srcs = glob(["test/components/sheet/**/*.ts", "test/components/sheet/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "slider_tests",
+    srcs = glob(["test/components/slider/**/*.ts", "test/components/slider/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "tabs_tests",
+    srcs = glob(["test/components/tabs/**/*.ts", "test/components/tabs/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "text_tests",
+    srcs = glob(["test/components/text/**/*.ts", "test/components/text/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "toggle_tests",
+    srcs = glob(["test/components/toggle/**/*.ts", "test/components/toggle/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "tooltip_tests",
+    srcs = glob(["test/components/tooltip/**/*.ts", "test/components/tooltip/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "util_tests",
+    srcs = glob(["test/components/util/**/*.ts", "test/components/util/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "semantic_color_tests",
+    srcs = glob(["test/components/semantic_color/**/*.ts", "test/components/semantic_color/**/*.tsx"]),
+    visibility = ["//visibility:public"],
+)
 
 valdi_module(
     name = "widgets",
-    srcs = glob([
-        "src/**/*.ts",
-        "src/**/*.tsx",
-        "test/**/*.ts",
-        "test/**/*.tsx",
+    srcs = [
+        # Root sources
+        ":styles",
+        # Component sources — one named target per component directory
+        ":animation",
+        ":button",
+        ":card",
+        ":cell",
+        ":dragdrop",
+        ":grid",
+        ":image",
+        ":indexview",
+        ":inputs",
+        ":pageview",
+        ":pickers",
+        ":refresh",
+        ":rules",
+        ":scroll",
+        ":section",
+        ":sheet",
+        ":slider",
+        ":subscreen",
+        ":tabs",
+        ":text",
+        ":toggle",
+        ":tooltip",
+        ":util",
+        # Test sources — one named target per test directory
+        ":animation_tests",
+        ":button_tests",
+        ":card_tests",
+        ":cell_tests",
+        ":grid_tests",
+        ":image_tests",
+        ":indexview_tests",
+        ":inputs_tests",
+        ":pageview_tests",
+        ":refresh_tests",
+        ":rules_tests",
+        ":scroll_tests",
+        ":section_tests",
+        ":sheet_tests",
+        ":slider_tests",
+        ":tabs_tests",
+        ":text_tests",
+        ":toggle_tests",
+        ":tooltip_tests",
+        ":util_tests",
+        ":semantic_color_tests",
+        # Root-level TS sources and component-level .d.ts declarations
+    ] + glob([
+        "src/*.ts",
+        "src/*.tsx",
+        "src/components/*.d.ts",
     ]) + [
+        # tsconfig
         "tsconfig.json",
     ],
+    android_deps = [":widgets_android"],
     android_output_target = "release",
     ids_yaml = "ids.yaml",
+    ios_deps = [":widgets_ios_impl"],
+    macos_deps = [":widgets_macos_impl"],
     ios_module_name = "SCCatalog",
     ios_output_target = "release",
     res = glob([
@@ -23,6 +402,7 @@ valdi_module(
         "res/**/*.webp",
     ]),
     visibility = ["//visibility:public"],
+    web_deps = [":widgets_web"],
     deps = [
         "@valdi//src/valdi_modules/src/valdi/bridge_observables",
         "@valdi//src/valdi_modules/src/valdi/coreutils",

@@ -14,7 +14,9 @@ export class EmojiLabel extends Component<EmojiLabelViewModel> {
   onRender(): void {
     <custom-view
       androidClass='com.snap.valdi.views.ValdiEmojiTextView'
-      iosClass='SCValdiLabel'
+      iosClass='SCWidgetsLabel'
+      macosClass='SCWidgetsMacOSLabel'
+      webClass='SCWidgetsLabelWeb'
       {...this.viewModel}
     />;
   }
