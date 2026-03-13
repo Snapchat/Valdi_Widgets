@@ -22,10 +22,6 @@ bazel build //valdi_modules/playground:app_android \
 
 The `scripts/bazel_android_install.sh` script already passes these flags. If you run `bazel build ...` by hand for Android, add them too.
 
-## Fix 2: Use internal Valdi (optional)
-
-If you need to build against the internal Valdi tree (e.g. with Snap toolchains), point **WORKSPACE** at the internal open_source root via `local_repository` so `//libs/utils` and other internal deps resolve. The install script’s flags (Fix 1) still apply.
-
-## Fix 3: Open-source Valdi (long-term)
+## Fix 2: Open-source Valdi (long-term)
 
 The published Valdi archive already includes `libs/utils` and `JvmUtils.cpp`; the only requirement is defining `ANDROID_WITH_JNI` when building for Android (Fix 1). No change is needed in the Valdi repo for the open-source archive to work.

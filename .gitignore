@@ -5,3 +5,4 @@ bazel-*
 
 # Web playground dev server dependencies
 valdi_modules/playground/web_app/node_modules/
+valdi_modules/playground/web_app/package-lock.json
