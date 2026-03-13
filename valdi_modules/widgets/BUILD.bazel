@@ -12,12 +12,6 @@ filegroup(
 )
 
 # Android attribute binders for polyglot custom views (IndexPicker, DatePicker, TimePicker).
-# Uses @RegisterAttributesBinder for auto-discovery at runtime.
-# NOTE: The corresponding view classes (ValdiIndexPicker, ValdiDatePicker, ValdiTimePicker)
-# live in @valdi//valdi:valdi_java and are already available transitively — only the
-# binders need to be here for the discovery mechanism to work.
-# TODO: Once these binders are removed from ValdiViewLoaderManager in the Valdi repo and
-# the valdi_java manual-registration is dropped, this becomes the sole source of truth.
 valdi_android_library(
     name = "widgets_android",
     srcs = glob(["android/*.kt"]),
@@ -25,10 +19,6 @@ valdi_android_library(
 )
 
 # iOS native views for polyglot custom views (IndexPicker, DatePicker, TimePicker, EmojiLabel).
-# SCValdiIndexPicker, SCValdiDatePicker, SCValdiTimePicker, SCValdiLabel are compiled here.
-# NOTE: These same classes currently exist in @valdi//valdi:valdi_ios. Once they are removed
-# from that target, this objc_library becomes the sole provider and duplicate-symbol issues
-# are resolved. Until then, avoid linking both in the same binary.
 objc_library(
     name = "widgets_ios_impl",
     srcs = glob(["ios/**/*.m"]),
@@ -41,7 +31,6 @@ objc_library(
 )
 
 # macOS native views for polyglot custom views (DatePicker, TimePicker, IndexPicker, EmojiLabel).
-# Uses AppKit (NSDatePicker, NSPopUpButton, NSTextField) via SCWidgetsMacOS* classes.
 objc_library(
     name = "widgets_macos_impl",
     srcs = glob(["macos/**/*.m"]),
@@ -51,9 +40,10 @@ objc_library(
 )
 
 # Per-component filegroups — named targets for each widget component.
-# NOTE: All filegroups must live in this top-level BUILD.bazel (same Bazel package as
-# valdi_module:widgets). Sub-packages would cause the Valdi compiler to treat each
-# component as a separate module, breaking cross-component imports.
+# All filegroups are defined in this top-level BUILD.bazel (same Bazel package as
+# valdi_module:widgets). Sub-packages are NOT used because the Valdi compiler strips
+# the package root prefix from file paths, making cross-component relative imports
+# break and creating a flat, colliding module namespace.
 
 filegroup(
     name = "animation",
@@ -329,7 +319,7 @@ filegroup(
 valdi_module(
     name = "widgets",
     srcs = [
-        # Root sources
+        # Styles
         ":styles",
         # Component sources — one named target per component directory
         ":animation",
@@ -377,13 +367,12 @@ valdi_module(
         ":tooltip_tests",
         ":util_tests",
         ":semantic_color_tests",
-        # Root-level TS sources and component-level .d.ts declarations
+        # Root-level TS sources and shared component-level .d.ts declarations
     ] + glob([
         "src/*.ts",
         "src/*.tsx",
         "src/components/*.d.ts",
     ]) + [
-        # tsconfig
         "tsconfig.json",
     ],
     android_deps = [":widgets_android"],

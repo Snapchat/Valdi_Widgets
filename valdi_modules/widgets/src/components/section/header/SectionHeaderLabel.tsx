@@ -2,7 +2,7 @@ import { Component } from 'valdi_core/src/Component';
 import { Style } from 'valdi_core/src/Style';
 import { Label, Layout, ImageView } from 'valdi_tsx/src/NativeTemplateElements';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
-import { SemanticColor } from '../../../styles/semanticColors';
+import { SemanticColor } from 'widgets/src/styles/semanticColors';
 
 export interface SectionHeaderLabelViewModel {
   text: string;

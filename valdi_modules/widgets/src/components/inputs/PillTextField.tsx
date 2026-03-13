@@ -19,8 +19,8 @@ import res from 'widgets/res';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { Spacing } from 'widgets/src/styles/spacing';
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
-import { FocusableComponentRef } from '../util/FocusableComponentRef';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
+import { FocusableComponentRef } from 'widgets/src/components/util/FocusableComponentRef';
 import { ScrollWithKeyboard } from './ScrollWithKeyboard';
 import { TextFieldWrapper } from './TextFieldWrapper';
 

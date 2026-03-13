@@ -1,4 +1,4 @@
-import { ScrollBarHandler } from '../scroll/scrollbar/ScrollBarHandler';
+import { ScrollBarHandler } from 'widgets/src/components/scroll/scrollbar/ScrollBarHandler';
 
 export interface TabsItem {
   key?: string;

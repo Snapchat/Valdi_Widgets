@@ -7,12 +7,12 @@ import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandl
 import { SectionList } from 'widgets/src/components/section/SectionList';
 import { SectionModel } from 'widgets/src/components/section/SectionModel';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
-import { RenderFunction } from '../RenderFunction';
-import { IndexViewAnchor } from '../indexview/IndexViewAnchor';
-import { IndexViewSymbol } from '../indexview/IndexViewSymbol';
-import { lookupSymbolForString } from '../indexview/utils/lookupSymbolForString';
-import { PullToRefresh, PullToRefreshEvent } from '../refresh/PullToRefresh';
-import { ScrollBarHandler } from '../scroll/scrollbar/ScrollBarHandler';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
+import { IndexViewAnchor } from 'widgets/src/components/indexview/IndexViewAnchor';
+import { IndexViewSymbol } from 'widgets/src/components/indexview/IndexViewSymbol';
+import { lookupSymbolForString } from 'widgets/src/components/indexview/utils/lookupSymbolForString';
+import { PullToRefresh, PullToRefreshEvent } from 'widgets/src/components/refresh/PullToRefresh';
+import { ScrollBarHandler } from 'widgets/src/components/scroll/scrollbar/ScrollBarHandler';
 import { Subscreen } from './Subscreen';
 import { SubscreenContent } from './SubscreenContent';
 import { SubscreenHeader } from './SubscreenHeader';

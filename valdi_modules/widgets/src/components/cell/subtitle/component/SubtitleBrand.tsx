@@ -1,7 +1,7 @@
 import { Component } from 'valdi_core/src/Component';
 import { CommonLabel, ViewAttributes } from 'valdi_tsx/src/NativeTemplateElements';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
-import { SemanticColor } from '../../../../styles/semanticColors';
+import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { SubtitleText } from './SubtitleText';
 
 export class SubtitleBrand extends Component<CommonLabel & ViewAttributes> {

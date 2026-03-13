@@ -6,7 +6,7 @@ import { Label, View, ImageView } from 'valdi_tsx/src/NativeTemplateElements';
 import res from 'widgets/res';
 import { CoreButton, CoreButtonColoring, CoreButtonSizing } from 'widgets/src/components/button/CoreButton';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
-import { SemanticColor } from '../../../styles/semanticColors';
+import { SemanticColor } from 'widgets/src/styles/semanticColors';
 
 export interface SectionHeaderActionButtonViewModel {
   /**

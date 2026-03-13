@@ -10,7 +10,7 @@ import { TextStyleFontNonDynamic } from 'widgets/src/styles/TextStyleFont';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { Spacing } from 'widgets/src/styles/spacing';
 import { clamp } from 'foundation/src/number';
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
 import { IndexViewHandler } from './IndexViewHandler';
 import { IndexViewSymbol } from './IndexViewSymbol';
 

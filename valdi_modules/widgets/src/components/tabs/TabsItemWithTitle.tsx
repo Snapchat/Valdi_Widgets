@@ -5,7 +5,7 @@ import { Label, Layout, View } from 'valdi_tsx/src/NativeTemplateElements';
 import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { Spacing } from 'widgets/src/styles/spacing';
-import { ScrollBarHandler } from '../scroll/scrollbar/ScrollBarHandler';
+import { ScrollBarHandler } from 'widgets/src/components/scroll/scrollbar/ScrollBarHandler';
 import { TabsItem } from './TabsItem';
 
 /**

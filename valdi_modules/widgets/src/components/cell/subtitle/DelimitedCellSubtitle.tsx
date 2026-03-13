@@ -1,7 +1,7 @@
 import { Component } from 'valdi_core/src/Component';
 import { when } from 'valdi_core/src/utils/When';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
-import { RenderFunction } from '../../RenderFunction';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
 import { CellPacking, packingSubtitleMinHeights, style, SUBTITLE_DELIMITER } from '../style';
 
 export interface GenericCellSubtitleViewModel {
