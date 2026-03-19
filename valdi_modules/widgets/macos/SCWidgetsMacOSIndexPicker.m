@@ -7,56 +7,66 @@
 #import "valdi/macos/SCValdiMacOSFunction.h"
 
 @implementation SCWidgetsMacOSIndexPicker {
-    NSPopUpButton *_popUp;
     NSArray<NSString *> *_labels;
     NSInteger _selectedIndex;
     SCValdiMacOSFunction *_onChange;
 }
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
-    self = [super initWithFrame:frameRect];
+    self = [super initWithFrame:frameRect pullsDown:NO];
     if (self) {
         _labels = @[];
         _selectedIndex = 0;
-        _popUp = [[NSPopUpButton alloc] initWithFrame:self.bounds pullsDown:NO];
-        _popUp.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [_popUp setTarget:self];
-        [_popUp setAction:@selector(_handleOnChange)];
-        [self addSubview:_popUp];
+        [self setTarget:self];
+        [self setAction:@selector(_handleOnChange)];
     }
     return self;
 }
 
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
+- (void)mouseDown:(NSEvent *)event {
+    // NSPopUpButton's built-in tracking doesn't work when embedded in a Valdi layer-backed hierarchy.
+    // Convert to screen coordinates and show the menu with inView:nil to bypass coordinate issues.
+    NSPoint windowPoint = [self convertPoint:NSZeroPoint toView:nil];
+    NSPoint screenPoint = [self.window convertPointToScreen:windowPoint];
+    [self.menu popUpMenuPositioningItem:self.selectedItem
+                             atLocation:screenPoint
+                                 inView:nil];
+}
+
 - (void)_handleOnChange {
     if (!_onChange) return;
-    NSInteger index = _popUp.indexOfSelectedItem;
+    NSInteger index = self.indexOfSelectedItem;
     [_onChange performWithParameters:@[@(index)]];
 }
 
-// The 'content' attribute is a composite: @[index, labels]
-- (void)valdi_setContent:(id)value {
+- (void)valdi_setLabels:(id)value {
     if (![value isKindOfClass:[NSArray class]]) return;
-    NSArray *arr = (NSArray *)value;
-    if (arr.count != 2) return;
-
-    NSArray *newLabels = arr[1];
-    if ([newLabels isKindOfClass:[NSArray class]] && ![newLabels isEqual:_labels]) {
-        _labels = newLabels;
-        [_popUp removeAllItems];
-        for (id label in _labels) {
-            if ([label isKindOfClass:[NSString class]]) {
-                [_popUp addItemWithTitle:label];
-            }
+    NSArray *newLabels = (NSArray *)value;
+    if ([newLabels isEqual:_labels]) return;
+    _labels = newLabels;
+    [self removeAllItems];
+    for (id label in _labels) {
+        if ([label isKindOfClass:[NSString class]]) {
+            [self addItemWithTitle:label];
         }
     }
+    NSInteger clamped = MAX(0, MIN(_selectedIndex, (NSInteger)_labels.count - 1));
+    if (_labels.count > 0) {
+        [self selectItemAtIndex:clamped];
+    }
+}
 
-    NSNumber *indexNum = arr[0];
-    if ([indexNum isKindOfClass:[NSNumber class]]) {
-        NSInteger newIndex = indexNum.integerValue;
-        newIndex = MAX(0, MIN(newIndex, (NSInteger)_labels.count - 1));
-        if (newIndex != _popUp.indexOfSelectedItem && _labels.count > 0) {
-            [_popUp selectItemAtIndex:newIndex];
-        }
+- (void)valdi_setIndex:(id)value {
+    if (![value isKindOfClass:[NSNumber class]]) return;
+    NSInteger newIndex = [(NSNumber *)value integerValue];
+    newIndex = MAX(0, MIN(newIndex, (NSInteger)_labels.count - 1));
+    _selectedIndex = newIndex;
+    if (_labels.count > 0 && newIndex != self.indexOfSelectedItem) {
+        [self selectItemAtIndex:newIndex];
     }
 }
 
@@ -65,9 +75,12 @@
 }
 
 + (void)bindAttributes:(SCValdiMacOSAttributesBinder *)attributesBinder {
-    [attributesBinder bindUntypedAttribute:@"content"
+    [attributesBinder bindUntypedAttribute:@"labels"
                   invalidateLayoutOnChange:YES
-                                  selector:@selector(valdi_setContent:)];
+                                  selector:@selector(valdi_setLabels:)];
+    [attributesBinder bindUntypedAttribute:@"index"
+                  invalidateLayoutOnChange:NO
+                                  selector:@selector(valdi_setIndex:)];
     [attributesBinder bindUntypedAttribute:@"onChange"
                   invalidateLayoutOnChange:NO
                                   selector:@selector(valdi_setOnChange:)];

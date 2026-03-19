@@ -159,15 +159,21 @@ export class TabsContent extends StatefulComponent<TabsContentViewModel, TabsCon
     this.subscribeVerticalScroll();
     this.subscribeHorizontalScroll();
   }
+  private _subscribedCoordinator?: TabsCoordinator;
+
   onViewModelUpdate(lastViewModel?: TabsContentViewModel): void {
+    // Unsubscribe eagerly when coordinator changes so stale events don't fire,
+    // but defer the re-subscribe to onRender so BehaviorSubject initial emissions
+    // don't call setState during the parent's render cycle.
     const tabsCoordinator = this.viewModel.tabsCoordinator;
     const tabsCoordinatorChanged = tabsCoordinator !== lastViewModel?.tabsCoordinator;
     if (tabsCoordinatorChanged) {
       this.unsubscribeCoordinator();
-      this.subscribeCoordinator();
+      this._subscribedCoordinator = undefined;
     }
   }
   onDestroy(): void {
+    this._subscribedCoordinator = undefined;
     this.unsubscribeCoordinator();
     this.unsubscribeVerticalScroll();
     this.unsubscribeHorizontalScroll();
@@ -177,6 +183,10 @@ export class TabsContent extends StatefulComponent<TabsContentViewModel, TabsCon
    * Rendering
    */
   onRender(): void {
+    if (this._subscribedCoordinator !== this.viewModel.tabsCoordinator) {
+      this._subscribedCoordinator = this.viewModel.tabsCoordinator;
+      this.subscribeCoordinator();
+    }
     const viewModel = this.viewModel;
     const minHeight = this.getVerticalScrollViewHeight() - this.getReservedTopSpace();
     <layout minHeight={minHeight} flexDirection='column-reverse' ref={this.containerRoot}>

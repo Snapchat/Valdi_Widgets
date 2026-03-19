@@ -9,7 +9,15 @@ static NSFont *SCWidgetsMacOSResolveFont(NSString *str) {
     if (![str isKindOfClass:[NSString class]]) return nil;
     NSArray *parts = [str componentsSeparatedByString:@" "];
     if (parts.count < 2) return nil;
-    return [NSFont fontWithName:parts[0] size:[parts[1] doubleValue]];
+    NSString *name = parts[0];
+    CGFloat size = [parts[1] doubleValue];
+    if ([name isEqualToString:@"system-bold"]) {
+        return [NSFont boldSystemFontOfSize:size];
+    }
+    if ([name isEqualToString:@"system"]) {
+        return [NSFont systemFontOfSize:size];
+    }
+    return [NSFont fontWithName:name size:size];
 }
 
 static NSColor *SCWidgetsMacOSResolveColor(NSNumber *color) {
@@ -57,7 +65,7 @@ static NSColor *SCWidgetsMacOSResolveColor(NSNumber *color) {
 }
 
 + (void)bindAttributes:(SCValdiMacOSAttributesBinder *)attributesBinder {
-    [attributesBinder bindUntypedAttribute:@"text"
+    [attributesBinder bindUntypedAttribute:@"value"
                   invalidateLayoutOnChange:YES
                                   selector:@selector(valdi_setText:)];
     [attributesBinder bindColorAttribute:@"color"

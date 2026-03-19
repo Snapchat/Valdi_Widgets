@@ -8,8 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// NSView wrapper around NSPopUpButton providing index-based selection.
-@interface SCWidgetsMacOSIndexPicker : NSView
+@interface SCWidgetsMacOSIndexPicker : NSPopUpButton
 
 + (void)bindAttributes:(SCValdiMacOSAttributesBinder *)attributesBinder;
 
