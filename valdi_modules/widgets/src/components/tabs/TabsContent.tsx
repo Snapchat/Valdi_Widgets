@@ -162,9 +162,6 @@ export class TabsContent extends StatefulComponent<TabsContentViewModel, TabsCon
   private _subscribedCoordinator?: TabsCoordinator;
 
   onViewModelUpdate(lastViewModel?: TabsContentViewModel): void {
-    // Unsubscribe eagerly when coordinator changes so stale events don't fire,
-    // but defer the re-subscribe to onRender so BehaviorSubject initial emissions
-    // don't call setState during the parent's render cycle.
     const tabsCoordinator = this.viewModel.tabsCoordinator;
     const tabsCoordinatorChanged = tabsCoordinator !== lastViewModel?.tabsCoordinator;
     if (tabsCoordinatorChanged) {
