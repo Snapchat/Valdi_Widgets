@@ -112,7 +112,7 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
         )}
       </view>;
       if (!this.state.catalogReady) {
-        setTimeout(() => this.setState({ catalogReady: true }), 0);
+        this.setTimeoutDisposable(() => this.setState({ catalogReady: true }), 0);
       }
       return;
     }
