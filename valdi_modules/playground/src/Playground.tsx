@@ -39,6 +39,7 @@ export interface PlaygroundContext {
 interface PlaygroundState {
   theme: string;
   showCatalog: boolean;
+  catalogReady: boolean;
 }
 /**
  * @Component
@@ -51,6 +52,7 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
   state: PlaygroundState = {
     theme: ThemeLight,
     showCatalog: false,
+    catalogReady: false,
   };
 
   onCreate(): void {
@@ -99,14 +101,19 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
             text='← Back'
             coloring={CoreButtonColoring.PRIMARY}
             sizing={CoreButtonSizing.SMALL}
-            onTap={() => this.setState({ showCatalog: false })}
+            onTap={() => this.setState({ showCatalog: false, catalogReady: false })}
           />
           <label font={TextStyleFont.TITLE_3} value='Widgets Catalog' margin='0 0 0 12' />
         </layout>
-        <scroll height='100%'>
-          <WidgetsCatalog context={{}} />
-        </scroll>
+        {this.state.catalogReady && (
+          <scroll height='100%'>
+            <WidgetsCatalog context={{}} />
+          </scroll>
+        )}
       </view>;
+      if (!this.state.catalogReady) {
+        setTimeout(() => this.setState({ catalogReady: true }), 0);
+      }
       return;
     }
     <view backgroundColor={SemanticColor.Background.SUBSCREEN}>
@@ -187,7 +194,7 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
               text='Browse Widgets Catalog'
               coloring={CoreButtonColoring.PRIMARY}
               sizing={CoreButtonSizing.LARGE}
-              onTap={() => this.setState({ showCatalog: true })}
+              onTap={() => this.setState({ showCatalog: true, catalogReady: false })}
             />
           </Section>
           <SectionSeparator />
