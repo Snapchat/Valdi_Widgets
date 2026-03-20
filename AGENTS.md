@@ -145,13 +145,19 @@ bazel build //valdi_modules/playground:app_macos
 
 ## AI Assistant Setup
 
-Valdi-specific rules for AI coding assistants (component patterns, Bazel conventions, etc.) are bundled in the [Claude Code](https://claude.ai/claude-code) CLI. Install the CLI and then run:
+Valdi-specific skills for AI coding assistants (component patterns, Bazel conventions, etc.) are bundled in the Valdi CLI. Install the CLI, then run:
 
 ```bash
-claude rules install
+valdi skills install
 ```
 
-This installs the Valdi skill rules directly into your Claude Code session.
+This installs the skills for all detected AI tools (Claude Code, Cursor, GitHub Copilot). To target a specific tool or category:
+
+```bash
+valdi skills install --for=claude          # Claude Code only
+valdi skills install --category=client     # module-development skills only
+valdi skills list                          # see all available skills and install status
+```
 
 ---
 
