@@ -1,13 +1,15 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
 load("@valdi//bzl/valdi:valdi_android_library.bzl", "valdi_android_library")
 
 # Web polyglot implementations (DatePicker, TimePicker, IndexPicker, EmojiLabel).
-# Plain JS — no ts_project needed, avoids the exec-platform valdi_tsx_web TS5055 issue.
-# The build system's generate_register_native_modules picks up .js files and checks
-# for webPolyglotViews exports to register custom view factories.
-filegroup(
+# The build system's generate_register_native_modules picks up the compiled JS
+# and checks for webPolyglotViews exports to register custom view factories.
+ts_project(
     name = "widgets_web",
-    srcs = ["web/src/WidgetsWeb.js"],
+    srcs = ["web/src/WidgetsWeb.ts"],
+    transpiler = "tsc",
+    tsconfig = "web/tsconfig.json",
     visibility = ["//visibility:public"],
 )
 

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "commonjs",
+    "strict": true,
+    "lib": ["dom", "ES2019"]
+  },
+  "include": ["src/**/*.ts"]
+}
