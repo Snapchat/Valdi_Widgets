@@ -1,1 +1,0 @@
-{"extends":"../../_configs/base.tsconfig.json","compilerOptions":{"noImplicitReturns":true,"noImplicitAny":true,"strict":true,"jsx":"preserve"}}
