@@ -1,14 +1,14 @@
 //
 //  SCWidgetsDatePicker.m
-//  Valdi
-//
-//  Created by Brandon Francis on 3/9/19.
+//  Valdi_Widgets
 //
 
-#import "valdi/ios/Views/SCWidgetsDatePicker.h"
-#import "valdi/ios/Views/SCWidgetsDatePickerUtils.h"
+#import "SCWidgetsDatePicker.h"
+#import "SCWidgetsDatePickerUtils.h"
 
-#import "valdi/ios/Categories/UIView+Valdi.h"
+#import "valdi_core/SCValdiAttributesBinderBase.h"
+#import "valdi_core/SCValdiFunction.h"
+#import "valdi_core/SCValdiMarshaller.h"
 
 @implementation SCWidgetsDatePicker {
     id<SCValdiFunction> _Nullable _onChange;
@@ -39,67 +39,20 @@
     return [super sizeThatFits:size];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view
-{
-    return [self valdi_convertPoint:point fromView:view];
-}
-
-- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view
-{
-    return [self valdi_convertPoint:point toView:view];
-}
-
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    if (self.valdiHitTest != nil) {
-        return [self valdi_hitTest:point withEvent:event withCustomHitTest:self.valdiHitTest];
-    }
-    return [super hitTest:point withEvent:event];
-}
-
-#pragma mark - UIView+Valdi
-
-- (BOOL)willEnqueueIntoValdiPool {
-    return NO;
-}
-
-#pragma mark - Action handling methods
-
-INTERNED_STRING_CONST("dateSeconds", SCWidgetsDatePickerDateInSecondsKey);
-
 #pragma mark - Internal methods
-
-// DO NOT USE - @mli6 - temporary workaround pending release of iOS dark mode
-- (BOOL)valdi_setTextColor:(UIColor *)color
-{
-    [self setValue:color forKey:@"textColor"];
-    [self setValue:@(NO) forKey:@"highlightsToday"];
-
-    return YES;
-}
-
-- (void)valdi_setOnChange:(id<SCValdiFunction>)onChange
-{
-    _onChange = onChange;
-}
 
 - (void)_handleOnChange
 {
-    NSTimeInterval dateSeconds = self.date.timeIntervalSince1970;
-    [self.valdiContext didChangeValue:@(dateSeconds)
-            forInternedValdiAttribute:SCWidgetsDatePickerDateInSecondsKey()
-                              inViewNode:self.valdiViewNode];
-    
     if (!_onChange) {
         return;
     }
-    
-    // pseudocode: _onChange.call({ "dateSeconds": dateSeconds })
+
+    NSTimeInterval dateSeconds = self.date.timeIntervalSince1970;
     SCValdiMarshallerScoped(marshaller, {
         NSInteger objectIndex = SCValdiMarshallerPushMap(marshaller, 1);
         SCValdiMarshallerPushDouble(marshaller, dateSeconds);
-        SCValdiMarshallerPutMapProperty(marshaller, SCWidgetsDatePickerDateInSecondsKey(), objectIndex);
-        
+        SCValdiMarshallerPutMapPropertyUninterned(marshaller, @"dateSeconds", objectIndex);
+
         [_onChange performWithMarshaller:marshaller];
     });
 }
@@ -141,19 +94,21 @@ INTERNED_STRING_CONST("dateSeconds", SCWidgetsDatePickerDateInSecondsKey);
 
     [attributesBinder bindAttribute:@"onChange"
                   withFunctionBlock:^(SCWidgetsDatePicker *view, id<SCValdiFunction> attributeValue) {
-        [view valdi_setOnChange:attributeValue];
+        view->_onChange = attributeValue;
     }
                          resetBlock:^(SCWidgetsDatePicker *view) {
-        [view valdi_setOnChange:nil];
+        view->_onChange = nil;
     }];
 
     [attributesBinder bindAttribute:@"color"
            invalidateLayoutOnChange:NO
                      withColorBlock:^BOOL(SCWidgetsDatePicker *view, UIColor *attributeValue, id<SCValdiAnimatorProtocol> animator) {
-        return [view valdi_setTextColor:attributeValue];
+        [view setValue:attributeValue forKey:@"textColor"];
+        [view setValue:@(NO) forKey:@"highlightsToday"];
+        return YES;
     }
                          resetBlock:^(SCWidgetsDatePicker *view, id<SCValdiAnimatorProtocol> animator) {
-        [view valdi_setTextColor:nil];
+        [view setValue:nil forKey:@"textColor"];
     }];
 
     [attributesBinder bindAttribute:@"preferredStyle"

@@ -10,9 +10,8 @@
  *   IndexPicker   → SCWidgetsIndexPickerWeb
  *   EmojiLabel    → SCWidgetsLabelWeb
  *
- * NOTE: WebValdiLayout.changeAttribute throws for unknown attribute names, so these
- * factories are static (mount-time only). Runtime attribute binding requires a framework
- * fix in Valdi. See plan: valdi-web-custom-view-attributes.md
+ * Each factory returns an object with a changeAttribute(name, value) method so the
+ * web renderer can forward attribute updates from the component tree.
  */
 
 // ─── DatePicker ──────────────────────────────────────────────────────────────
@@ -22,6 +21,7 @@ function createDatePickerFactory() {
     container.style.display = 'flex';
     container.style.alignItems = 'center';
     container.style.justifyContent = 'center';
+    container.style.pointerEvents = 'auto';
 
     var input = document.createElement('input');
     input.type = 'date';
@@ -30,7 +30,34 @@ function createDatePickerFactory() {
     input.style.border = '1px solid #ccc';
     input.style.borderRadius = '6px';
     input.style.cursor = 'pointer';
+    input.style.pointerEvents = 'auto';
     container.appendChild(input);
+
+    var onChange = null;
+
+    input.addEventListener('change', function () {
+      if (onChange) {
+        var dateSeconds = new Date(input.value).getTime() / 1000;
+        onChange({ dateSeconds: dateSeconds });
+      }
+    });
+
+    return {
+      changeAttribute: function (name, value) {
+        if (name === 'dateSeconds' && typeof value === 'number') {
+          var d = new Date(value * 1000);
+          input.value = d.toISOString().split('T')[0];
+        } else if (name === 'minimumDateSeconds' && typeof value === 'number') {
+          var d = new Date(value * 1000);
+          input.min = d.toISOString().split('T')[0];
+        } else if (name === 'maximumDateSeconds' && typeof value === 'number') {
+          var d = new Date(value * 1000);
+          input.max = d.toISOString().split('T')[0];
+        } else if (name === 'onChange') {
+          onChange = typeof value === 'function' ? value : null;
+        }
+      },
+    };
   };
 }
 
@@ -41,6 +68,7 @@ function createTimePickerFactory() {
     container.style.display = 'flex';
     container.style.alignItems = 'center';
     container.style.justifyContent = 'center';
+    container.style.pointerEvents = 'auto';
 
     var input = document.createElement('input');
     input.type = 'time';
@@ -49,7 +77,33 @@ function createTimePickerFactory() {
     input.style.border = '1px solid #ccc';
     input.style.borderRadius = '6px';
     input.style.cursor = 'pointer';
+    input.style.pointerEvents = 'auto';
     container.appendChild(input);
+
+    var onChange = null;
+
+    input.addEventListener('change', function () {
+      if (onChange) {
+        var parts = input.value.split(':');
+        onChange({ hourOfDay: parseInt(parts[0], 10), minuteOfHour: parseInt(parts[1], 10) });
+      }
+    });
+
+    return {
+      changeAttribute: function (name, value) {
+        if (name === 'hourOfDay' && typeof value === 'number') {
+          var parts = (input.value || '00:00').split(':');
+          parts[0] = String(value).padStart(2, '0');
+          input.value = parts.join(':');
+        } else if (name === 'minuteOfHour' && typeof value === 'number') {
+          var parts = (input.value || '00:00').split(':');
+          parts[1] = String(value).padStart(2, '0');
+          input.value = parts.join(':');
+        } else if (name === 'onChange') {
+          onChange = typeof value === 'function' ? value : null;
+        }
+      },
+    };
   };
 }
 
@@ -60,6 +114,7 @@ function createIndexPickerFactory() {
     container.style.display = 'flex';
     container.style.alignItems = 'center';
     container.style.justifyContent = 'center';
+    container.style.pointerEvents = 'auto';
 
     var select = document.createElement('select');
     select.style.fontSize = '16px';
@@ -68,12 +123,53 @@ function createIndexPickerFactory() {
     select.style.borderRadius = '6px';
     select.style.cursor = 'pointer';
     select.style.minWidth = '120px';
-
-    var placeholder = document.createElement('option');
-    placeholder.textContent = '\u2014'; // em dash placeholder
-    select.appendChild(placeholder);
-
+    select.style.pointerEvents = 'auto';
     container.appendChild(select);
+
+    var onChange = null;
+    var currentLabels = [];
+    var currentIndex = 0;
+
+    select.addEventListener('change', function () {
+      if (onChange) {
+        onChange(select.selectedIndex);
+      }
+    });
+
+    function rebuildOptions() {
+      select.innerHTML = '';
+      for (var i = 0; i < currentLabels.length; i++) {
+        var opt = document.createElement('option');
+        opt.textContent = currentLabels[i];
+        opt.value = String(i);
+        select.appendChild(opt);
+      }
+      if (currentLabels.length > 0) {
+        var clamped = Math.max(0, Math.min(currentIndex, currentLabels.length - 1));
+        select.selectedIndex = clamped;
+      }
+    }
+
+    return {
+      changeAttribute: function (name, value) {
+        if (name === 'content' && Array.isArray(value)) {
+          // Composite attribute: [index, labels]
+          var index = value[0];
+          var labels = value[1];
+          if (typeof index === 'number') currentIndex = index;
+          if (Array.isArray(labels)) currentLabels = labels;
+          rebuildOptions();
+        } else if (name === 'index' && typeof value === 'number') {
+          currentIndex = value;
+          rebuildOptions();
+        } else if (name === 'labels' && Array.isArray(value)) {
+          currentLabels = value;
+          rebuildOptions();
+        } else if (name === 'onChange') {
+          onChange = typeof value === 'function' ? value : null;
+        }
+      },
+    };
   };
 }
 
@@ -88,6 +184,32 @@ function createLabelFactory() {
     span.style.fontSize = 'inherit';
     span.style.lineHeight = 'inherit';
     container.appendChild(span);
+
+    return {
+      changeAttribute: function (name, value) {
+        if (name === 'value' && (typeof value === 'string' || value == null)) {
+          span.textContent = value || '';
+        } else if (name === 'color' && typeof value === 'number') {
+          var r = (value >> 24) & 0xff;
+          var g = (value >> 16) & 0xff;
+          var b = (value >> 8) & 0xff;
+          var a = (value & 0xff) / 255;
+          span.style.color = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+        } else if (name === 'numberOfLines' && typeof value === 'number') {
+          if (value > 0) {
+            span.style.display = '-webkit-box';
+            span.style.webkitLineClamp = String(value);
+            span.style.webkitBoxOrient = 'vertical';
+            span.style.overflow = 'hidden';
+          } else {
+            span.style.display = '';
+            span.style.webkitLineClamp = '';
+            span.style.webkitBoxOrient = '';
+            span.style.overflow = '';
+          }
+        }
+      },
+    };
   };
 }
 

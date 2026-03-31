@@ -51,8 +51,8 @@ interface PlaygroundState {
 export class Playground extends StatefulComponent<{}, PlaygroundState, PlaygroundContext> {
   state: PlaygroundState = {
     theme: ThemeLight,
-    showCatalog: false,
-    catalogReady: false,
+    showCatalog: true,
+    catalogReady: true,
   };
 
   onCreate(): void {
@@ -95,7 +95,7 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
   onRender() {
     { setTheme(this.state.theme, false) }
     if (this.state.showCatalog) {
-      <view backgroundColor={SemanticColor.Background.SUBSCREEN} height='100%'>
+      <view backgroundColor={SemanticColor.Background.SUBSCREEN} height='100%' flexDirection='column'>
         <layout flexDirection='row' alignItems='center' padding='12 16'>
           <CoreButton
             text='← Back'
@@ -106,7 +106,7 @@ export class Playground extends StatefulComponent<{}, PlaygroundState, Playgroun
           <label font={TextStyleFont.TITLE_3} value='Widgets Catalog' margin='0 0 0 12' />
         </layout>
         {this.state.catalogReady && (
-          <scroll height='100%'>
+          <scroll flexGrow={1}>
             <WidgetsCatalog context={{}} />
           </scroll>
         )}

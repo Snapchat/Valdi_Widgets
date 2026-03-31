@@ -81,6 +81,7 @@ build --experimental_reuse_sandbox_directories
 
 # Valdi Open Source Flags
 build --define=open_source_build=true
+build --flag_alias=valdi_js_engine=@valdi//bzl/valdi:js_engine
 
 # Enable web compilation (generates JS outputs from Valdi compiler for web targets)
 common --define=enable_web=true

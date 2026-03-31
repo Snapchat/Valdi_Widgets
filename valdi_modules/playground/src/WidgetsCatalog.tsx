@@ -1,4 +1,5 @@
 import { StatefulComponent } from 'valdi_core/src/Component';
+import { WithInsets } from 'widgets/src/components/util/WithInsets';
 import { DatePicker } from 'widgets/src/components/pickers/DatePicker';
 import { TimePicker, TimePickerTime } from 'widgets/src/components/pickers/TimePicker';
 import { IndexPicker } from 'widgets/src/components/pickers/IndexPicker';
@@ -29,7 +30,8 @@ export class WidgetsCatalog extends StatefulComponent<{}, CatalogState, {}> {
     const timeStr = `${String(time.hourOfDay).padStart(2, '0')}:${String(time.minuteOfHour).padStart(2, '0')}`;
     const fruitLabel = FRUIT_LABELS[fruitIndex];
 
-    <view padding='0 0 40 0'>
+    <WithInsets ignoreTop>
+    <view padding='0 0 16 0'>
       <Section title='DatePicker'>
         <DatePicker
           date={date}
@@ -82,6 +84,7 @@ export class WidgetsCatalog extends StatefulComponent<{}, CatalogState, {}> {
         <EmojiLabel value='🌍 Hello World 🌎' font={TextStyleFont.BODY} margin='8 0 0 0' />
         <EmojiLabel value='❤️ 🧡 💛 💚 💙 💜' font={TextStyleFont.TITLE_3} margin='8 0 0 0' />
       </Section>
-    </view>;
+    </view>
+    </WithInsets>;
   }
 }

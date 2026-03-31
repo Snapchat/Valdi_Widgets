@@ -1,14 +1,14 @@
 //
 //  SCWidgetsTimePicker.m
-//  Valdi
-//
-//  Created by Brandon Francis on 3/9/19.
+//  Valdi_Widgets
 //
 
-#import "valdi/ios/Views/SCWidgetsTimePicker.h"
-#import "valdi/ios/Views/SCWidgetsDatePickerUtils.h"
+#import "SCWidgetsTimePicker.h"
+#import "SCWidgetsDatePickerUtils.h"
 
-#import "valdi/ios/Categories/UIView+Valdi.h"
+#import "valdi_core/SCValdiAttributesBinderBase.h"
+#import "valdi_core/SCValdiFunction.h"
+#import "valdi_core/SCValdiMarshaller.h"
 
 @implementation SCWidgetsTimePicker {
     id<SCValdiFunction> _Nullable _onChange;
@@ -43,70 +43,26 @@
     return [super sizeThatFits:size];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view
-{
-    return [self valdi_convertPoint:point fromView:view];
-}
-
-- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view
-{
-    return [self valdi_convertPoint:point toView:view];
-}
-
-
-#pragma mark - UIView+Valdi
-
-- (BOOL)willEnqueueIntoValdiPool {
-    return YES;
-}
-
-#pragma mark - Action handling methods
-
-INTERNED_STRING_CONST("hourOfDay", SCWidgetsTimePickerHourOfDayKey);
-INTERNED_STRING_CONST("minuteOfHour", SCWidgetsTimePickerMinuteOfHourKey);
-
 #pragma mark - Internal methods
-
-// DO NOT USE - @mli6 - temporary workaround pending release of iOS dark mode
-- (BOOL)valdi_setTextColor:(UIColor *)color
-{
-    [self setValue:color forKey:@"textColor"];
-    [self setValue:@(NO) forKey:@"highlightsToday"];
-
-    return YES;
-}
-
-- (void)valdi_setOnChange:(id<SCValdiFunction>)onChange
-{
-    _onChange = onChange;
-}
 
 - (void)_handleOnChange
 {
+    if (!_onChange) {
+        return;
+    }
+
     NSDateComponents *components = [self.calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute)
                                                     fromDate:self.date];
     NSInteger hourOfDay = components.hour;
     NSInteger minuteOfHour = components.minute;
-    
-    [self.valdiContext didChangeValue:@(hourOfDay)
-            forInternedValdiAttribute:SCWidgetsTimePickerHourOfDayKey()
-                              inViewNode:self.valdiViewNode];
-    [self.valdiContext didChangeValue:@(minuteOfHour)
-            forInternedValdiAttribute:SCWidgetsTimePickerMinuteOfHourKey()
-                              inViewNode:self.valdiViewNode];
-    
-    if (!_onChange) {
-        return;
-    }
-    
-    // pseudocode: _onChange.call({ "hourOfDay": hourOfDay, "minuteOfHour": minuteOfHour })
+
     SCValdiMarshallerScoped(marshaller, {
         NSInteger objectIndex = SCValdiMarshallerPushMap(marshaller, 2);
         SCValdiMarshallerPushInt(marshaller, (int32_t)hourOfDay);
-        SCValdiMarshallerPutMapProperty(marshaller, SCWidgetsTimePickerHourOfDayKey(), objectIndex);
-        SCValdiMarshallerPushInt(marshaller,  (int32_t)minuteOfHour);
-        SCValdiMarshallerPutMapProperty(marshaller, SCWidgetsTimePickerMinuteOfHourKey(), objectIndex);
-        
+        SCValdiMarshallerPutMapPropertyUninterned(marshaller, @"hourOfDay", objectIndex);
+        SCValdiMarshallerPushInt(marshaller, (int32_t)minuteOfHour);
+        SCValdiMarshallerPutMapPropertyUninterned(marshaller, @"minuteOfHour", objectIndex);
+
         [_onChange performWithMarshaller:marshaller];
     });
 }
@@ -114,7 +70,7 @@ INTERNED_STRING_CONST("minuteOfHour", SCWidgetsTimePickerMinuteOfHourKey);
 - (NSDate *)_dateFromDate:(NSDate *)baseDate withCalendarComponent:(NSCalendarUnit)component setTo:(NSInteger)value
 {
     NSCalendar *calendar = self.calendar;
-    NSDateComponents *hourMinuteComponents = [self.calendar components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:baseDate];
+    NSDateComponents *hourMinuteComponents = [calendar components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:baseDate];
     [hourMinuteComponents setValue:value forComponent:component];
     NSDate *newDate = [calendar dateBySettingHour:hourMinuteComponents.hour
                                            minute:hourMinuteComponents.minute
@@ -129,6 +85,8 @@ INTERNED_STRING_CONST("minuteOfHour", SCWidgetsTimePickerMinuteOfHourKey);
     return newDate;
 }
 
+#pragma mark - Static methods
+
 + (void)bindAttributes:(id<SCValdiAttributesBinderProtocol>)attributesBinder {
     [attributesBinder bindAttribute:@"hourOfDay"
            invalidateLayoutOnChange:NO
@@ -142,7 +100,7 @@ INTERNED_STRING_CONST("minuteOfHour", SCWidgetsTimePickerMinuteOfHourKey);
         BOOL animated = animator != nil;
         [view setDate:date animated:animated];
     }];
-    
+
     [attributesBinder bindAttribute:@"minuteOfHour"
            invalidateLayoutOnChange:NO
                     withIntBlock:^BOOL(SCWidgetsTimePicker *view, NSInteger attributeValue, id<SCValdiAnimatorProtocol> animator) {
@@ -155,29 +113,31 @@ INTERNED_STRING_CONST("minuteOfHour", SCWidgetsTimePickerMinuteOfHourKey);
         BOOL animated = animator != nil;
         [view setDate:date animated:animated];
     }];
-    
+
     [attributesBinder bindAttribute:@"intervalMinutes" invalidateLayoutOnChange:NO withIntBlock:^BOOL(SCWidgetsTimePicker *view, NSInteger attributeValue, id<SCValdiAnimatorProtocol> animator) {
         [view setMinuteInterval:attributeValue];
         return YES;
     } resetBlock:^(SCWidgetsTimePicker *view, id<SCValdiAnimatorProtocol> animator) {
         [view setMinuteInterval:1];
     }];
-    
+
     [attributesBinder bindAttribute:@"onChange"
                   withFunctionBlock:^(SCWidgetsTimePicker *view, id<SCValdiFunction> attributeValue) {
-        [view valdi_setOnChange:attributeValue];
+        view->_onChange = attributeValue;
     }
                          resetBlock:^(SCWidgetsTimePicker *view) {
-        [view valdi_setOnChange:nil];
+        view->_onChange = nil;
     }];
 
     [attributesBinder bindAttribute:@"color"
         invalidateLayoutOnChange:NO
         withColorBlock:^BOOL(SCWidgetsTimePicker *view, UIColor *attributeValue, id<SCValdiAnimatorProtocol> animator) {
-            return [view valdi_setTextColor:attributeValue];
+            [view setValue:attributeValue forKey:@"textColor"];
+            [view setValue:@(NO) forKey:@"highlightsToday"];
+            return YES;
         }
         resetBlock:^(SCWidgetsTimePicker *view, id<SCValdiAnimatorProtocol> animator) {
-            [view valdi_setTextColor:nil];
+            [view setValue:nil forKey:@"textColor"];
     }];
 
     [attributesBinder bindAttribute:@"preferredStyle"

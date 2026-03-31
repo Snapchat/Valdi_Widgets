@@ -25,7 +25,6 @@ objc_library(
     hdrs = glob(["ios/**/*.h"]),
     sdk_frameworks = ["UIKit"],
     deps = [
-        "@valdi//valdi:valdi_ios",
         "@valdi//valdi_core:valdi_core_objc",
     ],
 )

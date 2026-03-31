@@ -4,14 +4,14 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Valdi bleeding edge (https://github.com/Snapchat/Valdi)
-git_repository(
+http_archive(
     name = "valdi",
-    remote = "https://github.com/Snapchat/Valdi.git",
-    commit = "d0cd062b213a31e2e9f2510534eb3760960f4cd9",
+    strip_prefix = "Valdi-45b28375a189da8f9c24544e3b2d40318d3386a9",
+    url = "https://github.com/Snapchat/Valdi/archive/45b28375a189da8f9c24544e3b2d40318d3386a9.tar.gz",
 )
 
 # For local development (uncomment to use local Valdi checkout):
-# local_repository(name = "valdi", path = "/Users/cholgate/Projects/Valdi")
+# local_repository(name = "valdi", path = "/Users/cholgate/Snapchat/Dev/mobile/client/src/open_source")
 
 # Valdi release beta-0.0.2 (https://github.com/Snapchat/Valdi/releases)
 # http_archive(

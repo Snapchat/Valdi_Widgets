@@ -1,7 +1,9 @@
-#import "valdi/ios/Views/SCWidgetsDateTimePicker.h"
-#import "valdi/ios/Views/SCWidgetsDatePickerUtils.h"
+#import "SCWidgetsDateTimePicker.h"
+#import "SCWidgetsDatePickerUtils.h"
 
-#import "valdi/ios/Categories/UIView+Valdi.h"
+#import "valdi_core/SCValdiAttributesBinderBase.h"
+#import "valdi_core/SCValdiFunction.h"
+#import "valdi_core/SCValdiMarshaller.h"
 
 @implementation SCWidgetsDateTimePicker {
     id<SCValdiFunction> _Nullable _onChange;
@@ -17,59 +19,20 @@
     return self;
 }
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view
-{
-    return [self valdi_convertPoint:point fromView:view];
-}
-
-- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view
-{
-    return [self valdi_convertPoint:point toView:view];
-}
-
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    if (self.valdiHitTest != nil) {
-        return [self valdi_hitTest:point withEvent:event withCustomHitTest:self.valdiHitTest];
-    }
-    return [super hitTest:point withEvent:event];
-}
-
-#pragma mark - UIView+Valdi
-
-- (BOOL)willEnqueueIntoValdiPool {
-    return NO;
-}
-
-#pragma mark - Action handling methods
-
-INTERNED_STRING_CONST("dateSeconds", SCWidgetsDateTimePickerDateInSecondsKey);
-
 #pragma mark - Internal methods
-
-
-- (void)valdi_setOnChange:(id<SCValdiFunction>)onChange
-{
-    _onChange = onChange;
-}
 
 - (void)_handleOnChange
 {
-    NSTimeInterval dateSeconds = self.date.timeIntervalSince1970;
-    [self.valdiContext didChangeValue:@(dateSeconds)
-            forInternedValdiAttribute:SCWidgetsDateTimePickerDateInSecondsKey()
-                              inViewNode:self.valdiViewNode];
-    
     if (!_onChange) {
         return;
     }
-    
-    // pseudocode: _onChange.call({ "dateSeconds": dateSeconds })
+
+    NSTimeInterval dateSeconds = self.date.timeIntervalSince1970;
     SCValdiMarshallerScoped(marshaller, {
         NSInteger objectIndex = SCValdiMarshallerPushMap(marshaller, 1);
         SCValdiMarshallerPushDouble(marshaller, dateSeconds);
-        SCValdiMarshallerPutMapProperty(marshaller, SCWidgetsDateTimePickerDateInSecondsKey(), objectIndex);
-        
+        SCValdiMarshallerPutMapPropertyUninterned(marshaller, @"dateSeconds", objectIndex);
+
         [_onChange performWithMarshaller:marshaller];
     });
 }
@@ -111,12 +74,11 @@ INTERNED_STRING_CONST("dateSeconds", SCWidgetsDateTimePickerDateInSecondsKey);
 
     [attributesBinder bindAttribute:@"onChange"
                   withFunctionBlock:^(SCWidgetsDateTimePicker *view, id<SCValdiFunction> attributeValue) {
-        [view valdi_setOnChange:attributeValue];
+        view->_onChange = attributeValue;
     }
                          resetBlock:^(SCWidgetsDateTimePicker *view) {
-        [view valdi_setOnChange:nil];
+        view->_onChange = nil;
     }];
-
 
     [attributesBinder setPlaceholderViewMeasureDelegate:^UIView *{
         return [SCWidgetsDateTimePicker new];
