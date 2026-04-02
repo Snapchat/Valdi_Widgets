@@ -13,10 +13,10 @@ import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandl
 import { ScrollViewListener, ScrollViewRegionEvent } from 'widgets/src/components/scroll/ScrollViewListener';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { clamp } from 'foundation/src/number';
-import { FadeImage } from '../image/FadeImage';
-import { ScrollViewSubscription } from '../scroll/ScrollViewSubscription';
-import { ScrollBar } from '../scroll/scrollbar/ScrollBar';
-import { ScrollBarHandler } from '../scroll/scrollbar/ScrollBarHandler';
+import { FadeImage } from 'widgets/src/components/image/FadeImage';
+import { ScrollViewSubscription } from 'widgets/src/components/scroll/ScrollViewSubscription';
+import { ScrollBar } from 'widgets/src/components/scroll/scrollbar/ScrollBar';
+import { ScrollBarHandler } from 'widgets/src/components/scroll/scrollbar/ScrollBarHandler';
 
 const SCROLLBAR_SIDE_OFFSET = 9;
 

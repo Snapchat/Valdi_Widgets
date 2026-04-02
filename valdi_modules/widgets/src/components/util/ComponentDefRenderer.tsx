@@ -1,4 +1,4 @@
-import { ComponentDef } from '../ComponentDef';
+import { ComponentDef } from 'widgets/src/components/ComponentDef';
 
 interface ComponentDefRendererViewModel<Def> {
   componentDef: Def;

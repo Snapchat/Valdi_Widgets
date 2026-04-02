@@ -1,7 +1,7 @@
 import { $slot } from 'valdi_core/src/CompilerIntrinsics';
 import { StatefulComponent } from 'valdi_core/src/Component';
 import { Subscription } from 'valdi_rxjs/src/Subscription';
-import { RenderFunction } from '../RenderFunction';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
 import { ComponentMeasurer } from './ComponentMeasurer';
 import { MeasureCache, MeasuredComponentSize } from './MeasureCache';
 

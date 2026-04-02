@@ -7,7 +7,7 @@ import { Layout } from 'valdi_tsx/src/NativeTemplateElements';
 import res from 'widgets/res';
 import { isCustomTheme } from 'widgets/src/InitSemanticColors';
 import { Theme, ThemeType } from 'widgets/src/Theme';
-import { SemanticColor } from '../../styles/semanticColors';
+import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { CoreButton, CoreButtonSizing, sizingOptions } from './CoreButton';
 
 export interface FloatingActionButtonViewModel {

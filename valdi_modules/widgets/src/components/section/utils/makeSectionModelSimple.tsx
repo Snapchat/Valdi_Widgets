@@ -1,5 +1,5 @@
-import { RenderFunction } from '../../RenderFunction';
-import { Card } from '../../card/Card';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
+import { Card } from 'widgets/src/components/card/Card';
 import { SectionBody } from '../SectionBody';
 import { SectionHeader } from '../SectionHeader';
 import { SectionModel } from '../SectionModel';

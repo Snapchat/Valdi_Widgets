@@ -1,4 +1,4 @@
-import { RenderFunction } from '../RenderFunction';
+import { RenderFunction } from 'widgets/src/components/RenderFunction';
 import { SectionHandler } from './SectionHandler';
 
 export type RenderFunctionAnchor = RenderFunction;

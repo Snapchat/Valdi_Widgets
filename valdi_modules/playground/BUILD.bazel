@@ -1,5 +1,6 @@
-load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
 load("@valdi//bzl/valdi:valdi_application.bzl", "valdi_application")
+load("@valdi//bzl/valdi:valdi_exported_library.bzl", "valdi_exported_library")
+load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
 
 valdi_application(
     name = "app",
@@ -31,5 +32,16 @@ valdi_module(
         "//valdi_modules/widgets",
         "@valdi//src/valdi_modules/src/valdi/valdi_core",
         "@valdi//src/valdi_modules/src/valdi/valdi_tsx",
+    ],
+)
+
+valdi_exported_library(
+    name = "playground_export",
+    ios_bundle_id = "com.snap.valdi.playground",
+    ios_bundle_name = "ValdiPlayground",
+    web_package_name = "playground_export_npm",
+    deps = [
+        ":playground",
+        "@valdi//src/valdi_modules/src/valdi/web_renderer",
     ],
 )

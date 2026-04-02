@@ -4,7 +4,7 @@ import { ElementFrame } from 'valdi_tsx/src/Geometry';
 import { View } from 'valdi_tsx/src/NativeTemplateElements';
 import { GradientDirection, linearGradient } from 'widgets/src/styles/gradients';
 import { SemanticColor } from 'widgets/src/styles/semanticColorsGen';
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
 
 interface DataSyncingBarState {
   width: number;

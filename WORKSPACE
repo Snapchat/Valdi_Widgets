@@ -3,15 +3,22 @@ workspace(name = "valdi_widgets")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-# Valdi release beta-0.0.2 (https://github.com/Snapchat/Valdi/releases)
+# Valdi bleeding edge (https://github.com/Snapchat/Valdi)
 http_archive(
     name = "valdi",
-    strip_prefix = "Valdi-beta-0.0.2",
-    url = "https://github.com/Snapchat/Valdi/archive/refs/tags/beta-0.0.2.tar.gz",
+    strip_prefix = "Valdi-45b28375a189da8f9c24544e3b2d40318d3386a9",
+    url = "https://github.com/Snapchat/Valdi/archive/45b28375a189da8f9c24544e3b2d40318d3386a9.tar.gz",
 )
 
-# For local development:
-# local_repository(name = "valdi", path = "/path/to/Valdi")
+# For local development (uncomment to use local Valdi checkout):
+# local_repository(name = "valdi", path = "/Users/cholgate/Snapchat/Dev/mobile/client/src/open_source")
+
+# Valdi release beta-0.0.2 (https://github.com/Snapchat/Valdi/releases)
+# http_archive(
+#     name = "valdi",
+#     strip_prefix = "Valdi-beta-0.0.2",
+#     url = "https://github.com/Snapchat/Valdi/archive/refs/tags/beta-0.0.2.tar.gz",
+# )
 
 load("@valdi//bzl:workspace_prepare.bzl", "valdi_prepare_workspace")
 

@@ -10,8 +10,8 @@ import { Layout, ScrollView, View } from 'valdi_tsx/src/NativeTemplateElements';
 import { linearGradient } from 'widgets/src/styles/gradients';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { clamp } from 'foundation/src/number';
-import { ScrollViewHandler } from '../scroll/ScrollViewHandler';
-import { ScrollViewSubscription } from '../scroll/ScrollViewSubscription';
+import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandler';
+import { ScrollViewSubscription } from 'widgets/src/components/scroll/ScrollViewSubscription';
 import { TabsCoordinator, TabsCoordinatorItems } from './TabsCoordinator';
 
 export enum TabsContentLoading {
@@ -159,15 +159,18 @@ export class TabsContent extends StatefulComponent<TabsContentViewModel, TabsCon
     this.subscribeVerticalScroll();
     this.subscribeHorizontalScroll();
   }
+  private _subscribedCoordinator?: TabsCoordinator;
+
   onViewModelUpdate(lastViewModel?: TabsContentViewModel): void {
     const tabsCoordinator = this.viewModel.tabsCoordinator;
     const tabsCoordinatorChanged = tabsCoordinator !== lastViewModel?.tabsCoordinator;
     if (tabsCoordinatorChanged) {
       this.unsubscribeCoordinator();
-      this.subscribeCoordinator();
+      this._subscribedCoordinator = undefined;
     }
   }
   onDestroy(): void {
+    this._subscribedCoordinator = undefined;
     this.unsubscribeCoordinator();
     this.unsubscribeVerticalScroll();
     this.unsubscribeHorizontalScroll();
@@ -177,6 +180,10 @@ export class TabsContent extends StatefulComponent<TabsContentViewModel, TabsCon
    * Rendering
    */
   onRender(): void {
+    if (this._subscribedCoordinator !== this.viewModel.tabsCoordinator) {
+      this._subscribedCoordinator = this.viewModel.tabsCoordinator;
+      this.subscribeCoordinator();
+    }
     const viewModel = this.viewModel;
     const minHeight = this.getVerticalScrollViewHeight() - this.getReservedTopSpace();
     <layout minHeight={minHeight} flexDirection='column-reverse' ref={this.containerRoot}>

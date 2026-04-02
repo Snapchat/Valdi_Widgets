@@ -10,9 +10,9 @@ import { ScrollViewSubscription } from 'widgets/src/components/scroll/ScrollView
 import { linearGradient } from 'widgets/src/styles/gradients';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { clamp } from 'foundation/src/number';
-import { Ids } from '../../../ids';
-import { EasingFunctions } from '../animation/EasingFunctions';
-import { ScrollViewListener } from '../scroll/ScrollViewListener';
+import { Ids } from 'widgets/ids';
+import { EasingFunctions } from 'widgets/src/components/animation/EasingFunctions';
+import { ScrollViewListener } from 'widgets/src/components/scroll/ScrollViewListener';
 import { DataSyncingBar } from './DataSyncingBar';
 
 /**

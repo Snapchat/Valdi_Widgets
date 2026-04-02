@@ -35,8 +35,10 @@ export class TimePicker extends Component<TimePickerViewModel, {}> {
 
   onRender(): void {
     <custom-view
-      iosClass='SCValdiTimePicker'
+      iosClass='SCWidgetsTimePicker'
+      macosClass='SCWidgetsMacOSTimePicker'
       androidClass='com.snap.valdi.views.ValdiTimePicker'
+      webClass='SCWidgetsTimePickerWeb'
       canAlwaysScrollVertical={true}
       {...this.platformViewModel}
     />;

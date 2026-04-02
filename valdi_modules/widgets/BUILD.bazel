@@ -1,4 +1,44 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
+load("@valdi//bzl/valdi:valdi_android_library.bzl", "valdi_android_library")
+
+# Web polyglot implementations (DatePicker, TimePicker, IndexPicker, EmojiLabel).
+# The build system's generate_register_native_modules picks up the compiled JS
+# and checks for webPolyglotViews exports to register custom view factories.
+ts_project(
+    name = "widgets_web",
+    srcs = ["web/src/WidgetsWeb.ts"],
+    transpiler = "tsc",
+    tsconfig = "web/tsconfig.json",
+    visibility = ["//visibility:public"],
+)
+
+# Android attribute binders for polyglot custom views (IndexPicker, DatePicker, TimePicker).
+valdi_android_library(
+    name = "widgets_android",
+    srcs = glob(["android/*.kt"]),
+    deps = ["@valdi//valdi:valdi_java"],
+)
+
+# iOS native views for polyglot custom views (IndexPicker, DatePicker, TimePicker, EmojiLabel).
+objc_library(
+    name = "widgets_ios_impl",
+    srcs = glob(["ios/**/*.m"]),
+    hdrs = glob(["ios/**/*.h"]),
+    sdk_frameworks = ["UIKit"],
+    deps = [
+        "@valdi//valdi_core:valdi_core_objc",
+    ],
+)
+
+# macOS native views for polyglot custom views (DatePicker, TimePicker, IndexPicker, EmojiLabel).
+objc_library(
+    name = "widgets_macos_impl",
+    srcs = glob(["macos/**/*.m"]),
+    hdrs = glob(["macos/**/*.h"]),
+    sdk_frameworks = ["Cocoa"],
+    deps = ["@valdi//valdi:valdi_macos"],
+)
 
 valdi_module(
     name = "widgets",
@@ -10,8 +50,11 @@ valdi_module(
     ]) + [
         "tsconfig.json",
     ],
+    android_deps = [":widgets_android"],
     android_output_target = "release",
     ids_yaml = "ids.yaml",
+    ios_deps = [":widgets_ios_impl"],
+    macos_deps = [":widgets_macos_impl"],
     ios_module_name = "SCCatalog",
     ios_output_target = "release",
     res = glob([
@@ -23,6 +66,7 @@ valdi_module(
         "res/**/*.webp",
     ]),
     visibility = ["//visibility:public"],
+    web_deps = [":widgets_web"],
     deps = [
         "@valdi//src/valdi_modules/src/valdi/bridge_observables",
         "@valdi//src/valdi_modules/src/valdi/coreutils",

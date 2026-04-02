@@ -32,8 +32,10 @@ export class DatePicker extends Component<DatePickerViewModel, {}> {
 
   onRender(): void {
     <custom-view
-      iosClass='SCValdiDatePicker'
+      iosClass='SCWidgetsDatePicker'
+      macosClass='SCWidgetsMacOSDatePicker'
       androidClass='com.snap.valdi.views.ValdiDatePicker'
+      webClass='SCWidgetsDatePickerWeb'
       canAlwaysScrollVertical={true}
       {...this.platformViewModel}
     />;

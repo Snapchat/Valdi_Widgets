@@ -11,7 +11,7 @@ Valdi Widgets provides reusable UI widgets, styles, and patterns for apps built 
 - **`valdi_modules/`** – Valdi modules (widgets, navigation, valdi_standalone_ui, navigation_internal, playground)
 - **`WORKSPACE`** – Depends on Valdi via `http_archive` (e.g. `beta-0.0.2`)
 - **Build**: Bazel; tests: `bazel test //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test //valdi_modules/navigation_internal:test //valdi_modules/playground:test`
-- **Docs**: `AGENTS.md` (this file), `.cursor/rules/` (typescript-tsx, bazel, testing), `README.md`
+- **Docs**: `AGENTS.md` (this file), `README.md`
 
 The rest of this guide describes **Valdi** patterns so AI assistants don’t suggest React or wrong APIs when editing TypeScript/TSX in `valdi_modules/`.
 
@@ -107,7 +107,6 @@ const ChildWithProvider = withProviders(MyServiceProvider)(ChildComponent);
 - **`valdi_modules/navigation_internal/`** – Internal navigation support
 - **`valdi_modules/valdi_standalone_ui/`** – Standalone UI module
 - **`valdi_modules/playground/`** – Example app and entry point
-- **`.cursor/rules/`** – Cursor rules (bazel, typescript-tsx, testing, etc.)
 
 Valdi itself (compiler, runtime, core modules) is in the `@valdi//` external repository; see Valdi’s [AGENTS.md](https://github.com/Snapchat/Valdi/blob/main/AGENTS.md) and [docs](https://github.com/Snapchat/Valdi/tree/main/docs) for full framework documentation.
 
@@ -141,9 +140,27 @@ bazel build //valdi_modules/playground:app_macos
 
 ## More Information
 
-- Valdi: https://github.com/Snapchat/Valdi  
-- Valdi Widgets README: `/README.md`  
-- Cursor rules: `/.cursor/rules/README.md`  
+- Valdi: https://github.com/Snapchat/Valdi
+- Valdi Widgets README: `/README.md`
+
+## AI Assistant Setup
+
+### Install the Valdi CLI
+
+```bash
+npm install -g @snap/valdi
+```
+
+### Install AI skills
+
+Valdi-specific skills for AI coding assistants (component patterns, Bazel conventions, etc.) are bundled in the CLI:
+
+```bash
+valdi skills install                       # all detected AI tools
+valdi skills install --for=claude          # Claude Code only
+valdi skills install --category=client     # module-development skills only
+valdi skills list                          # see all available skills and install status
+```
 
 ---
 

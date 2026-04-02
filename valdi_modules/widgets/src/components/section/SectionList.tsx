@@ -12,7 +12,7 @@ import { linearGradient } from 'widgets/src/styles/gradients';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { binarySearch } from 'coreutils/src/ArrayUtils';
 import { clamp } from 'foundation/src/number';
-import { ScrollViewSubscription } from '../scroll/ScrollViewSubscription';
+import { ScrollViewSubscription } from 'widgets/src/components/scroll/ScrollViewSubscription';
 import { SectionHandler } from './SectionHandler';
 import { SectionModel } from './SectionModel';
 import { SectionSeparator } from './SectionSeparator';
