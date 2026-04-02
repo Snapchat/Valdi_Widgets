@@ -21,7 +21,7 @@ if command -v lsof &>/dev/null && lsof -i ":$PORT" -sTCP:LISTEN -t &>/dev/null; 
 fi
 
 echo "Building web bundle..."
-bazel build "$WEB_TARGET"
+bazel build --repo_env=VALDI_PLATFORM_DEPENDENCIES=cli "$WEB_TARGET"
 
 OUT_DIR="$ROOT_DIR/bazel-bin/valdi_modules/playground/playground_export_npm"
 if [[ ! -d "$OUT_DIR" ]]; then

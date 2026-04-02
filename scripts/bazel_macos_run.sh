@@ -12,6 +12,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 ROOT_DIR="$SCRIPT_DIR/../"
 
 pushd "$ROOT_DIR"
-bazel build "//valdi_modules/playground:app_macos"
+bazel build --repo_env=VALDI_PLATFORM_DEPENDENCIES=macos "//valdi_modules/playground:app_macos"
 ./bazel-bin/valdi_modules/playground/app_macos_bin
 popd
