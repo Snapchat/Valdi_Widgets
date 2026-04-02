@@ -12,7 +12,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 ROOT_DIR="$SCRIPT_DIR/../"
 
 pushd "$ROOT_DIR"
-bazel build --repo_env=VALDI_PLATFORM_DEPENDENCIES=ios //valdi_modules/playground:app_ios
+bazel build --config=ios //valdi_modules/playground:app_ios
 TARGET_TEMP_DIR=`mktemp`
 rm "$TARGET_TEMP_DIR"
 mkdir "$TARGET_TEMP_DIR"

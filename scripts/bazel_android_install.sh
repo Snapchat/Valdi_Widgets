@@ -9,7 +9,7 @@ ROOT_DIR="$SCRIPT_DIR/../"
 START_ACTIVITY="com.snap.valdi.playground/.StartActivity"
 
 pushd "$ROOT_DIR"
-bazel build --repo_env=VALDI_PLATFORM_DEPENDENCIES=android "//valdi_modules/playground:app_android"
+bazel build --config=android "//valdi_modules/playground:app_android"
 adb install -r "bazel-bin/valdi_modules/playground/app_android.apk"
 adb shell am start -n $START_ACTIVITY
 
