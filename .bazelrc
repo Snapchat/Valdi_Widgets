@@ -89,3 +89,7 @@ common --define=enable_web=true
 build --android_crosstool_top="@snap_client_toolchains//:android_crosstool"
 # Web build configuration (used by scripts/bazel_web_serve.sh)
 build:web --build_tag_filters=web
+build:ios --repo_env=VALDI_PLATFORM_DEPENDENCIES=ios
+build:android --repo_env=VALDI_PLATFORM_DEPENDENCIES=android
+build:macos --repo_env=VALDI_PLATFORM_DEPENDENCIES=macos
+build:web --repo_env=VALDI_PLATFORM_DEPENDENCIES=cli

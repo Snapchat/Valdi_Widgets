@@ -57,9 +57,13 @@ maybe(
     name = "host_platform",
 )
 
-load("@valdi//bzl:workspace_init.bzl", "valdi_initialize_workspace")
+load("@valdi//bzl:workspace_init.bzl", "platform_dependency_rule", "valdi_initialize_workspace")
 
-valdi_initialize_workspace()
+platform_dependency_rule(name = "platform_check")
+
+load("@platform_check//:target_platform.bzl", "VALDI_PLATFORM_DEPENDENCIES")
+
+valdi_initialize_workspace(VALDI_PLATFORM_DEPENDENCIES)
 
 load("@valdi_npm//:repositories.bzl", "npm_repositories")
 
