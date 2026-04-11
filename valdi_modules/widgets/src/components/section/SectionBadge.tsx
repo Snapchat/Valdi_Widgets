@@ -51,6 +51,10 @@ export interface SectionBadgeViewModel {
   theme?: SectionBadgeTheme;
 }
 
+/**
+ * Pill-shaped badge with uppercase text that animates in with a squishy scale effect after a 2.4s delay.
+ * Supports Yellow (default) and Red themes.
+ */
 export class SectionBadge extends Component<SectionBadgeViewModel> {
   onRender(): void {
     const text = this.viewModel?.text.toLocaleUpperCase();

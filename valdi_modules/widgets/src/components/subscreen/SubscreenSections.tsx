@@ -138,6 +138,10 @@ export interface SubscreenSectionViewModel {
   themingEnabled?: boolean;
 }
 
+/**
+ * Pre-wired Subscreen that renders a SectionList with optional IndexView, pull-to-refresh, and scroll-bar support.
+ * Manages ScrollViewHandler and IndexViewHandler internally unless overrides are provided.
+ */
 export class SubscreenSections extends Component<SubscreenSectionViewModel> {
   // To simplify the API, we provide default handlers if the consumer code doesn't need any special behavior
   private indexViewHandler = new IndexViewHandler();

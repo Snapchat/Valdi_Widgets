@@ -28,6 +28,9 @@ interface SelectorToggleState {
   on: boolean;
 }
 
+/**
+ * Checkbox-style circle toggle (24pt): grey border when off, filled brand-secondary with a checkmark icon when on.
+ */
 export class SelectorToggle extends StatefulComponent<SelectorToggleViewModel, SelectorToggleState> {
   state: SelectorToggleState = {
     on: false,

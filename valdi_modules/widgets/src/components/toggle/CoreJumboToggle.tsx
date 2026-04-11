@@ -135,6 +135,9 @@ const onStyle = {
   }),
 };
 
+/**
+ * Large on/off toggle (46×88pt) with a spring-animated thumb, haptic feedback, and optional on/off image overlays on the track.
+ */
 export class CoreJumboToggle extends StatefulComponent<CoreJumboToggleViewModel, State> {
   state = {
     pressed: false,

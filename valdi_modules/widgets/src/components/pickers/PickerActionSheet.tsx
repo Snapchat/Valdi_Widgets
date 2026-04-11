@@ -34,6 +34,9 @@ export interface PickerActionSheetViewModel {
  *  android: 'com.snap.valdi.widgets.PickerActionSheet'
  * })
  */
+/**
+ * Bottom sheet containing a title label and a PickerView; fires haptic feedback on creation.
+ */
 export class PickerActionSheet extends StatefulComponent<PickerActionSheetViewModel, {}, {}> {
   override onCreate(): void {
     Device.performHapticFeedback(DeviceHapticFeedbackType.ACTION_SHEET);

@@ -1,6 +1,10 @@
 import { ScrollEvent, ScrollDragEndEvent } from 'valdi_tsx/src/GestureEvents';
 import { ScrollViewListener } from 'widgets/src/components/scroll/ScrollViewListener';
 
+/**
+ * ScrollViewListener that monitors scroll events to decide when a downward drag gesture should dismiss a sheet.
+ * Calls onCouldDismiss when the threshold is crossed and onShouldDismiss when the drag ends with enough distance or velocity.
+ */
 export class DragToDismissController implements ScrollViewListener {
   // The current drag session is eligible to trigger a dismiss on end
   public isEligibleForDismiss = true;

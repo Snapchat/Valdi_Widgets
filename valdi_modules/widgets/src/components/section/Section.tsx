@@ -4,6 +4,9 @@ import { SectionHeader, SectionHeaderViewModel } from './SectionHeader';
 
 export interface SectionViewModel extends SectionHeaderViewModel, SectionBodyViewModel {}
 
+/**
+ * Convenience wrapper that composes a SectionHeader and a SectionBody with header and content slots.
+ */
 export class Section extends Component<SectionViewModel> {
   onRender(): void {
     const { title, actionButton, actionButtonRenderFn, fullBleed, subtitle, description } = this.viewModel;

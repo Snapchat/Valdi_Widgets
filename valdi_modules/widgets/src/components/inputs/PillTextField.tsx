@@ -79,6 +79,9 @@ interface PillTextFieldState {
   status: string;
 }
 
+/**
+ * Horizontally-scrolling input that combines removable pill chips with an inline text field for token-based entry.
+ */
 export class PillTextField extends StatefulComponent<PillTextFieldViewModel, PillTextFieldState> {
   state: PillTextFieldState = {
     inputValue: '',

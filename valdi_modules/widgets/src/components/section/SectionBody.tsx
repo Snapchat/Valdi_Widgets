@@ -10,6 +10,9 @@ export interface SectionBodyViewModel {
   fullBleed?: boolean;
 }
 
+/**
+ * Content wrapper that applies the standard section gutter padding; set fullBleed=true to remove horizontal padding.
+ */
 export class SectionBody extends Component<SectionBodyViewModel> {
   onRender(): void {
     const paddingHorizontal = this.viewModel.fullBleed ? 0 : Subscreen.GUTTER_SIZE;

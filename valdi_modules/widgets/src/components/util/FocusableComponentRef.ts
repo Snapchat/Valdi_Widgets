@@ -13,6 +13,10 @@ interface FocusableComponentRefOptions {
   delayBeforeFocusingOnIOS?: boolean;
 }
 
+/**
+ * ComponentRef wrapper that tracks focus state and defers setFocused(true) to the next component creation when no component is mounted yet.
+ * On iOS, an optional delayBeforeFocusingOnIOS flag adds a one-tick delay to ensure the text field is ready before focusing.
+ */
 export class FocusableComponentRef<T extends FocusableComponent>
   implements IRenderedComponentHolder<T, IRenderedVirtualNode>
 {

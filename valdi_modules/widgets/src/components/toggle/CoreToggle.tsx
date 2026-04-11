@@ -103,6 +103,9 @@ const onStyle = {
   }),
 };
 
+/**
+ * Small on/off toggle (24×38pt) with a spring-animated thumb and haptic feedback on state change; supports custom track and thumb colors.
+ */
 export class CoreToggle extends StatefulComponent<CoreToggleViewModel, State> {
   state = {
     pressed: false,

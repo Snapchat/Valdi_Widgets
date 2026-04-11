@@ -22,6 +22,9 @@ interface RadioToggleState {
   on: boolean;
 }
 
+/**
+ * Radio-button style circle toggle (24pt): grey-filled when off, brand-secondary filled with a white inner circle when on.
+ */
 export class RadioToggle extends StatefulComponent<RadioToggleViewModel, RadioToggleState> {
   state: RadioToggleState = {
     on: false,

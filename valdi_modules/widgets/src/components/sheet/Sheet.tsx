@@ -58,6 +58,9 @@ export interface SheetViewModel {
   grabberColor?: string;
 }
 
+/**
+ * Floating bottom sheet with a rounded top and an optional tap-to-dismiss backdrop and grabber handle.
+ */
 export class Sheet extends Component<SheetViewModel> {
   onRender(): void {
     const {

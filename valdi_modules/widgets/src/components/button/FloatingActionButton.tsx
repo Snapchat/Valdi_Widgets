@@ -32,6 +32,10 @@ interface FloatingActionButtonColorTheme {
   icon: SemanticColor;
 }
 
+/**
+ * Absolutely-positioned circular search button anchored to the bottom-right corner.
+ * Slides in or out of view by animating its bottom margin; respects safe area insets on tall devices.
+ */
 export class FloatingActionButton extends StatefulComponent<
   FloatingActionButtonViewModel,
   FloatingActionButtonState,

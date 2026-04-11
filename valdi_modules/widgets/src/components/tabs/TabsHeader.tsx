@@ -102,6 +102,10 @@ interface TabsHeaderState {
   currentIndex?: number;
 }
 
+/**
+ * Horizontally-scrolling tab bar that renders each tab's header and tracks the focused tab with an animated underline indicator.
+ * Syncs selection state with a TabsCoordinator; supports fixed-column widths and configurable underline and ruler styles.
+ */
 export class TabsHeader extends StatefulComponent<TabsHeaderViewModel, TabsHeaderState, TabsHeaderViewContext> {
   private static sides = Spacing.XS;
 
