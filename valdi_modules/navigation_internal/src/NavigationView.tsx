@@ -59,6 +59,10 @@ interface NavigationPresent extends NavigationInfo {}
 
 type NavigationOperation = (done: () => void) => void;
 
+/**
+ * Web/desktop navigation stack renderer that stacks components as full-screen views and animates push (slide-right) and present (slide-up) transitions.
+ * Manages a serial task queue so navigation animations run sequentially without overlap.
+ */
 export class NavigationView extends StatefulComponent<{}, State, NavigationViewContext> {
   state: State = { stack: [] };
 

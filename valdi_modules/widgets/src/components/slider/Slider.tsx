@@ -27,6 +27,9 @@ const BAR_SIZE = 25;
 const DEFAULT_HANDLE_SIZE = 20;
 const DEFAULT_LINE_HEIGHT = 4;
 
+/**
+ * Horizontal drag slider that reports a normalized value between 0 and 1 via onChange; supports customizable track colors and handle size.
+ */
 export class Slider extends StatefulComponent<ViewModel, State> {
   state: State = { value: 0, barWidth: 0 };
 

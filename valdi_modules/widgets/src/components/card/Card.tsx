@@ -24,6 +24,9 @@ export enum CardShadow {
   NONE,
 }
 
+/**
+ * Rounded container (10pt radius by default) with an optional drop shadow, configurable background color, and tap handler.
+ */
 export class Card extends Component<CardViewModel> {
   onRender(): void {
     const viewModel = this.viewModel ?? {};

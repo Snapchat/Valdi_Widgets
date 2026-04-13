@@ -27,6 +27,9 @@ export enum StatusColor {
   Purple,
 }
 
+/**
+ * Full-width status banner that renders text centered on a tinted background; supports Blue, Red, Green, and Purple color themes.
+ */
 export class SectionStatusBar extends StatefulComponent<SectionStatusBarViewModel, {}> {
   onRender(): void {
     <view

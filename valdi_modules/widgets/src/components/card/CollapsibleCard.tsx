@@ -76,6 +76,10 @@ const animationOptions: PresetCurveAnimationOptions = {
   duration: 0.2,
 };
 
+/**
+ * Card that initially shows up to `maxNumCollapsedComponents` rows and animates height to reveal or hide additional rows.
+ * Rows can be supplied as render functions or ComponentDef objects; supply `rowHeight` to enable lazy rendering.
+ */
 export class CollapsibleCard<T extends {}> extends StatefulComponent<
   CollapsibleCardViewModel<T>,
   CollapsibleCardState

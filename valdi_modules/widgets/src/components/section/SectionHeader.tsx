@@ -43,6 +43,10 @@ export interface SectionHeaderViewModel {
   titleMaxLines?: number;
 }
 
+/**
+ * Section header row rendering a bold title, optional subtitle, optional description, and an optional action button.
+ * Supports a slot for additional title-row content and themed text colors.
+ */
 export class SectionHeader extends Component<SectionHeaderViewModel, SectionHeaderContext> {
   private readonly theme = Theme.from(this.context.themeType);
   private readonly style = {

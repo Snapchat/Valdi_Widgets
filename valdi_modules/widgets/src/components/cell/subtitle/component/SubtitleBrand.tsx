@@ -4,6 +4,9 @@ import { TextStyleFont } from 'widgets/src/styles/TextStyleFont';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 import { SubtitleText } from './SubtitleText';
 
+/**
+ * Subtitle label rendered in CAPTION font and primary text color, used for brand-name text in a cell subtitle.
+ */
 export class SubtitleBrand extends Component<CommonLabel & ViewAttributes> {
   onRender(): void {
     <SubtitleText {...this.viewModel} font={TextStyleFont.CAPTION} color={SemanticColor.Text.PRIMARY} />;

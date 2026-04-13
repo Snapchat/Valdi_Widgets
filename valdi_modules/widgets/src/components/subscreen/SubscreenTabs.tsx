@@ -107,6 +107,10 @@ interface SubscreenTabsState {
   currentTabIndex: number;
 }
 
+/**
+ * Pre-wired Subscreen that renders a TabsHeader and TabsContent with optional pull-to-refresh and scroll-bar support.
+ * Manages TabsCoordinator and ScrollViewHandler internally unless overrides are provided.
+ */
 export class SubscreenTabs extends StatefulComponent<SubscreenTabsViewModel, SubscreenTabsState> {
   state: SubscreenTabsState = {
     currentTabIndex: this.viewModel.tabsItemsInitialIndex || 0,

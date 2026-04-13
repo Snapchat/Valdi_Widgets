@@ -7,6 +7,10 @@ export interface TabsCoordinatorItems {
   initialIndex?: number;
 }
 
+/**
+ * Observable coordinator that synchronizes TabsHeader and TabsContent.
+ * Pass the same instance to both components; subscribe to index/onNav/onTap for programmatic control.
+ */
 export class TabsCoordinator {
   // Triggered when the exact index is changing
   readonly index = new BehaviorSubject<number | undefined>(undefined);

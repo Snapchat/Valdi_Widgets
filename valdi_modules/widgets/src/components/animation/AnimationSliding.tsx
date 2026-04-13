@@ -23,6 +23,10 @@ interface AnimationSlidingState {
   progress: number;
 }
 
+/**
+ * Translates its children from a start X/Y offset to an end X/Y offset after an optional delay.
+ * Progress animates from 0 to 1 using the provided animationOptions.
+ */
 export class AnimationSliding extends StatefulComponent<AnimationSlidingViewModel, AnimationSlidingState> {
   state: AnimationSlidingState = {
     progress: 0,

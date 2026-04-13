@@ -37,6 +37,10 @@ interface GridViewContext<T> {
   renderItem(item: T, borderRadius: number, index: number): void;
 }
 
+/**
+ * Renders items in a multi-column grid with lazy layout; defaults to 3 columns with a square aspect ratio per item.
+ * Used internally by GridViewWrapper — prefer GridViewWrapper for most use cases.
+ */
 export class GridView<T> extends StatefulComponent<GridViewModel<T>, GridViewState, GridViewContext<T>> {
   defaultGridRowStyle = new Style<Layout>({
     flexDirection: 'row',

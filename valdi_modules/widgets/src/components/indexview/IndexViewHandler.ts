@@ -1,6 +1,10 @@
 import { ElementRef } from 'valdi_core/src/ElementRef';
 import { IndexViewSymbol } from './IndexViewSymbol';
 
+/**
+ * Maintains a map of IndexViewSymbol keys to ElementRef instances so an IndexView can scroll to named anchors.
+ * Pass to IndexView and IndexViewAnchor to link them together.
+ */
 export class IndexViewHandler {
   private elementRefs: Map<string, ElementRef>;
   constructor() {
