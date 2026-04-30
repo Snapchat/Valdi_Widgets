@@ -16,6 +16,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Checkout Valdi
+        uses: actions/checkout@v4
+        with:
+          repository: Snapchat/Valdi
+          ref: 45b28375a189da8f9c24544e3b2d40318d3386a9
+          path: .valdi
+
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
         with:
@@ -24,7 +31,23 @@ jobs:
           repository-cache: true
 
       - name: Run all tests
-        run: bazel test --test_output=all //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_modules/valdi_standalone_ui:test //valdi_modules/navigation_internal:test //valdi_modules/playground:test
+        run: |
+          VALDI=${{ github.workspace }}/.valdi
+          bazel test --test_output=all \
+            --override_module=valdi=$VALDI \
+            --override_module=android_macros=$VALDI/bzl/macros \
+            --override_module=snap_macros=$VALDI/bzl/valdi/snap_macros \
+            --override_module=snap_client_toolchains=$VALDI/bzl/toolchains \
+            --override_module=snap_platforms=$VALDI/bzl/platforms \
+            --override_module=skia_user_config=$VALDI/third-party/skia_user_config \
+            --override_module=rules_hdrs=$VALDI/third-party/rules_hdrs \
+            --override_module=valdi_toolchain=$VALDI/bin \
+            --override_module=resvg_libs=$VALDI/third-party/resvg/resvg_libs \
+            //valdi_modules/widgets:test \
+            //valdi_modules/navigation:test \
+            //valdi_modules/valdi_standalone_ui:test \
+            //valdi_modules/navigation_internal:test \
+            //valdi_modules/playground:test
 
       - name: Upload test results
         if: always()
