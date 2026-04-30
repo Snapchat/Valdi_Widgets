@@ -30,7 +30,6 @@ jobs:
 
           # Add missing bazel_dep entries that were added after this commit
           printf '\nbazel_dep(name = "snap_platforms")\n' >> .valdi/bzl/toolchains/MODULE.bazel
-          printf '\nbazel_dep(name = "rules_android", version = "0.5.1")\n' >> .valdi/bzl/macros/MODULE.bazel
           printf '\nbazel_dep(name = "rules_pkg", version = "0.9.1")\n' >> .valdi/third-party/rules_hdrs/MODULE.bazel
 
       - name: Setup Bazel
