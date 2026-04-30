@@ -13,6 +13,8 @@ archive_override(
     module_name = "valdi",
     urls = [VALDI_URL],
     strip_prefix = VALDI_STRIP_PREFIX,
+    patches = ["//third-party/patches:valdi_remove_llvm_extension.patch"],
+    patch_strip = 1,
 )
 
 bazel_dep(name = "android_macros")

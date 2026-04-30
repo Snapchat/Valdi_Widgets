@@ -1,0 +1,13 @@
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -431,10 +431,6 @@
+ use_repo(apple_cc_configure, "local_config_apple_cc_toolchains", "local_config_apple_cc")
+ register_toolchains("@local_config_apple_cc_toolchains//:all")
+
+-llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+-llvm.toolchain(name = "llvm_toolchain", llvm_version = "16.0.0")
+-use_repo(llvm, "llvm_toolchain")
+-register_toolchains("@llvm_toolchain//:all")
+
+ # Swift Package Manager deps for //compiler/compiler:local_valdi_compiler.
+ # Consumers loading @valdi via bzlmod should also use this extension; see
