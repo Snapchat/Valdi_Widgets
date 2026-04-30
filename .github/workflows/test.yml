@@ -29,9 +29,9 @@ jobs:
           sed -i '' '/^llvm = use_extension/d; /^llvm\.toolchain/d; /^use_repo(llvm/d; /^register_toolchains("@llvm_toolchain/d' .valdi/MODULE.bazel
 
           # Add missing bazel_dep entries that were added after this commit
-          echo 'bazel_dep(name = "snap_platforms")' >> .valdi/bzl/toolchains/MODULE.bazel
-          echo 'bazel_dep(name = "rules_android", version = "0.5.1")' >> .valdi/bzl/macros/MODULE.bazel
-          echo 'bazel_dep(name = "rules_pkg", version = "0.9.1")' >> .valdi/third-party/rules_hdrs/MODULE.bazel
+          printf '\nbazel_dep(name = "snap_platforms")\n' >> .valdi/bzl/toolchains/MODULE.bazel
+          printf '\nbazel_dep(name = "rules_android", version = "0.5.1")\n' >> .valdi/bzl/macros/MODULE.bazel
+          printf '\nbazel_dep(name = "rules_pkg", version = "0.9.1")\n' >> .valdi/third-party/rules_hdrs/MODULE.bazel
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
