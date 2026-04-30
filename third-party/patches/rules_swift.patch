@@ -1,0 +1,19 @@
+diff --git a/swift/swift_interop_hint.bzl b/swift/swift_interop_hint.bzl
+index 8ccb1bd..afc7a51 100644
+--- a/swift/swift_interop_hint.bzl
++++ b/swift/swift_interop_hint.bzl
+@@ -73,6 +73,14 @@ other non-identifier characters with underscores.
+             doc = """\
+ If `True`, the hinted target should suppress any module that it would otherwise
+ generate.
++""",
++            mandatory = False,
++        ),
++        "system_pcms": attr.label_list(
++            allow_files = True,
++            doc = """\
++A list of system PCM files that should be included in the Clang module generated
++for the target to which this hint is applied.
+ """,
+             mandatory = False,
+         ),

@@ -1,0 +1,12 @@
+--- kotlin/internal/jvm/android.bzl
++++ kotlin/internal/jvm/android.bzl
+@@ -119,6 +119,9 @@ def kt_android_library(name, exports = [], visibility = None, exec_properties =
+         tags = kwargs.get("tags", default = None),
+         testonly = kwargs.get("testonly", default = 0),
+         exec_properties = exec_properties,
++        manifest = kwargs.get("manifest", default = None),
++        custom_package = kwargs.get("custom_package", default = None),
++        resource_files = kwargs.get("resource_files", default= None),
+     )
+
+ def kt_android_local_test(

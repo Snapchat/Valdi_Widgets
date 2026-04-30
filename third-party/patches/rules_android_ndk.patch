@@ -1,0 +1,21 @@
+--- BUILD.ndk_root.tpl
++++ BUILD.ndk_root.tpl
+@@ -12,6 +12,18 @@ alias(
+     actual = "//{clang_directory}:cc_toolchain_suite",
+ )
+
++filegroup(
++    name = "strip",
++    srcs = ["//{clang_directory}:bin/llvm-strip"],
++    visibility = ["//visibility:public"],
++)
++
++filegroup(
++    name = "strip_libs",
++    srcs = glob(["{clang_directory}/lib64/**/libc++.so.1"]),
++    visibility = ["//visibility:public"],
++)
++
+ # Loop over TARGET_SYSTEM_NAMES and define all toolchain targets.
+ [toolchain(
+     name = "toolchain_%s" % target_system_name,

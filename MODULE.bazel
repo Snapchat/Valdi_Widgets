@@ -1,0 +1,102 @@
+module(name = "valdi_widgets", version = "0.1")
+
+# Valdi release beta-0.0.3 (https://github.com/Snapchat/Valdi/releases)
+VALDI_RELEASE_TAG = "beta-0.0.3"
+
+VALDI_URL = "https://github.com/Snapchat/Valdi/archive/refs/tags/{}.tar.gz".format(VALDI_RELEASE_TAG)
+
+VALDI_STRIP_PREFIX = "Valdi-{}".format(VALDI_RELEASE_TAG)
+
+bazel_dep(name = "valdi")
+archive_override(
+    module_name = "valdi",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX,
+)
+
+bazel_dep(name = "android_macros")
+archive_override(
+    module_name = "android_macros",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/bzl/macros",
+)
+
+bazel_dep(name = "snap_macros")
+archive_override(
+    module_name = "snap_macros",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/bzl/valdi/snap_macros",
+)
+
+bazel_dep(name = "snap_client_toolchains")
+archive_override(
+    module_name = "snap_client_toolchains",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/bzl/toolchains",
+)
+
+bazel_dep(name = "snap_platforms")
+archive_override(
+    module_name = "snap_platforms",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/bzl/platforms",
+)
+
+bazel_dep(name = "skia_user_config")
+archive_override(
+    module_name = "skia_user_config",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/third-party/skia_user_config",
+)
+
+bazel_dep(name = "rules_hdrs")
+archive_override(
+    module_name = "rules_hdrs",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/third-party/rules_hdrs",
+)
+
+bazel_dep(name = "valdi_toolchain")
+archive_override(
+    module_name = "valdi_toolchain",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/bin",
+)
+
+bazel_dep(name = "resvg_libs")
+archive_override(
+    module_name = "resvg_libs",
+    urls = [VALDI_URL],
+    strip_prefix = VALDI_STRIP_PREFIX + "/third-party/resvg/resvg_libs",
+)
+
+# Required for widgets/BUILD.bazel which uses ts_project directly
+bazel_dep(name = "aspect_rules_ts", version = "3.7.0")
+
+rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
+rules_ts_ext.deps(ts_version = "5.3.3")
+use_repo(rules_ts_ext, "npm_typescript")
+
+# Third-party patches required because Valdi's single_version_override
+# entries only take effect when Valdi is the root module.
+single_version_override(
+    module_name = "rules_swift",
+    patches = ["//third-party/patches:rules_swift.patch"],
+    patch_strip = 1,
+)
+
+single_version_override(
+    module_name = "rules_kotlin",
+    patches = ["//third-party/patches:rules_kotlin.patch"],
+)
+
+single_version_override(
+    module_name = "rules_android_ndk",
+    patches = ["//third-party/patches:rules_android_ndk.patch"],
+)
+
+single_version_override(
+    module_name = "websocketpp",
+    patches = ["//third-party/patches:websocketpp.patch"],
+    patch_strip = 1,
+)

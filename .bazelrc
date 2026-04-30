@@ -1,6 +1,3 @@
-# No bzlmod yet
-common --noenable_bzlmod
-
 common --bes_instance_name=client
 common --enable_platform_specific_config
 
@@ -57,18 +54,14 @@ build --define=android_incremental_dexing_tool=d8_dexbuilder
 build --define=android_standalone_dexing_tool=d8_compat_dx
 build --incremental_dexing
 
-# Disable 3rd party libs warnings
-build --per_file_copt=external/com_github_grpc_grpc/.*\$@-Wno-everything
-build --per_file_copt=external/snap_protobuf/.*\$@-Wno-everything
-build --per_file_copt=external/boringssl/.*\$@-Wno-everything
-build --per_file_copt=external/com_github_google_flatbuffers/.*\$@-Wno-everything
+# Disable 3rd party libs warnings (bzlmod-compatible patterns)
+build --per_file_copt=external/protobuf[^/]*/.*\$@-Wno-everything
+build --per_file_copt=external/boringssl[^/]*/.*\$@-Wno-everything
+build --per_file_copt=external/grpc[^/]*/.*\$@-Wno-everything
+build --per_file_copt=external/flatbuffers[^/]*/.*\$@-Wno-everything
 
 # Enable persistent worker for Valdi compilation
 build --strategy=ValdiCompile=worker
-
-## Disable sandboxing for macs, both laptops and in CI; the performance hit is much too high.
-build:macos --spawn_strategy=local
-build:linux --sandbox_writable_path=/var/tmp
 
 # Disable disk cache to save disk space
 build --disk_cache=""
@@ -86,6 +79,5 @@ build --flag_alias=valdi_js_engine=@valdi//bzl/valdi:js_engine
 # Enable web compilation (generates JS outputs from Valdi compiler for web targets)
 common --define=enable_web=true
 
-build --android_crosstool_top="@snap_client_toolchains//:android_crosstool"
 # Web build configuration (used by scripts/bazel_web_serve.sh)
 build:web --build_tag_filters=web
