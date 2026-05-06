@@ -4,7 +4,7 @@ module(name = "valdi_widgets", version = "0.1")
 # For development against a local checkout, replace archive_override with
 # local_path_override entries (see CONTRIBUTING.md).
 VALDI_TAG = "beta-0.1.0"
-VALDI_URL = "https://github.com/Snapchat/Valdi/archive/refs/tags/{}.tar.gz".format(VALDI_TAG)
+VALDI_URL = "https://github.com/Snapchat/Valdi/archive/{}.tar.gz".format(VALDI_TAG)
 VALDI_STRIP_PREFIX = "Valdi-{}".format(VALDI_TAG)
 
 bazel_dep(name = "valdi", version = "0.1")
