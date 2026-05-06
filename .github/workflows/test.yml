@@ -29,6 +29,8 @@ jobs:
           sed -i '' '/^llvm = use_extension/d; /^llvm\.toolchain/d; /^use_repo(llvm/d; /^register_toolchains("@llvm_toolchain/d' .valdi/MODULE.bazel
           # Point .bazelrc registry at local Valdi checkout (release tag may not exist yet)
           sed -i '' "s|--registry=https://raw.githubusercontent.com/Snapchat/Valdi/.*/registry|--registry=file://$VALDI/registry|" .bazelrc
+          # Stub out open_source_archives.bzl (stripped by Copybara, not on public repo)
+          echo 'ARCHIVES = {}' > .valdi/bzl/open_source_archives.bzl
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
