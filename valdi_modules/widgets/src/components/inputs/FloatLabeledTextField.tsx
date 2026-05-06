@@ -45,6 +45,9 @@ interface FloatLabeledTextFieldState {
   text: string;
 }
 
+/**
+ * Text field with a title label that floats above the input when the field is focused or has content, plus an optional inline error message.
+ */
 export class FloatLabeledTextField extends StatefulComponent<
   FloatLabeledTextFieldViewModel,
   FloatLabeledTextFieldState

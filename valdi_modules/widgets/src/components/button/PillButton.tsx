@@ -18,6 +18,9 @@ export interface PillButtonViewModel {
   accessibilityLabel?: string;
 }
 
+/**
+ * SMALL SECONDARY CoreButton with optional icon and selection state; selected items render the foreground in brand primary color.
+ */
 export class PillButton extends Component<PillButtonViewModel> {
   onRender(): void {
     const viewModel = this.viewModel;

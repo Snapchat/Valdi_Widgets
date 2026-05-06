@@ -7,6 +7,10 @@ export interface TextInputElement {
   focused?: boolean;
 }
 
+/**
+ * Manages focus state for a text input element; if setFocused(true) is called before the element is created,
+ * it defers focus until the element's onElementCreated callback fires.
+ */
 export class TextInputHandler<T> implements IRenderedElementHolder<T> {
   protected readonly elementRef = new ElementRef<T>();
 

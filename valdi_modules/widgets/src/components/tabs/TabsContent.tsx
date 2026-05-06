@@ -78,6 +78,10 @@ interface TabsContentState {
   verticalScrollViewHeight?: number;
 }
 
+/**
+ * Horizontally-paged content area that renders each tab's content and syncs the active page with a TabsCoordinator.
+ * Supports Greedy, LazyNoUnload, LazyWithUnload, AggressivelyLazy loading strategies.
+ */
 export class TabsContent extends StatefulComponent<TabsContentViewModel, TabsContentState> {
   state: TabsContentState = {};
 

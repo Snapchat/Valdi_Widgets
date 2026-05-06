@@ -59,6 +59,9 @@ interface SearchBoxState {
   status: string;
 }
 
+/**
+ * Rounded search bar with a leading magnifying-glass icon, inline text field, and a trailing clear button that appears when text is present.
+ */
 export class SearchBox extends StatefulComponent<SearchBoxViewModel, SearchBoxState, SearchBoxContext> {
   state: SearchBoxState = {
     inputValue: '',

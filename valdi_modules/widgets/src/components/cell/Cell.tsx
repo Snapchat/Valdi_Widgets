@@ -54,6 +54,10 @@ export interface CellViewModel {
   accessoryMarginRight?: number;
 }
 
+/**
+ * Standard list row with configurable packing density, left/right accessory slots, and label slots for
+ * title, subtitle, identity, meta, and reason text.
+ */
 export class Cell extends Component<CellViewModel> {
   identityAccessoryRef = new ElementRef();
   rightAccessoryRef = new ElementRef();

@@ -6,6 +6,9 @@ export interface SectionSeparatorViewModel {
   spacing?: CSSValue;
 }
 
+/**
+ * Vertical spacer used between sections; defaults to MD spacing.
+ */
 export class SectionSeparator extends Component<SectionSeparatorViewModel> {
   onRender(): void {
     const { spacing = Spacing.MD } = this.viewModel; // Standardized value, taken from SearchV2 production value and applied to all features

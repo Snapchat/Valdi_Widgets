@@ -13,6 +13,9 @@ export interface ConfirmationButtonViewModel {
   accessibilityLabel?: string;
 }
 
+/**
+ * Full-width XL PRIMARY CoreButton pre-configured for confirmation actions; switches to INACTIVE coloring when disabled.
+ */
 export class ConfirmationButton extends Component<ConfirmationButtonViewModel> {
   onRender(): void {
     const viewModel = this.viewModel;

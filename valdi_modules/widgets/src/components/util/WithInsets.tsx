@@ -30,6 +30,10 @@ interface WithInsetsState {
   };
 }
 
+/**
+ * Layout that automatically applies the device safe-area insets as padding or margin and re-renders whenever the insets change.
+ * Individual edges can be suppressed with ignoreTop/Bottom/Left/Right; provide resolveFn to transform the raw inset values.
+ */
 export class WithInsets extends StatefulComponent<WithInsetsViewModel, WithInsetsState> {
   state = {
     insets: {

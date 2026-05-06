@@ -21,6 +21,9 @@ interface AnimationSquishyState {
   progress: number;
 }
 
+/**
+ * Scales its children in ("grow") or out ("shrink") after an optional delay, with optional tilt offsets applied to the translation.
+ */
 export class AnimationSquishy extends StatefulComponent<AnimationSquishyViewModel, AnimationSquishyState> {
   state: AnimationSquishyState = {
     progress: 0,

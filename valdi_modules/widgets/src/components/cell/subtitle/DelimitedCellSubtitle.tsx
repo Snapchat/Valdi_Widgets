@@ -13,6 +13,9 @@ export interface GenericCellSubtitleViewModel {
   children?: RenderFunction;
 }
 
+/**
+ * Subtitle row that renders an array of render functions separated by a dot delimiter, with an optional left accessory slot.
+ */
 export class DelimitedCellSubtitle extends Component<GenericCellSubtitleViewModel> {
   onRender(): void {
     const viewModel = this.viewModel ?? {};

@@ -26,6 +26,9 @@ const GRADIENT = linearGradient(
   GradientDirection.LeftToRight,
 );
 
+/**
+ * Animated horizontal loading bar that continuously scrolls a yellow-white-brand gradient to indicate background data syncing.
+ */
 export class DataSyncingBar extends StatefulComponent<{}, DataSyncingBarState> {
   state = {
     width: 0,

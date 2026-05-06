@@ -10,6 +10,9 @@ export interface IndexPickerViewModel {
   onChange: (index: number) => void;
 }
 
+/**
+ * Drum-roll style picker that renders a native platform index picker (SCWidgetsIndexPicker on iOS, ValdiIndexPicker on Android).
+ */
 export class IndexPicker extends Component<IndexPickerViewModel, {}> {
   onRender(): void {
     const viewModel = this.viewModel;

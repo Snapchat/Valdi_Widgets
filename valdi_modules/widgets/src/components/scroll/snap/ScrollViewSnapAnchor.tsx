@@ -6,6 +6,10 @@ export interface ScrollViewSnapAnchorViewModel {
   controller: ScrollViewSnapController;
 }
 
+/**
+ * Wraps its slot content in a layout registered to a ScrollViewSnapController so the scroll view can snap to it.
+ * Set enabled=false to temporarily opt out of snapping without removing the anchor.
+ */
 export class ScrollViewSnapAnchor extends Component<ScrollViewSnapAnchorViewModel> {
   onRender(): void {
     const viewModel = this.viewModel;

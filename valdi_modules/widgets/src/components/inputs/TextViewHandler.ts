@@ -1,6 +1,9 @@
 import { TextViewInteractive } from 'valdi_tsx/src/NativeTemplateElements';
 import { TextInputHandler } from './TextInputHandler';
 
+/**
+ * TextInputHandler specialized for TextView elements; adds a deprecated setValue helper for imperative value updates.
+ */
 export class TextViewHandler extends TextInputHandler<TextViewInteractive> {
   /**
    * @deprecated
