@@ -22,10 +22,13 @@ jobs:
           repository: Snapchat/Valdi
           path: .valdi
 
-      - name: Patch Valdi for non-root module usage
+      - name: Patch for CI (local Valdi checkout)
         run: |
+          VALDI=${{ github.workspace }}/.valdi
           # Remove root-module-only llvm extension from Valdi's MODULE.bazel
           sed -i '' '/^llvm = use_extension/d; /^llvm\.toolchain/d; /^use_repo(llvm/d; /^register_toolchains("@llvm_toolchain/d' .valdi/MODULE.bazel
+          # Point .bazelrc registry at local Valdi checkout (release tag may not exist yet)
+          sed -i '' "s|--registry=https://raw.githubusercontent.com/Snapchat/Valdi/.*/registry|--registry=file://$VALDI/registry|" .bazelrc
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
@@ -38,7 +41,6 @@ jobs:
         run: |
           VALDI=${{ github.workspace }}/.valdi
           bazel test --test_output=all \
-            --registry=file://$VALDI/registry \
             --override_module=valdi=$VALDI \
             --override_module=android_macros=$VALDI/bzl/macros \
             --override_module=snap_macros=$VALDI/bzl/valdi/snap_macros \
