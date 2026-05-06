@@ -79,7 +79,6 @@ register_toolchains("@llvm_toolchain//:all")
 # Required for widgets/BUILD.bazel which uses ts_project directly.
 bazel_dep(name = "aspect_rules_ts", version = "3.7.0")
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
-rules_ts_ext.deps(ts_version = "5.3.3")
 use_repo(rules_ts_ext, "npm_typescript")
 
 # Third-party patches: Valdi's single_version_override entries only take
