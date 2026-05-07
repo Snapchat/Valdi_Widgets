@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Snapchat/Valdi
+          ref: beta-0.1.0
           lfs: true
           path: .valdi
 
