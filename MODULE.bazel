@@ -81,16 +81,6 @@ bazel_dep(name = "aspect_rules_ts", version = "3.7.0")
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
 use_repo(rules_ts_ext, "npm_typescript")
 
-# Third-party patches: Valdi's single_version_override entries only take
-# effect when Valdi is the root module. The Valdi Bazel registry provides
-# pre-patched versions of rules_swift, rules_kotlin, and rules_android_ndk.
-# Websocketpp still needs a local patch.
-single_version_override(
-    module_name = "websocketpp",
-    patches = ["//third-party/patches:websocketpp.patch"],
-    patch_strip = 1,
-)
-
 # Version pins (must match Valdi's MODULE.bazel).
 single_version_override(module_name = "protobuf", version = "27.0")
 single_version_override(module_name = "rules_apple", version = "4.0.0")
