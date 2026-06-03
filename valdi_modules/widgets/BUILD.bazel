@@ -2,7 +2,7 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
 load("@valdi//bzl/valdi:valdi_android_library.bzl", "valdi_android_library")
 
-# Web polyglot implementations (DatePicker, TimePicker, IndexPicker, EmojiLabel).
+# Web polyglot implementations (DatePicker, TimePicker, IndexPicker, FilePicker, EmojiLabel).
 # The build system's generate_register_native_modules picks up the compiled JS
 # and checks for webPolyglotViews exports to register custom view factories.
 ts_project(
@@ -13,30 +13,30 @@ ts_project(
     visibility = ["//visibility:public"],
 )
 
-# Android attribute binders for polyglot custom views (IndexPicker, DatePicker, TimePicker).
+# Android attribute binders for polyglot custom views (IndexPicker, DatePicker, TimePicker, FilePicker).
 valdi_android_library(
     name = "widgets_android",
     srcs = glob(["android/*.kt"]),
     deps = ["@valdi//valdi:valdi_java"],
 )
 
-# iOS native views for polyglot custom views (IndexPicker, DatePicker, TimePicker, EmojiLabel).
+# iOS native views for polyglot custom views (IndexPicker, DatePicker, TimePicker, FilePicker, EmojiLabel).
 objc_library(
     name = "widgets_ios_impl",
     srcs = glob(["ios/**/*.m"]),
     hdrs = glob(["ios/**/*.h"]),
-    sdk_frameworks = ["UIKit"],
+    sdk_frameworks = ["UIKit", "UniformTypeIdentifiers"],
     deps = [
         "@valdi//valdi_core:valdi_core_objc",
     ],
 )
 
-# macOS native views for polyglot custom views (DatePicker, TimePicker, IndexPicker, EmojiLabel).
+# macOS native views for polyglot custom views (DatePicker, TimePicker, IndexPicker, FilePicker, EmojiLabel).
 objc_library(
     name = "widgets_macos_impl",
     srcs = glob(["macos/**/*.m"]),
     hdrs = glob(["macos/**/*.h"]),
-    sdk_frameworks = ["Cocoa"],
+    sdk_frameworks = ["Cocoa", "UniformTypeIdentifiers"],
     deps = ["@valdi//valdi:valdi_macos"],
 )
 

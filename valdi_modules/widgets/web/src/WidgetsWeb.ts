@@ -8,6 +8,7 @@
  *   DatePicker    → SCWidgetsDatePickerWeb
  *   TimePicker    → SCWidgetsTimePickerWeb
  *   IndexPicker   → SCWidgetsIndexPickerWeb
+ *   FilePicker    → SCWidgetsFilePickerWeb
  *   EmojiLabel    → SCWidgetsLabelWeb
  *
  * Each factory returns an object with a changeAttribute(name, value) method so the
@@ -178,6 +179,75 @@ function createIndexPickerFactory(): ViewFactory {
   };
 }
 
+// ─── FilePicker ─────────────────────────────────────────────────────────────
+
+function createFilePickerFactory(): ViewFactory {
+  return (container: HTMLElement): AttributeHandler => {
+    container.style.display = 'flex';
+    container.style.alignItems = 'center';
+    container.style.justifyContent = 'center';
+    container.style.pointerEvents = 'auto';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.display = 'inline-flex';
+    wrapper.style.alignItems = 'center';
+
+    const button = document.createElement('button');
+    button.textContent = 'Choose file…';
+    button.style.fontSize = '14px';
+    button.style.padding = '8px 16px';
+    button.style.border = '1px solid #ccc';
+    button.style.borderRadius = '6px';
+    button.style.cursor = 'pointer';
+    button.style.backgroundColor = '#f8f9fa';
+    wrapper.appendChild(button);
+
+    const label = document.createElement('span');
+    label.style.marginLeft = '8px';
+    label.style.fontSize = '13px';
+    label.style.color = '#555';
+    wrapper.appendChild(label);
+
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.style.display = 'none';
+    wrapper.appendChild(input);
+
+    container.appendChild(wrapper);
+
+    let onSelect: ((event: { fileName: string }) => void) | null = null;
+
+    button.addEventListener('click', () => {
+      input.click();
+    });
+
+    input.addEventListener('change', () => {
+      const files = Array.from(input.files ?? []);
+      if (files.length === 0) return;
+      label.textContent =
+        files.length === 1 ? files[0].name : `${files.length} files selected`;
+      if (onSelect) {
+        for (const file of files) {
+          onSelect({ fileName: file.name });
+        }
+      }
+    });
+
+    return {
+      changeAttribute(name: string, value: unknown): void {
+        if (name === 'onSelect') {
+          onSelect = typeof value === 'function' ? (value as (event: { fileName: string }) => void) : null;
+        } else if (name === 'allowMultiple' && typeof value === 'boolean') {
+          input.multiple = value;
+        } else if (name === 'accept' && (typeof value === 'string' || value == null)) {
+          input.accept = (value as string) ?? '';
+        }
+      },
+    };
+  };
+}
+
 // ─── EmojiLabel ──────────────────────────────────────────────────────────────
 
 function createLabelFactory(): ViewFactory {
@@ -224,5 +294,6 @@ export const webPolyglotViews: Record<string, ViewFactory> = {
   SCWidgetsDatePickerWeb: createDatePickerFactory(),
   SCWidgetsTimePickerWeb: createTimePickerFactory(),
   SCWidgetsIndexPickerWeb: createIndexPickerFactory(),
+  SCWidgetsFilePickerWeb: createFilePickerFactory(),
   SCWidgetsLabelWeb: createLabelFactory(),
 };
