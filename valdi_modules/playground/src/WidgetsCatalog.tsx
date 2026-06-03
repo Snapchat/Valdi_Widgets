@@ -3,6 +3,7 @@ import { WithInsets } from 'widgets/src/components/util/WithInsets';
 import { DatePicker } from 'widgets/src/components/pickers/DatePicker';
 import { TimePicker, TimePickerTime } from 'widgets/src/components/pickers/TimePicker';
 import { IndexPicker } from 'widgets/src/components/pickers/IndexPicker';
+import { FilePicker, FilePickerOnSelectEvent } from 'widgets/src/components/pickers/FilePicker';
 import { EmojiLabel } from 'widgets/src/components/text/EmojiLabel';
 import { Section } from 'widgets/src/components/section/Section';
 import { SectionSeparator } from 'widgets/src/components/section/SectionSeparator';
@@ -15,6 +16,7 @@ interface CatalogState {
   date: Date;
   time: TimePickerTime;
   fruitIndex: number;
+  selectedFileName: string;
 }
 
 export class WidgetsCatalog extends StatefulComponent<{}, CatalogState, {}> {
@@ -22,10 +24,11 @@ export class WidgetsCatalog extends StatefulComponent<{}, CatalogState, {}> {
     date: new Date(),
     time: { hourOfDay: new Date().getHours(), minuteOfHour: 0 },
     fruitIndex: 0,
+    selectedFileName: '',
   };
 
   onRender(): void {
-    const { date, time, fruitIndex } = this.state;
+    const { date, time, fruitIndex, selectedFileName } = this.state;
     const dateStr = date.toLocaleDateString();
     const timeStr = `${String(time.hourOfDay).padStart(2, '0')}:${String(time.minuteOfHour).padStart(2, '0')}`;
     const fruitLabel = FRUIT_LABELS[fruitIndex];
@@ -71,6 +74,20 @@ export class WidgetsCatalog extends StatefulComponent<{}, CatalogState, {}> {
         />
         <label
           value={`Selected: ${fruitLabel}`}
+          font={TextStyleFont.BODY}
+          color={SemanticColor.Text.SECONDARY}
+          margin='8 0 0 0'
+        />
+      </Section>
+
+      <SectionSeparator />
+
+      <Section title='FilePicker'>
+        <FilePicker
+          onSelect={(e: FilePickerOnSelectEvent) => this.setState({ selectedFileName: e.fileName })}
+        />
+        <label
+          value={selectedFileName ? `Selected: ${selectedFileName}` : 'No file selected'}
           font={TextStyleFont.BODY}
           color={SemanticColor.Text.SECONDARY}
           margin='8 0 0 0'
