@@ -120,16 +120,24 @@ function createIndexPickerFactory(): ViewFactory {
   return (container: HTMLElement): AttributeHandler => {
     container.style.display = 'flex';
     container.style.alignItems = 'center';
-    container.style.justifyContent = 'center';
+    container.style.justifyContent = 'stretch';
     container.style.pointerEvents = 'auto';
+    // Explicit height prevents WebValdiCustomView from applying the 80px default min-height.
+    container.style.height = '32px';
+    container.style.minHeight = '0';
 
     const select = document.createElement('select');
-    select.style.fontSize = '16px';
-    select.style.padding = '8px';
+    select.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+    select.style.fontSize = '13px';
+    select.style.padding = '4px 8px';
     select.style.border = '1px solid #ccc';
     select.style.borderRadius = '6px';
     select.style.cursor = 'pointer';
-    select.style.minWidth = '120px';
+    select.style.minWidth = '0';
+    select.style.width = '100%';
+    select.style.height = '100%';
+    select.style.maxWidth = '100%';
+    select.style.boxSizing = 'border-box';
     select.style.pointerEvents = 'auto';
     container.appendChild(select);
 

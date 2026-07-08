@@ -78,6 +78,11 @@ export interface CoreButtonViewModel {
    */
   icon?: Asset | string;
   text?: string;
+  /**
+   * Optional label font override (Valdi "family size [weight]" string).
+   * Defaults to the font for the chosen `sizing`.
+   */
+  font?: string;
   loading?: boolean;
   disabled?: boolean;
   /**
@@ -247,7 +252,9 @@ export class CoreButton extends StatefulComponent<CoreButtonViewModel, CoreButto
     const sidesSize = sizingOption.sides;
     const separatorSize = sizingOption.separator;
     const verticalPad = sizingOption.verticalPad;
-    const textFont = viewModel.disableAccessibilityFontScaling ? sizingOption.nonDynamicFont : sizingOption.font;
+    const textFont =
+      viewModel.font ??
+      (viewModel.disableAccessibilityFontScaling ? sizingOption.nonDynamicFont : sizingOption.font);
     const borderWidth = viewModel.borderWidth ?? sizingOption.border;
 
     const rootRadius = minHeight / 2;
