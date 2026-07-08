@@ -1,0 +1,41 @@
+name: Nightly (Valdi main)
+
+# MODULE.bazel's archive_override points at Valdi's main branch tarball, so a
+# plain `bazel test` here always re-fetches whatever is current on main —
+# this workflow just runs that on a schedule to catch upstream breakage
+# before it lands in a tagged release.
+on:
+  schedule:
+    - cron: '0 9 * * *' # 9am UTC daily
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@e403ad507104847c3539436f64a9e9eecc73eeec # 0.8.5
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Run all tests
+        run: |
+          bazel test --test_output=all \
+            //valdi_modules/widgets:test \
+            //valdi_modules/navigation:test \
+            //valdi_modules/valdi_standalone_ui:test \
+            //valdi_modules/navigation_internal:test \
+            //valdi_modules/playground:test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: nightly-test-results
+          path: bazel-testlogs/
