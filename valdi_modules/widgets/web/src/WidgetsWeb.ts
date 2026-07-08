@@ -223,6 +223,7 @@ function createFilePickerFactory(): ViewFactory {
       dataUrl?: string;
     }) => void) | null = null;
     let acceptFilter = '';
+    let readContent = false;
 
     button.addEventListener('click', () => {
       input.click();
@@ -239,6 +240,13 @@ function createFilePickerFactory(): ViewFactory {
       label.textContent =
         files.length === 1 ? files[0].name : `${files.length} files selected`;
       if (!onSelect) return;
+
+      if (!readContent) {
+        for (const file of files) {
+          onSelect({ fileName: file.name });
+        }
+        return;
+      }
 
       for (const file of files) {
         const reader = new FileReader();
@@ -280,6 +288,8 @@ function createFilePickerFactory(): ViewFactory {
         } else if (name === 'accept' && (typeof value === 'string' || value == null)) {
           acceptFilter = (value as string) ?? '';
           input.accept = acceptFilter;
+        } else if (name === 'readContent' && typeof value === 'boolean') {
+          readContent = value;
         }
       },
     };
