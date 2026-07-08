@@ -87,6 +87,8 @@
             NSInteger objectIndex = SCValdiMarshallerPushMap(marshaller, 1);
             SCValdiMarshallerPushString(marshaller, url.lastPathComponent);
             SCValdiMarshallerPutMapPropertyUninterned(marshaller, @"fileName", objectIndex);
+            SCValdiMarshallerPushString(marshaller, url.path ?: @"");
+            SCValdiMarshallerPutMapPropertyUninterned(marshaller, @"path", objectIndex);
             [self.onSelect performWithMarshaller:marshaller];
         });
     }

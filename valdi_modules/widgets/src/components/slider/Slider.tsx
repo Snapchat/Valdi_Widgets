@@ -103,6 +103,10 @@ const styles = {
     height: BAR_SIZE,
     alignItems: 'center',
     flexDirection: 'row',
+    // Allow the slider to stretch when embedded in a row.
+    // Without this, the bar can end up with ~0 width, leaving barWidth=0 and disabling touch updates.
+    width: '100%',
+    flexGrow: 1,
   }),
   line: new Style<View>({
     width: '100%',
