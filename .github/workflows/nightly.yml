@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.8.5
+        uses: bazel-contrib/setup-bazel@e403ad507104847c3539436f64a9e9eecc73eeec # 0.8.5
         with:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: nightly-test-results
           path: bazel-testlogs/
