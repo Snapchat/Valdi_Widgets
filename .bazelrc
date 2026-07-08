@@ -1,5 +1,5 @@
 # Valdi custom Bazel registry (patched rules_swift, rules_kotlin, etc.)
-common --registry=https://raw.githubusercontent.com/Snapchat/Valdi/beta-0.1.0/registry
+common --registry=https://raw.githubusercontent.com/Snapchat/Valdi/main/registry
 common --registry=https://bcr.bazel.build
 
 common --bes_instance_name=client
