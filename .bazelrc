@@ -23,6 +23,10 @@ build --cxxopt=-std=c++20
 build --cxxopt=-Wno-ambiguous-reversed-operator
 build --cxxopt=-Wno-gcc-compat
 build --cxxopt=-Wno-nullability-extension
+# Some Clang versions don't know about the two warnings below yet; without
+# this, an unrecognized -Wno-* flag is itself a fatal error under -Werror.
+build --cxxopt=-Wno-unknown-warning-option
+build --host_cxxopt=-Wno-unknown-warning-option
 # Newer Clang enables these under -Wall by default; Valdi's vendored
 # third-party/yoga and Hermes still trip them.
 build --cxxopt=-Wno-deprecated-literal-operator
