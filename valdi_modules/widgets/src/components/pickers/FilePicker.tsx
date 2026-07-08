@@ -2,6 +2,14 @@ import { Component } from 'valdi_core/src/Component';
 
 export interface FilePickerOnSelectEvent {
   fileName: string;
+  /** Absolute path on desktop native builds. */
+  path?: string;
+  /** Text payload from web or decoded native text files. */
+  text?: string;
+  /** Image data URL from web file input. */
+  dataUrl?: string;
+  /** Raw bytes from native binary reads. */
+  bytes?: Uint8Array;
 }
 
 export interface FilePickerViewModel {

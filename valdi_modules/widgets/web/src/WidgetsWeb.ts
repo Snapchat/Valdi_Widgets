@@ -216,20 +216,50 @@ function createFilePickerFactory(): ViewFactory {
 
     container.appendChild(wrapper);
 
-    let onSelect: ((event: { fileName: string }) => void) | null = null;
+    let onSelect: ((event: {
+      fileName: string;
+      path?: string;
+      text?: string;
+      dataUrl?: string;
+    }) => void) | null = null;
+    let acceptFilter = '';
 
     button.addEventListener('click', () => {
       input.click();
     });
+
+    const isImageAccept = (): boolean => {
+      const accept = acceptFilter.toLowerCase();
+      return accept.includes('image/') || accept === 'image/*';
+    };
 
     input.addEventListener('change', () => {
       const files = Array.from(input.files ?? []);
       if (files.length === 0) return;
       label.textContent =
         files.length === 1 ? files[0].name : `${files.length} files selected`;
-      if (onSelect) {
-        for (const file of files) {
-          onSelect({ fileName: file.name });
+      if (!onSelect) return;
+
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onerror = () => {
+          onSelect?.({ fileName: file.name });
+        };
+        reader.onloadend = () => {
+          if (typeof reader.result !== 'string') {
+            onSelect?.({ fileName: file.name });
+            return;
+          }
+          if (isImageAccept()) {
+            onSelect?.({ fileName: file.name, dataUrl: reader.result });
+          } else {
+            onSelect?.({ fileName: file.name, text: reader.result });
+          }
+        };
+        if (isImageAccept()) {
+          reader.readAsDataURL(file);
+        } else {
+          reader.readAsText(file);
         }
       }
     });
@@ -237,11 +267,19 @@ function createFilePickerFactory(): ViewFactory {
     return {
       changeAttribute(name: string, value: unknown): void {
         if (name === 'onSelect') {
-          onSelect = typeof value === 'function' ? (value as (event: { fileName: string }) => void) : null;
+          onSelect = typeof value === 'function'
+            ? (value as (event: {
+                fileName: string;
+                path?: string;
+                text?: string;
+                dataUrl?: string;
+              }) => void)
+            : null;
         } else if (name === 'allowMultiple' && typeof value === 'boolean') {
           input.multiple = value;
         } else if (name === 'accept' && (typeof value === 'string' || value == null)) {
-          input.accept = (value as string) ?? '';
+          acceptFilter = (value as string) ?? '';
+          input.accept = acceptFilter;
         }
       },
     };
