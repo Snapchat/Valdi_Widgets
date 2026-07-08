@@ -26,13 +26,16 @@ export class AnimationRotate extends StatefulComponent<AnimationRotateViewModel,
 
   onCreate(): void {
     const revolutionMs = 1000 / this.viewModel.revolutionPerSecond;
+    // Each tick advances the rotation by PI (half a revolution), so we schedule
+    // two ticks per revolution to achieve the requested revolutionPerSecond.
+    const halfRevolutionMs = revolutionMs / 2;
     // setInterval with explicit clearInterval in onDestroy (Valdi rule: prefer setTimeoutDisposable for one-shot; repeating tick kept here with cleanup).
     this.ticker = setInterval(() => {
       this.setStateAnimated(
         { tick: this.state.tick + 1 },
-        { duration: revolutionMs / 1000, curve: AnimationCurve.Linear },
+        { duration: halfRevolutionMs / 1000, curve: AnimationCurve.Linear },
       );
-    }, revolutionMs);
+    }, halfRevolutionMs);
   }
   onDestroy(): void {
     clearInterval(this.ticker);
