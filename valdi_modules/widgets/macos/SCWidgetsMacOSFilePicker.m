@@ -51,7 +51,10 @@
     if (result != NSModalResponseOK || !_onSelect) return;
 
     for (NSURL *url in panel.URLs) {
-        [_onSelect performWithParameters:@[@{@"fileName": url.lastPathComponent ?: @""}]];
+        [_onSelect performWithParameters:@[@{
+            @"fileName": url.lastPathComponent ?: @"",
+            @"path": url.path ?: @"",
+        }]];
     }
 }
 
