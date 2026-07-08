@@ -1,11 +1,9 @@
 module(name = "valdi_widgets", version = "0.1")
 
 # Valdi framework (https://github.com/Snapchat/Valdi)
-# For development against a local checkout, replace archive_override with
-# local_path_override entries (see CONTRIBUTING.md).
-VALDI_TAG = "beta-0.1.0"
-VALDI_URL = "https://github.com/Snapchat/Valdi/archive/{}.tar.gz".format(VALDI_TAG)
-VALDI_STRIP_PREFIX = "Valdi-{}".format(VALDI_TAG)
+# Tracks the main branch (bleeding edge, not yet tagged).
+VALDI_URL = "https://github.com/Snapchat/Valdi/archive/refs/heads/main.tar.gz"
+VALDI_STRIP_PREFIX = "Valdi-main"
 
 bazel_dep(name = "valdi", version = "0.1")
 archive_override(
@@ -63,12 +61,9 @@ archive_override(
     strip_prefix = VALDI_STRIP_PREFIX + "/bin",
 )
 
-bazel_dep(name = "resvg_libs")
-archive_override(
-    module_name = "resvg_libs",
-    urls = [VALDI_URL],
-    strip_prefix = VALDI_STRIP_PREFIX + "/third-party/resvg/resvg_libs",
-)
+# resvg_libs module was removed upstream (Valdi PR #100 inlined resvg into
+# Valdi's own MODULE.bazel via rules_rust crate_universe); nothing here
+# references @resvg_libs directly.
 
 # C++ toolchains via Valdi's unified extension (Apple CC before LLVM for ObjC priority).
 valdi_toolchains = use_extension("@valdi//bzl:valdi_toolchains.bzl", "valdi_toolchains")
