@@ -56,7 +56,6 @@ jobs:
             --override_module=skia_user_config=$VALDI/third-party/skia_user_config \
             --override_module=rules_hdrs=$VALDI/third-party/rules_hdrs \
             --override_module=valdi_toolchain=$VALDI/bin \
-            --override_module=resvg_libs=$VALDI/third-party/resvg/resvg_libs \
             //valdi_modules/widgets:test \
             //valdi_modules/navigation:test \
             //valdi_modules/valdi_standalone_ui:test \
