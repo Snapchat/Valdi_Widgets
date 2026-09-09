@@ -20,9 +20,18 @@ declare const global: {
   theme: string;
 };
 
+// Name of the single named palette widgets keeps active. The runtime's
+// setColorPalette(palette) was replaced by the named-palette API
+// (configureColorPalette + setActiveColorPalette); reconfiguring one name and
+// keeping it active reproduces the old "apply this palette now" behavior —
+// configureColorPalette refreshes listeners when the colors change, and
+// setActiveColorPalette activates it once.
+const ACTIVE_PALETTE_NAME = 'widgetsSemanticColors';
+
 function updateColorPalette(palette: ColorPalette): void {
   global.currentPalette = palette;
-  runtime.setColorPalette(palette);
+  runtime.configureColorPalette(ACTIVE_PALETTE_NAME, palette);
+  runtime.setActiveColorPalette(ACTIVE_PALETTE_NAME);
 }
 
 if (!global.currentPalette) {
