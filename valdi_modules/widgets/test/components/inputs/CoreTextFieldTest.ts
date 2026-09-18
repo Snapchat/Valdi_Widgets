@@ -4,7 +4,9 @@ import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
 import { Device } from 'valdi_core/src/Device';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { Style } from 'valdi_core/src/Style';
+import { View } from 'valdi_tsx/src/NativeTemplateElements';
+import { createComponent, valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('CoreTextField', () => {
@@ -122,5 +124,38 @@ describe('CoreTextField', () => {
 
     const elements = componentGetElements(component);
     expect(elements.length).toBeGreaterThanOrEqual(1);
+  });
+
+  valdiIt('inner textfield can shrink below its intrinsic width', async driver => {
+    const component = driver.renderComponent(CoreTextField, { text: '12' }, {});
+
+    const elements = componentGetElements(component);
+    const textFields = elementTypeFind(elements, IRenderedElementViewClass.TextField);
+    expect(textFields.length).toBeGreaterThanOrEqual(1);
+
+    // flexShrink defaults to 0 in Valdi layout; without an explicit shrink the
+    // web input keeps its intrinsic width (~200px) and escapes narrow parents.
+    expect(textFields[0].getAttribute('flexShrink')).toBe(1);
+    expect(textFields[0].getAttribute('minWidth')).toBe(0);
+  });
+
+  valdiIt('containerStyle sizes the component root', async driver => {
+    const component = driver.renderComponent(
+      CoreTextField,
+      {
+        text: '12',
+        containerStyle: new Style<View>({ width: 96 }),
+      },
+      {},
+    );
+
+    const elements = componentGetElements(component);
+    expect(elements.length).toBeGreaterThanOrEqual(1);
+
+    // Root view is the styles.container <view>; caller width must land on
+    // its style, and base container styling must survive the merge.
+    const rootStyle = elements[0].getAttribute('style') as Style<View> | undefined;
+    expect(rootStyle?.attributes.width).toBe(96);
+    expect(rootStyle?.attributes.borderRadius).toBe(10);
   });
 });

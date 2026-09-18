@@ -76,6 +76,13 @@ interface CoreTextFieldSpecificViewModel {
   noBorder?: boolean;
 
   /**
+   * Additional style applied to the textfield's container view,
+   * merged over the default container style. Use this to size the
+   * textfield (e.g. width) from the caller.
+   */
+  containerStyle?: Style<View>;
+
+  /**
    * Configures the auto-scrolling behaviour when the textfield becomes focused
    */
   scrollWithKeyboard?: ScrollWithKeyboard;
@@ -139,7 +146,7 @@ export class CoreTextField extends StatefulComponent<CoreTextFieldViewModel, Int
     const state = this.state;
     const baseFont = TextStyleFont.BODY_EMPHASIS;
     <view
-      style={styles.container}
+      style={viewModel.containerStyle ? Style.merge(styles.container, viewModel.containerStyle) : styles.container}
       backgroundColor={this.getBackgroundColor()}
       borderWidth={this.getBorderWidth()}
       borderColor={this.getBorderColor()}
@@ -154,6 +161,8 @@ export class CoreTextField extends StatefulComponent<CoreTextFieldViewModel, Int
         color={viewModel.color ?? SemanticColor.Text.PRIMARY}
         placeholderColor={viewModel.placeholderColor ?? SemanticColor.Text.TERTIARY}
         flexGrow={1}
+        flexShrink={1}
+        minWidth={0}
         tintColor={SemanticColor.Brand.SECONDARY}
         onEditBegin={this.onEditBegin}
         onEditEnd={this.onEditEnd}
