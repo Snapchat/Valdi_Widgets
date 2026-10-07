@@ -38,6 +38,10 @@ type TextFieldPassthroughAttributes =
   | 'onReturn'
   | 'keyboardAppearance';
 
+// The container's backgroundColor, borderColor and borderWidth are set as attributes from
+// the textfield's state, and attributes take precedence over style, so they're excluded here.
+type ContainerStyle = Omit<View, 'backgroundColor' | 'borderColor' | 'borderWidth'>;
+
 export type CoreTextFieldViewModel = CoreTextFieldSpecificViewModel & Pick<TextField, TextFieldPassthroughAttributes>;
 
 interface CoreTextFieldSpecificViewModel {
@@ -78,9 +82,10 @@ interface CoreTextFieldSpecificViewModel {
   /**
    * Additional style applied to the textfield's container view,
    * merged over the default container style. Use this to size the
-   * textfield (e.g. width) from the caller.
+   * textfield (e.g. width) from the caller. Create it once rather than
+   * inside onRender, so the merged style is only rebuilt when it changes.
    */
-  containerStyle?: Style<View>;
+  containerStyle?: Style<ContainerStyle>;
 
   /**
    * Configures the auto-scrolling behaviour when the textfield becomes focused
@@ -128,16 +133,22 @@ export class CoreTextField extends StatefulComponent<CoreTextFieldViewModel, Int
   };
 
   private readonly textFieldWrapperRef = new FocusableComponentRef<TextFieldWrapper>();
+  private mergedContainerStyle: Style<View> = styles.container;
 
   setFocused(value: boolean): void {
     this.textFieldWrapperRef.setFocused(value);
   }
 
-  onViewModelUpdate(): void {
+  onViewModelUpdate(previousViewModel?: Readonly<CoreTextFieldViewModel>): void {
     if (this.viewModel?.text !== undefined) {
       this.setState({
         text: this.viewModel.text,
       });
+    }
+
+    const containerStyle = this.viewModel?.containerStyle;
+    if (!previousViewModel || previousViewModel.containerStyle !== containerStyle) {
+      this.mergedContainerStyle = containerStyle ? Style.merge(styles.container, containerStyle) : styles.container;
     }
   }
 
@@ -146,7 +157,7 @@ export class CoreTextField extends StatefulComponent<CoreTextFieldViewModel, Int
     const state = this.state;
     const baseFont = TextStyleFont.BODY_EMPHASIS;
     <view
-      style={viewModel.containerStyle ? Style.merge(styles.container, viewModel.containerStyle) : styles.container}
+      style={this.mergedContainerStyle}
       backgroundColor={this.getBackgroundColor()}
       borderWidth={this.getBorderWidth()}
       borderColor={this.getBorderColor()}
