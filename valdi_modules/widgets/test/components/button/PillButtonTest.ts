@@ -1,45 +1,45 @@
 import { PillButton } from 'widgets/src/components/button/PillButton';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 
 describe('PillButton', () => {
-  it('renders without error', async () => {
-    const component = createComponent(
+  valdiIt('renders without error', async driver => {
+    const component = driver.renderComponent(
       PillButton,
       {
         text: 'Pill',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     expect(component).toBeDefined();
   });
 
-  it('renders when disabled', async () => {
-    const component = createComponent(
+  valdiIt('renders when disabled', async driver => {
+    const component = driver.renderComponent(
       PillButton,
       {
         text: 'Pill',
         disabled: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     expect(component).toBeDefined();
   });
 
-  it('renders when selected', async () => {
-    const component = createComponent(
+  valdiIt('renders when selected', async driver => {
+    const component = driver.renderComponent(
       PillButton,
       {
         text: 'Pill',
         selected: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     expect(component).toBeDefined();

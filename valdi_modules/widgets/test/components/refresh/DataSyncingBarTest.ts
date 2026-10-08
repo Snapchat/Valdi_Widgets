@@ -3,12 +3,12 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('DataSyncingBar', () => {
-  it('renders gradient view within scroll', async () => {
-    const component = createComponent(DataSyncingBar, {}, {}).getComponent();
+  valdiIt('renders gradient view within scroll', async driver => {
+    const component = driver.renderComponent(DataSyncingBar, {}, {});
 
     await untilRenderComplete(component);
 
@@ -19,8 +19,8 @@ describe('DataSyncingBar', () => {
     expect(views.length).toBeGreaterThan(0);
   });
 
-  it('updates scroll position over time', async () => {
-    const bar = createComponent(DataSyncingBar, {}, {}).getComponent();
+  valdiIt('updates scroll position over time', async driver => {
+    const bar = driver.renderComponent(DataSyncingBar, {}, {});
     const scrollSpy = jasmine.createSpy('scroll');
     (bar as any).scrollViewHandler = {
       scrollTo: scrollSpy,

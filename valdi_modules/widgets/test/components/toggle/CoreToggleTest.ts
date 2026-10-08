@@ -3,18 +3,18 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('CoreToggle', () => {
-  it('renders default enabled state with proper accessibility flags', async () => {
-    const component = createComponent(
+  valdiIt('renders default enabled state with proper accessibility flags', async driver => {
+    const component = driver.renderComponent(
       CoreToggle,
       {
         on: false,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -26,15 +26,15 @@ describe('CoreToggle', () => {
     expect(root.getAttribute('opacity')).toBeUndefined();
   });
 
-  it('disables touch and lowers opacity when disabled', async () => {
-    const component = createComponent(
+  valdiIt('disables touch and lowers opacity when disabled', async driver => {
+    const component = driver.renderComponent(
       CoreToggle,
       {
         on: true,
         disabled: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -44,14 +44,14 @@ describe('CoreToggle', () => {
     expect(root.getAttribute('accessibilityStateSelected')).toBe(true);
   });
 
-  it('shows pressed shade during touch interaction', async () => {
-    const component = createComponent(
+  valdiIt('shows pressed shade during touch interaction', async driver => {
+    const component = driver.renderComponent(
       CoreToggle,
       {
         on: false,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

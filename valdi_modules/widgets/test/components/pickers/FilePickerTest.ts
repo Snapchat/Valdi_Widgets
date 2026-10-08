@@ -2,7 +2,7 @@ import { FilePicker } from 'widgets/src/components/pickers/FilePicker';
 import { componentGetElements } from 'foundation/test/util/componentGetElements';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 
 describe('FilePicker', () => {
   it('exports FilePicker class', () => {
@@ -14,12 +14,12 @@ describe('FilePicker', () => {
     expect(FilePicker.prototype.onRender).toBeDefined();
   });
 
-  it('renders a custom-view element', async () => {
-    const component = createComponent(
+  valdiIt('renders a custom-view element', async driver => {
+    const component = driver.renderComponent(
       FilePicker,
       {},
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -27,13 +27,13 @@ describe('FilePicker', () => {
     expect(elements.length).toBeGreaterThan(0);
   });
 
-  it('renders with onSelect callback', async () => {
+  valdiIt('renders with onSelect callback', async driver => {
     const onSelect = jasmine.createSpy('onSelect');
-    const component = createComponent(
+    const component = driver.renderComponent(
       FilePicker,
       { onSelect },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -41,8 +41,8 @@ describe('FilePicker', () => {
     expect(elements.length).toBeGreaterThan(0);
   });
 
-  it('renders with allowMultiple and accept', async () => {
-    const component = createComponent(
+  valdiIt('renders with allowMultiple and accept', async driver => {
+    const component = driver.renderComponent(
       FilePicker,
       {
         onSelect: () => {},
@@ -50,7 +50,7 @@ describe('FilePicker', () => {
         accept: 'image/*',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

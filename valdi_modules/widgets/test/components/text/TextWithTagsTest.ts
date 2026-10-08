@@ -1,6 +1,6 @@
 import { AttributedTextBuilder } from 'valdi_core/src/utils/AttributedTextBuilder';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { TextWithTags } from 'widgets/src/components/text/TextWithTags';
 import { makeChunksFromString } from 'widgets/src/components/text/utils/makeChunksFromString';
 import { componentGetElements } from 'foundation/test/util/componentGetElements';
@@ -12,11 +12,11 @@ describe('TextWithTagsTest', () => {
   /**
    * When allowing the attributed text rendering, we have a single label
    */
-  it('Simple case, with attributed, should render an attribured text label and match the tags', async () => {
+  valdiIt('Simple case, with attributed, should render an attribured text label and match the tags', async driver => {
     // Parse the string
     const chunks = makeChunksFromString('This is my <tag>string</tag>');
     // Create our test component
-    const instrumentedComponent = createComponent(
+    const component = driver.renderComponent(
       TextWithTags,
       {
         chunks: chunks,
@@ -31,7 +31,6 @@ describe('TextWithTagsTest', () => {
       },
       {},
     );
-    const component = instrumentedComponent.getComponent();
     // Wait for first render
     await untilRenderComplete(component);
     // Check results
@@ -52,14 +51,14 @@ describe('TextWithTagsTest', () => {
    * When allowing the attributed text rendering we use a single label
    * even when configuring an `onTap` on one of its parts.
    */
-  it('with onTap on one of the parts should render an attributed text label and match the tags', async () => {
+  valdiIt('with onTap on one of the parts should render an attributed text label and match the tags', async driver => {
     const onTap = (): void => {};
 
     // Parse the string
     const chunks = makeChunksFromString('This is my <tag1>string</tag1> and <tag2>my-other-string</tag2>');
 
     // Create our test component
-    const instrumentedComponent = createComponent(
+    const component = driver.renderComponent(
       TextWithTags,
       {
         chunks: chunks,
@@ -81,7 +80,6 @@ describe('TextWithTagsTest', () => {
       },
       {},
     );
-    const component = instrumentedComponent.getComponent();
     // Wait for first render
     await untilRenderComplete(component);
     // Check results
@@ -108,14 +106,14 @@ describe('TextWithTagsTest', () => {
   /**
    * When allowing the attributed text rendering, but using forbiddent feature, we have multiple labels
    */
-  it('Complex case, with attributed and accessibilityId, should render multiple labels', async () => {
+  valdiIt('Complex case, with attributed and accessibilityId, should render multiple labels', async driver => {
     const onTap = (): void => {};
 
     // Parse the string
     const chunks = makeChunksFromString('This is my <tag1>string</tag1> and <tag2>my-other-string</tag2>');
 
     // Create our test component
-    const instrumentedComponent = createComponent(
+    const component = driver.renderComponent(
       TextWithTags,
       {
         chunks: chunks,
@@ -138,7 +136,6 @@ describe('TextWithTagsTest', () => {
       },
       {},
     );
-    const component = instrumentedComponent.getComponent();
     // Wait for first render
     await untilRenderComplete(component);
     // Check results
