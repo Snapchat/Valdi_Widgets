@@ -3,7 +3,7 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('CollapsibleCard', () => {
@@ -18,8 +18,8 @@ describe('CollapsibleCard', () => {
     }));
   };
 
-  it('renders with view elements', async () => {
-    const component = createComponent(
+  valdiIt('renders with view elements', async driver => {
+    const component = driver.renderComponent(
       CollapsibleCard,
       {
         renderFunctions: createRenderFunctions(3),
@@ -28,7 +28,7 @@ describe('CollapsibleCard', () => {
         collapseText: 'View Less',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -38,8 +38,8 @@ describe('CollapsibleCard', () => {
     expect(views.length).toBeGreaterThanOrEqual(0);
   });
 
-  it('shows expand button label when items exceed maxNumCollapsedComponents', async () => {
-    const component = createComponent(
+  valdiIt('shows expand button label when items exceed maxNumCollapsedComponents', async driver => {
+    const component = driver.renderComponent(
       CollapsibleCard,
       {
         renderFunctions: createRenderFunctions(5),
@@ -48,7 +48,7 @@ describe('CollapsibleCard', () => {
         collapseText: 'View Less',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -59,8 +59,8 @@ describe('CollapsibleCard', () => {
     expect(component.viewModel.renderFunctions!.length > component.viewModel.maxNumCollapsedComponents).toBeTrue();
   });
 
-  it('does not require expand button when items are within maxNumCollapsedComponents', async () => {
-    const component = createComponent(
+  valdiIt('does not require expand button when items are within maxNumCollapsedComponents', async driver => {
+    const component = driver.renderComponent(
       CollapsibleCard,
       {
         renderFunctions: createRenderFunctions(2),
@@ -69,7 +69,7 @@ describe('CollapsibleCard', () => {
         collapseText: 'View Less',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

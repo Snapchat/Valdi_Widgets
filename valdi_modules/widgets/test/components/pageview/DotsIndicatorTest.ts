@@ -3,12 +3,12 @@ import { ScrollViewHandler } from 'widgets/src/components/scroll/ScrollViewHandl
 import { componentGetElements } from 'foundation/test/util/componentGetElements';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 
 describe('DotsIndicator', () => {
-  it('renders dots based on pageCount', async () => {
+  valdiIt('renders dots based on pageCount', async driver => {
     const handler = new ScrollViewHandler();
-    const component = createComponent(
+    const component = driver.renderComponent(
       DotsIndicator,
       {
         pageCount: 3,
@@ -18,7 +18,7 @@ describe('DotsIndicator', () => {
         scrollViewHandler: handler,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -30,9 +30,9 @@ describe('DotsIndicator', () => {
     expect(elements.length).toBeGreaterThan(0);
   });
 
-  it('does not render when pageCount is 0', async () => {
+  valdiIt('does not render when pageCount is 0', async driver => {
     const handler = new ScrollViewHandler();
-    const component = createComponent(
+    const component = driver.renderComponent(
       DotsIndicator,
       {
         pageCount: 0,
@@ -42,16 +42,16 @@ describe('DotsIndicator', () => {
         scrollViewHandler: handler,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
     expect(component.pageCount).toBe(0);
   });
 
-  it('exposes viewModel properties correctly', async () => {
+  valdiIt('exposes viewModel properties correctly', async driver => {
     const handler = new ScrollViewHandler();
-    const component = createComponent(
+    const component = driver.renderComponent(
       DotsIndicator,
       {
         pageCount: 5,
@@ -61,7 +61,7 @@ describe('DotsIndicator', () => {
         scrollViewHandler: handler,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

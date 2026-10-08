@@ -3,7 +3,7 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 import { Device } from 'valdi_core/src/Device';
 
@@ -12,14 +12,14 @@ describe('Sheet', () => {
     spyOn(Device, 'isIOS').and.returnValue(false);
   });
 
-  it('renders with default props', async () => {
-    const component = createComponent(
+  valdiIt('renders with default props', async driver => {
+    const component = driver.renderComponent(
       Sheet,
       {
         height: 300,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -27,16 +27,16 @@ describe('Sheet', () => {
     expect(elements.length).toBeGreaterThan(0);
   });
 
-  it('calls onTapOut when dismiss target is tapped', async () => {
+  valdiIt('calls onTapOut when dismiss target is tapped', async driver => {
     const onTapOut = jasmine.createSpy('onTapOut');
-    const component = createComponent(
+    const component = driver.renderComponent(
       Sheet,
       {
         height: 300,
         onTapOut,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -45,15 +45,15 @@ describe('Sheet', () => {
     expect(views.length).toBeGreaterThan(0);
   });
 
-  it('renders grabber when shouldShowGrabber is true', async () => {
-    const component = createComponent(
+  valdiIt('renders grabber when shouldShowGrabber is true', async driver => {
+    const component = driver.renderComponent(
       Sheet,
       {
         height: 300,
         shouldShowGrabber: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -63,15 +63,15 @@ describe('Sheet', () => {
     expect(views.length).toBeGreaterThan(1);
   });
 
-  it('does not render grabber when shouldShowGrabber is false', async () => {
-    const component = createComponent(
+  valdiIt('does not render grabber when shouldShowGrabber is false', async driver => {
+    const component = driver.renderComponent(
       Sheet,
       {
         height: 300,
         shouldShowGrabber: false,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

@@ -3,20 +3,20 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('Checkbox', () => {
-  it('renders unchecked with border and no tick', async () => {
+  valdiIt('renders unchecked with border and no tick', async driver => {
     const onTap = jasmine.createSpy('onTap');
-    const component = createComponent(
+    const component = driver.renderComponent(
       Checkbox,
       {
         on: false,
         onTap,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -29,15 +29,15 @@ describe('Checkbox', () => {
     expect(images.length).toBe(0);
   });
 
-  it('renders checked with tick and no border', async () => {
-    const component = createComponent(
+  valdiIt('renders checked with tick and no border', async driver => {
+    const component = driver.renderComponent(
       Checkbox,
       {
         on: true,
         onTap: () => {},
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -50,9 +50,9 @@ describe('Checkbox', () => {
     expect(images.length).toBe(1);
   });
 
-  it('does not toggle when disabled', async () => {
+  valdiIt('does not toggle when disabled', async driver => {
     const onTap = jasmine.createSpy('onTap');
-    const component = createComponent(
+    const component = driver.renderComponent(
       Checkbox,
       {
         on: false,
@@ -60,7 +60,7 @@ describe('Checkbox', () => {
         disabled: true,
       },
       {},
-    ).getComponent() as unknown as Checkbox;
+    ) as unknown as Checkbox;
 
     await untilRenderComplete(component);
 

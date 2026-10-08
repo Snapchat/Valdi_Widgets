@@ -3,18 +3,18 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('RadioToggle', () => {
-  it('renders inactive state with larger inner circle', async () => {
-    const component = createComponent(
+  valdiIt('renders inactive state with larger inner circle', async driver => {
+    const component = driver.renderComponent(
       RadioToggle,
       {
         on: false,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -27,14 +27,14 @@ describe('RadioToggle', () => {
     expect(inner.getAttribute('width')).toBeGreaterThan(10); // inactive uses OUTER_SIZE-2
   });
 
-  it('renders active state with small inner dot', async () => {
-    const component = createComponent(
+  valdiIt('renders active state with small inner dot', async driver => {
+    const component = driver.renderComponent(
       RadioToggle,
       {
         on: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

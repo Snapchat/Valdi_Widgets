@@ -3,18 +3,18 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('SelectorToggle', () => {
-  it('renders inactive state with border and no icon', async () => {
-    const component = createComponent(
+  valdiIt('renders inactive state with border and no icon', async driver => {
+    const component = driver.renderComponent(
       SelectorToggle,
       {
         on: false,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -28,14 +28,14 @@ describe('SelectorToggle', () => {
     expect(images[0].getAttribute('src')).toBeUndefined();
   });
 
-  it('renders active state with check icon and no border', async () => {
-    const component = createComponent(
+  valdiIt('renders active state with check icon and no border', async driver => {
+    const component = driver.renderComponent(
       SelectorToggle,
       {
         on: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

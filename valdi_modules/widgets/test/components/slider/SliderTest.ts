@@ -2,18 +2,18 @@ import { Slider } from 'widgets/src/components/slider/Slider';
 import { componentGetElements } from 'foundation/test/util/componentGetElements';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 
 describe('Slider', () => {
-  it('initializes with provided value', async () => {
-    const component = createComponent(
+  valdiIt('initializes with provided value', async driver => {
+    const component = driver.renderComponent(
       Slider,
       {
         initialValue: 0.5,
         onChange: () => {},
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -21,15 +21,15 @@ describe('Slider', () => {
     expect(component.state.value).toBeCloseTo(0.5, 2);
   });
 
-  it('updates value on touch within bar width', async () => {
+  valdiIt('updates value on touch within bar width', async driver => {
     const onChange = jasmine.createSpy('onChange');
-    const component = createComponent(
+    const component = driver.renderComponent(
       Slider,
       {
         onChange,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -47,15 +47,15 @@ describe('Slider', () => {
     expect(component.state.value).toBeCloseTo(0.5, 2);
   });
 
-  it('clamps value between 0 and 1', async () => {
+  valdiIt('clamps value between 0 and 1', async driver => {
     const onChange = jasmine.createSpy('onChange');
-    const component = createComponent(
+    const component = driver.renderComponent(
       Slider,
       {
         onChange,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -78,15 +78,15 @@ describe('Slider', () => {
     expect(component.state.value).toBe(0.0);
   });
 
-  it('renders without errors', async () => {
-    const component = createComponent(
+  valdiIt('renders without errors', async driver => {
+    const component = driver.renderComponent(
       Slider,
       {
         initialValue: 0.3,
         onChange: () => {},
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

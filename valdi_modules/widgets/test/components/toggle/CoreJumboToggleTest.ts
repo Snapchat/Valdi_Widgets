@@ -3,18 +3,18 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('CoreJumboToggle', () => {
-  it('renders enabled off state with default sizing and touch enabled', async () => {
-    const component = createComponent(
+  valdiIt('renders enabled off state with default sizing and touch enabled', async driver => {
+    const component = driver.renderComponent(
       CoreJumboToggle,
       {
         on: false,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -26,15 +26,15 @@ describe('CoreJumboToggle', () => {
     expect(root.getAttribute('opacity')).toBeUndefined();
   });
 
-  it('renders disabled on state with reduced opacity and selected state', async () => {
-    const component = createComponent(
+  valdiIt('renders disabled on state with reduced opacity and selected state', async driver => {
+    const component = driver.renderComponent(
       CoreJumboToggle,
       {
         on: true,
         disabled: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -44,10 +44,10 @@ describe('CoreJumboToggle', () => {
     expect(root.getAttribute('accessibilityStateSelected')).toBe(true);
   });
 
-  it('selects correct image/tint per state', async () => {
+  valdiIt('selects correct image/tint per state', async driver => {
     const offSrc = 'off.png';
     const onSrc = 'on.png';
-    const component = createComponent(
+    const component = driver.renderComponent(
       CoreJumboToggle,
       {
         on: false,
@@ -57,7 +57,7 @@ describe('CoreJumboToggle', () => {
         onImageTintColor: 'green',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
