@@ -154,9 +154,14 @@ These rules apply when an AI reviewer (for example Codex code review) reviews a 
 
 ### Findings are advisory
 
+- Start every review with this line: _Automated review by Codex. Advisory only; a maintainer decides what happens with this pull request._
 - Your review is advisory. Never approve, request changes, merge, or give an overall pass/fail verdict. A maintainer decides.
 - Don't push commits, open pull requests, create branches, tags or releases, or run workflows. Post review comments only.
 - End with one summary line: **No material findings**, **Findings to check**, or **Unguarded shared-component change** (see the primary lens below).
+
+### Security issues
+
+- This repo is public, so everything you post is public. If you think a change introduces or exposes a security vulnerability, don't describe the vulnerability, how to trigger it, or where exactly it is. Post only: **Possible security issue in this change. A maintainer will follow up privately.**
 
 ### How to write the review
 
@@ -202,7 +207,7 @@ Widgets are used by every app that depends on this repo, so a change to an exist
 
 ### Bar
 
-Only raise a finding you can tie to a concrete failure or regression at a specific hunk. If the shared-component audit finds nothing and nothing else is material, post **No material findings** with no other comments.
+Only raise a finding you can tie to a concrete failure or regression at a specific hunk. If the shared-component audit finds nothing and nothing else is material, post the opening line and **No material findings** with no other comments.
 
 ## AI Assistant Setup
 
