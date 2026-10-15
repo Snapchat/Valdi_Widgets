@@ -2,17 +2,17 @@ import { EmojiLabel } from 'widgets/src/components/text/EmojiLabel';
 import { componentGetElements } from 'foundation/test/util/componentGetElements';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 
 describe('EmojiLabel', () => {
-  it('renders with value', async () => {
-    const component = createComponent(
+  valdiIt('renders with value', async driver => {
+    const component = driver.renderComponent(
       EmojiLabel,
       {
         value: '😀 Hello',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -20,15 +20,15 @@ describe('EmojiLabel', () => {
     expect(elements.length).toBeGreaterThan(0);
   });
 
-  it('passes through viewModel properties', async () => {
-    const component = createComponent(
+  valdiIt('passes through viewModel properties', async driver => {
+    const component = driver.renderComponent(
       EmojiLabel,
       {
         value: 'Test',
         numberOfLines: 2,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

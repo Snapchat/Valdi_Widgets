@@ -3,7 +3,7 @@ import { CoreButtonSizing } from 'widgets/src/components/button/CoreButton';
 import { ThemeType } from 'widgets/src/Theme';
 import 'jasmine/src/jasmine';
 import { Device } from 'valdi_core/src/Device';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 
 describe('FloatingActionButton', () => {
@@ -16,8 +16,8 @@ describe('FloatingActionButton', () => {
     spyOn(Device, 'getDisplayWidth').and.returnValue(400);
   });
 
-  it('renders when visible', async () => {
-    const component = createComponent(
+  valdiIt('renders when visible', async driver => {
+    const component = driver.renderComponent(
       FloatingActionButton,
       {
         visible: true,
@@ -25,14 +25,14 @@ describe('FloatingActionButton', () => {
       {
         themeType: ThemeType.LIGHT,
       },
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     expect(component).toBeDefined();
   });
 
-  it('renders when not visible', async () => {
-    const component = createComponent(
+  valdiIt('renders when not visible', async driver => {
+    const component = driver.renderComponent(
       FloatingActionButton,
       {
         visible: false,
@@ -40,14 +40,14 @@ describe('FloatingActionButton', () => {
       {
         themeType: ThemeType.LIGHT,
       },
-    ).getComponent() as unknown as FloatingActionButton;
+    ) as unknown as FloatingActionButton;
 
     await untilRenderComplete(component);
     expect(component).toBeDefined();
   });
 
-  it('returns sizing override when provided', async () => {
-    const component = createComponent(
+  valdiIt('returns sizing override when provided', async driver => {
+    const component = driver.renderComponent(
       FloatingActionButton,
       {
         visible: true,
@@ -56,16 +56,16 @@ describe('FloatingActionButton', () => {
       {
         themeType: ThemeType.LIGHT,
       },
-    ).getComponent() as unknown as FloatingActionButton;
+    ) as unknown as FloatingActionButton;
 
     await untilRenderComplete(component);
 
     expect((component as any).getButtonSize()).toBe(CoreButtonSizing.SMALL);
   });
 
-  it('dark mode theme picks dark palette', async () => {
+  valdiIt('dark mode theme picks dark palette', async driver => {
     (Device.isDarkMode as jasmine.Spy).and.returnValue(true);
-    const component = createComponent(
+    const component = driver.renderComponent(
       FloatingActionButton,
       {
         visible: true,
@@ -73,7 +73,7 @@ describe('FloatingActionButton', () => {
       {
         themeType: ThemeType.SYSTEM,
       },
-    ).getComponent() as unknown as FloatingActionButton;
+    ) as unknown as FloatingActionButton;
 
     await untilRenderComplete(component);
 

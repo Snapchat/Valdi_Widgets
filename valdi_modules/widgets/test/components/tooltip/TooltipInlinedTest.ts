@@ -4,17 +4,17 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt, withValdiRenderer } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('TooltipInlined', () => {
-  it('renders with default viewModel properties', async () => {
+  valdiIt('renders with default viewModel properties', async driver => {
     const viewModel = {
       text: 'Hint',
       position: TooltipPosition.TopCenter,
     };
 
-    const component = createComponent(TooltipInlined, viewModel, {}).getComponent();
+    const component = driver.renderComponent(TooltipInlined, viewModel, {});
 
     await untilRenderComplete(component);
 
@@ -33,7 +33,7 @@ describe('TooltipInlined', () => {
     expect(views.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders with custom viewModel properties', async () => {
+  valdiIt('renders with custom viewModel properties', async driver => {
     const viewModel = {
       text: 'Custom Hint',
       position: TooltipPosition.BottomLeft,
@@ -42,7 +42,7 @@ describe('TooltipInlined', () => {
       overrideBackgroundColor: 'pink' as const,
     };
 
-    const component = createComponent(TooltipInlined, viewModel, {}).getComponent();
+    const component = driver.renderComponent(TooltipInlined, viewModel, {});
 
     await untilRenderComplete(component);
 
@@ -77,18 +77,21 @@ describe('TooltipInlined', () => {
     ];
 
     for (const position of positions) {
-      const component = createComponent(
-        TooltipInlined,
-        { text: 'Test', position },
-        {},
-      ).getComponent();
+      // Fresh renderer per position: re-rendering one tree with a new position trips a native assertion.
+      await withValdiRenderer(async driver => {
+        const component = driver.renderComponent(
+          TooltipInlined,
+          { text: 'Test', position },
+          {},
+        );
 
-      await untilRenderComplete(component);
+        await untilRenderComplete(component);
 
-      expect(component.viewModel.position).toBe(position);
+        expect(component.viewModel.position).toBe(position);
 
-      const elements = componentGetElements(component);
-      expect(elements.length).toBeGreaterThan(0);
+        const elements = componentGetElements(component);
+        expect(elements.length).toBeGreaterThan(0);
+      })();
     }
   });
 });

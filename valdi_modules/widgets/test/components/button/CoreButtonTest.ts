@@ -5,18 +5,18 @@ import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
 import { Device } from 'valdi_core/src/Device';
 import * as InitSemanticColors from 'widgets/src/InitSemanticColors';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('CoreButton', () => {
-  it('renders defaults with text', async () => {
-    const component = createComponent(
+  valdiIt('renders defaults with text', async driver => {
+    const component = driver.renderComponent(
       CoreButton,
       {
         text: 'Press me',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -27,9 +27,9 @@ describe('CoreButton', () => {
     expect(labels[0].getAttribute('numberOfLines')).toEqual(2);
   });
 
-  it('does not fire onTap when disabled', async () => {
+  valdiIt('does not fire onTap when disabled', async driver => {
     const onTap = jasmine.createSpy('onTap');
-    const component = createComponent(
+    const component = driver.renderComponent(
       CoreButton,
       {
         text: 'Disabled',
@@ -37,7 +37,7 @@ describe('CoreButton', () => {
         disabled: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -45,8 +45,8 @@ describe('CoreButton', () => {
     expect(onTap).not.toHaveBeenCalled();
   });
 
-  it('shows spinner instead of icon when loading', async () => {
-    const component = createComponent(
+  valdiIt('shows spinner instead of icon when loading', async driver => {
+    const component = driver.renderComponent(
       CoreButton,
       {
         text: 'Loading',
@@ -54,7 +54,7 @@ describe('CoreButton', () => {
         loading: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     const elements = componentGetElements(component);
@@ -65,15 +65,15 @@ describe('CoreButton', () => {
     expect(images.length).toEqual(0);
   });
 
-  it('hides text when loading without icon', async () => {
-    const component = createComponent(
+  valdiIt('hides text when loading without icon', async driver => {
+    const component = driver.renderComponent(
       CoreButton,
       {
         text: 'Loading',
         loading: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     const elements = componentGetElements(component);
@@ -82,18 +82,18 @@ describe('CoreButton', () => {
     expect(labels[0].getAttribute('opacity')).toEqual(0);
   });
 
-  it('uses blending color only on iOS without custom theme', async () => {
+  valdiIt('uses blending color only on iOS without custom theme', async driver => {
     const iosSpy = spyOn(Device, 'isIOS').and.returnValue(true);
     const customThemeSpy = spyOn(InitSemanticColors, 'isCustomTheme').and.returnValue(false);
 
-    const component = createComponent(
+    const component = driver.renderComponent(
       CoreButton,
       {
         text: 'Blend',
         coloring: CoreButtonColoring.PRIMARY,
       },
       {},
-    ).getComponent() as unknown as CoreButton;
+    ) as unknown as CoreButton;
 
     await untilRenderComplete(component);
 

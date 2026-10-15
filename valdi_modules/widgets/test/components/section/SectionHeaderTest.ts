@@ -2,12 +2,12 @@ import { SectionHeader } from 'widgets/src/components/section/SectionHeader';
 import { componentGetElements } from 'foundation/test/util/componentGetElements';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { ThemeType } from 'widgets/src/Theme';
 
 describe('SectionHeader', () => {
-  it('renders title', async () => {
-    const component = createComponent(
+  valdiIt('renders title', async driver => {
+    const component = driver.renderComponent(
       SectionHeader,
       {
         title: 'Section Title',
@@ -17,7 +17,7 @@ describe('SectionHeader', () => {
           themeType: ThemeType.SYSTEM,
         },
       },
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -29,8 +29,8 @@ describe('SectionHeader', () => {
     expect(elements.length).toBeGreaterThanOrEqual(0);
   });
 
-  it('renders subtitle when provided', async () => {
-    const component = createComponent(
+  valdiIt('renders subtitle when provided', async driver => {
+    const component = driver.renderComponent(
       SectionHeader,
       {
         title: 'Title',
@@ -41,7 +41,7 @@ describe('SectionHeader', () => {
           themeType: ThemeType.SYSTEM,
         },
       },
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -50,8 +50,8 @@ describe('SectionHeader', () => {
     expect(component.viewModel.subtitle).toBe('Subtitle');
   });
 
-  it('renders description when provided', async () => {
-    const component = createComponent(
+  valdiIt('renders description when provided', async driver => {
+    const component = driver.renderComponent(
       SectionHeader,
       {
         title: 'Title',
@@ -62,7 +62,7 @@ describe('SectionHeader', () => {
           themeType: ThemeType.SYSTEM,
         },
       },
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -71,9 +71,9 @@ describe('SectionHeader', () => {
     expect(component.viewModel.description).toBe('Description text');
   });
 
-  it('renders action button when provided', async () => {
+  valdiIt('renders action button when provided', async driver => {
     const onTap = jasmine.createSpy('onTap');
-    const component = createComponent(
+    const component = driver.renderComponent(
       SectionHeader,
       {
         title: 'Title',
@@ -87,7 +87,7 @@ describe('SectionHeader', () => {
           themeType: ThemeType.SYSTEM,
         },
       },
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

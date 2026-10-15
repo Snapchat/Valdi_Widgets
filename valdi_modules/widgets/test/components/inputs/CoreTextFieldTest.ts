@@ -6,7 +6,7 @@ import 'jasmine/src/jasmine';
 import { Device } from 'valdi_core/src/Device';
 import { Style } from 'valdi_core/src/Style';
 import { View } from 'valdi_tsx/src/NativeTemplateElements';
-import { createComponent, valdiIt } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('CoreTextField', () => {
@@ -14,14 +14,14 @@ describe('CoreTextField', () => {
     spyOn(Device, 'getDisplayScale').and.returnValue(2);
   });
 
-  it('renders default enabled state', async () => {
-    const component = createComponent(
+  valdiIt('renders default enabled state', async driver => {
+    const component = driver.renderComponent(
       CoreTextField,
       {
         text: 'hello',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -36,14 +36,14 @@ describe('CoreTextField', () => {
     expect((component as any).state.text).toBe('hello');
   });
 
-  it('renders inactive state with disabled behavior', async () => {
-    const component = createComponent(
+  valdiIt('renders inactive state with disabled behavior', async driver => {
+    const component = driver.renderComponent(
       CoreTextField,
       {
         specialState: CoreTextFieldSpecialState.Inactive,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
     const elements = componentGetElements(component);
@@ -56,14 +56,14 @@ describe('CoreTextField', () => {
     expect(textFields.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('shows validation accessory states', async () => {
-    const component = createComponent(
+  valdiIt('shows validation accessory states', async driver => {
+    const component = driver.renderComponent(
       CoreTextField,
       {
         specialState: CoreTextFieldSpecialState.Errored,
       },
       {},
-    ).getComponent();
+    );
     await untilRenderComplete(component);
 
     let elements = componentGetElements(component);
@@ -79,15 +79,15 @@ describe('CoreTextField', () => {
     expect(spinners.length).toBeGreaterThanOrEqual(0);
   });
 
-  it('clear button functionality when clearButtonEditing enabled', async () => {
-    const component = createComponent(
+  valdiIt('clear button functionality when clearButtonEditing enabled', async driver => {
+    const component = driver.renderComponent(
       CoreTextField,
       {
         text: 'text',
         clearButtonEditing: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -108,14 +108,14 @@ describe('CoreTextField', () => {
     expect((component as any).state.text).toBe('');
   });
 
-  it('custom accessory state can be set', async () => {
-    const component = createComponent(
+  valdiIt('custom accessory state can be set', async driver => {
+    const component = driver.renderComponent(
       CoreTextField,
       {
         specialState: CoreTextFieldSpecialState.CustomAccessory,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
