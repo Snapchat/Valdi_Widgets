@@ -1,14 +1,17 @@
 module(name = "valdi_widgets", version = "0.1")
 
 # Valdi framework (https://github.com/Snapchat/Valdi)
-# Tracks the main branch (bleeding edge, not yet tagged).
-VALDI_URL = "https://github.com/Snapchat/Valdi/archive/refs/heads/main.tar.gz"
-VALDI_STRIP_PREFIX = "Valdi-main"
+# Pinned to the matching Valdi release on this release branch; main tracks Valdi main.
+VALDI_TAG = "beta-0.2.1"
+VALDI_URL = "https://github.com/Snapchat/Valdi/archive/refs/tags/%s.tar.gz" % VALDI_TAG
+VALDI_STRIP_PREFIX = "Valdi-" + VALDI_TAG
+VALDI_INTEGRITY = "sha256-C/MetjlLxCZPxLXS7hhZ8gGUjBSWmiSnxuvIs19o6dQ="
 
 bazel_dep(name = "valdi", version = "0.1")
 archive_override(
     module_name = "valdi",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX,
 )
 
@@ -16,6 +19,7 @@ bazel_dep(name = "android_macros")
 archive_override(
     module_name = "android_macros",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/bzl/macros",
 )
 
@@ -23,6 +27,7 @@ bazel_dep(name = "snap_macros")
 archive_override(
     module_name = "snap_macros",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/bzl/valdi/snap_macros",
 )
 
@@ -30,6 +35,7 @@ bazel_dep(name = "snap_client_toolchains")
 archive_override(
     module_name = "snap_client_toolchains",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/bzl/toolchains",
 )
 
@@ -37,6 +43,7 @@ bazel_dep(name = "snap_platforms")
 archive_override(
     module_name = "snap_platforms",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/bzl/platforms",
 )
 
@@ -44,6 +51,7 @@ bazel_dep(name = "skia_user_config")
 archive_override(
     module_name = "skia_user_config",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/third-party/skia_user_config",
 )
 
@@ -51,6 +59,7 @@ bazel_dep(name = "rules_hdrs")
 archive_override(
     module_name = "rules_hdrs",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/third-party/rules_hdrs",
 )
 
@@ -58,6 +67,7 @@ bazel_dep(name = "valdi_toolchain")
 archive_override(
     module_name = "valdi_toolchain",
     urls = [VALDI_URL],
+    integrity = VALDI_INTEGRITY,
     strip_prefix = VALDI_STRIP_PREFIX + "/bin",
 )
 
