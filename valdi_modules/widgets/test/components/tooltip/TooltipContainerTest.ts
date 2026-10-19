@@ -9,7 +9,7 @@ import { elementGlobFind } from 'foundation/test/util/elementGlobFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { ElementFrame } from 'valdi_tsx/src/Geometry';
 
 type CallOnLayout = (frame: ElementFrame) => void;
@@ -19,9 +19,9 @@ describe('TooltipContainerTest', () => {
    * Test that the tooltip become opacity=1 when all frames have been computed
    * using the Position=TopLeft case
    */
-  it('Tooltip appears with frames and position TopLeft', async () => {
+  valdiIt('Tooltip appears with frames and position TopLeft', async driver => {
     // Create our test component
-    const component = createComponent(
+    const component = driver.renderComponent(
       TooltipContainer,
       {
         on: true,
@@ -29,7 +29,7 @@ describe('TooltipContainerTest', () => {
         position: TooltipPosition.TopLeft,
       },
       {},
-    ).getComponent();
+    );
     // Wait for first render
     await untilRenderComplete(component);
     // Check result, tooltip not visible because no frame compouted
@@ -72,9 +72,9 @@ describe('TooltipContainerTest', () => {
   /**
    * Test that the tooltip is horizontally centered properly when using Position=BottomCenter
    */
-  it('Tooltip appears horizontally centered', async () => {
+  valdiIt('Tooltip appears horizontally centered', async driver => {
     // Create our test component
-    const component = createComponent(
+    const component = driver.renderComponent(
       TooltipContainer,
       {
         on: true,
@@ -82,7 +82,7 @@ describe('TooltipContainerTest', () => {
         position: TooltipPosition.BottomCenter,
       },
       {},
-    ).getComponent();
+    );
     // Wait for first render
     await untilRenderComplete(component);
     // Fetch elements that we and set the frame artificially

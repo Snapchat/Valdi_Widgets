@@ -4,13 +4,13 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 import { SemanticColor } from 'widgets/src/styles/semanticColors';
 
 describe('Rule components', () => {
-  it('renders horizontal rule with defaults', async () => {
-    const component = createComponent(HorizontalRule, {}, {}).getComponent();
+  valdiIt('renders horizontal rule with defaults', async driver => {
+    const component = driver.renderComponent(HorizontalRule, {}, {});
 
     await untilRenderComplete(component);
 
@@ -22,15 +22,15 @@ describe('Rule components', () => {
     expect(views[0].getAttribute('width')).toBe('100%');
   });
 
-  it('renders vertical rule with custom stroke and color', async () => {
-    const component = createComponent(
+  valdiIt('renders vertical rule with custom stroke and color', async driver => {
+    const component = driver.renderComponent(
       VerticalRule,
       {
         stroke: 3,
         color: SemanticColor.Icon.PRIMARY,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

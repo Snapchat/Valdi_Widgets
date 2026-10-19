@@ -3,17 +3,17 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 import { Subscreen } from 'widgets/src/components/subscreen/Subscreen';
 
 describe('SectionBody', () => {
-  it('renders with default padding', async () => {
-    const component = createComponent(
+  valdiIt('renders with default padding', async driver => {
+    const component = driver.renderComponent(
       SectionBody,
       {},
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -26,14 +26,14 @@ describe('SectionBody', () => {
     expect(root?.getAttribute('paddingRight')).toBe(Subscreen.GUTTER_SIZE);
   });
 
-  it('renders without padding when fullBleed is true', async () => {
-    const component = createComponent(
+  valdiIt('renders without padding when fullBleed is true', async driver => {
+    const component = driver.renderComponent(
       SectionBody,
       {
         fullBleed: true,
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 

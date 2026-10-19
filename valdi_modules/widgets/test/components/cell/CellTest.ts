@@ -3,18 +3,18 @@ import { componentGetElements } from 'foundation/test/util/componentGetElements'
 import { elementTypeFind } from 'foundation/test/util/elementTypeFind';
 import { untilRenderComplete } from 'foundation/test/util/untilRenderComplete';
 import 'jasmine/src/jasmine';
-import { createComponent } from 'valdi_test/test/JSXTestUtils';
+import { valdiIt } from 'valdi_test/test/JSXTestUtils';
 import { IRenderedElementViewClass } from 'valdi_test/test/IRenderedElementViewClass';
 
 describe('Cell', () => {
-  it('renders title when provided', async () => {
-    const component = createComponent(
+  valdiIt('renders title when provided', async driver => {
+    const component = driver.renderComponent(
       Cell,
       {
         title: 'Test Title',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -24,15 +24,15 @@ describe('Cell', () => {
     expect(titleLabels.length).toBeGreaterThan(0);
   });
 
-  it('renders subtitle when provided as string', async () => {
-    const component = createComponent(
+  valdiIt('renders subtitle when provided as string', async driver => {
+    const component = driver.renderComponent(
       Cell,
       {
         title: 'Title',
         subtitle: 'Test Subtitle',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -42,15 +42,15 @@ describe('Cell', () => {
     expect(subtitleLabels.length).toBeGreaterThan(0);
   });
 
-  it('renders identity title when provided', async () => {
-    const component = createComponent(
+  valdiIt('renders identity title when provided', async driver => {
+    const component = driver.renderComponent(
       Cell,
       {
         title: 'Title',
         identityTitle: 'Identity',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
@@ -60,15 +60,15 @@ describe('Cell', () => {
     expect(identityLabels.length).toBeGreaterThan(0);
   });
 
-  it('renders reason in uppercase when provided', async () => {
-    const component = createComponent(
+  valdiIt('renders reason in uppercase when provided', async driver => {
+    const component = driver.renderComponent(
       Cell,
       {
         title: 'Title',
         reason: 'test reason',
       },
       {},
-    ).getComponent();
+    );
 
     await untilRenderComplete(component);
 
