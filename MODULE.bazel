@@ -95,3 +95,7 @@ single_version_override(module_name = "abseil-cpp", version = "20250127.0")
 single_version_override(module_name = "rules_apple", version = "4.0.0")
 single_version_override(module_name = "rules_pkg", version = "0.9.1")
 single_version_override(module_name = "zlib", version = "1.3.2")
+# rules_kotlin 2.3.10 asks for rules_android 0.7.1, whose extension no longer
+# generates the android_gmaven_r8 repo Valdi imports. Valdi pins 0.6.5, but only
+# the root module's overrides apply, so pin it here too.
+single_version_override(module_name = "rules_android", version = "0.6.5")
