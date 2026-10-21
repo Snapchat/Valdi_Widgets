@@ -2,21 +2,33 @@ name: Tests
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, 'release/**']
   push:
-    branches: [main]
+    branches: [main, 'release/**']
   release:
     types: [published, prereleased]
 
 jobs:
-  test:
-    runs-on: macos-latest
+  run-tests:
+    name: test (${{ matrix.runner }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # xcode-27 runs macOS 27, whose dyld rejects stripped Rust proc-macros;
+        # macos-latest is still macOS 26.
+        runner: [macos-latest, xcode-27]
+    runs-on: ${{ matrix.runner }}
+    env:
+      # Release tags and release branches test the Valdi pin in MODULE.bazel as
+      # shipped; everything else tracks Valdi main via --override_module.
+      TEST_PINNED_VALDI: ${{ github.event_name == 'release' || startsWith(github.ref_name, 'release/') || startsWith(github.base_ref, 'release/') }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Checkout Valdi
+        if: env.TEST_PINNED_VALDI != 'true'
         uses: actions/checkout@v4
         with:
           repository: Snapchat/Valdi
@@ -28,6 +40,7 @@ jobs:
           path: .valdi
 
       - name: Patch for CI (local Valdi checkout)
+        if: env.TEST_PINNED_VALDI != 'true'
         run: |
           VALDI=${{ github.workspace }}/.valdi
           # Remove root-module-only llvm extension from Valdi's MODULE.bazel
@@ -41,21 +54,26 @@ jobs:
         uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
+          disk-cache: ${{ github.workflow }}-${{ matrix.runner }}
           repository-cache: true
 
       - name: Run all tests
         run: |
-          VALDI=${{ github.workspace }}/.valdi
-          bazel test --test_output=all \
-            --override_module=valdi=$VALDI \
-            --override_module=android_macros=$VALDI/bzl/macros \
-            --override_module=snap_macros=$VALDI/bzl/valdi/snap_macros \
-            --override_module=snap_client_toolchains=$VALDI/bzl/toolchains \
-            --override_module=snap_platforms=$VALDI/bzl/platforms \
-            --override_module=skia_user_config=$VALDI/third-party/skia_user_config \
-            --override_module=rules_hdrs=$VALDI/third-party/rules_hdrs \
-            --override_module=valdi_toolchain=$VALDI/bin \
+          OVERRIDES=()
+          if [ "$TEST_PINNED_VALDI" != "true" ]; then
+            VALDI=${{ github.workspace }}/.valdi
+            OVERRIDES=(
+              "--override_module=valdi=$VALDI"
+              "--override_module=android_macros=$VALDI/bzl/macros"
+              "--override_module=snap_macros=$VALDI/bzl/valdi/snap_macros"
+              "--override_module=snap_client_toolchains=$VALDI/bzl/toolchains"
+              "--override_module=snap_platforms=$VALDI/bzl/platforms"
+              "--override_module=skia_user_config=$VALDI/third-party/skia_user_config"
+              "--override_module=rules_hdrs=$VALDI/third-party/rules_hdrs"
+              "--override_module=valdi_toolchain=$VALDI/bin"
+            )
+          fi
+          bazel test --test_output=all "${OVERRIDES[@]}" \
             //valdi_modules/widgets:test \
             //valdi_modules/navigation:test \
             //valdi_modules/valdi_standalone_ui:test \
@@ -66,5 +84,15 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.runner }}
           path: bazel-testlogs/
+
+  # `test` is the required status check on main; report the matrix result under
+  # that one name so adding runners doesn't change it.
+  test:
+    needs: run-tests
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check matrix result
+        run: '[ "${{ needs.run-tests.result }}" = "success" ]'
