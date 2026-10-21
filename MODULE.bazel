@@ -99,3 +99,30 @@ single_version_override(module_name = "zlib", version = "1.3.2")
 # generates the android_gmaven_r8 repo Valdi imports. Valdi pins 0.6.5, but only
 # the root module's overrides apply, so pin it here too.
 single_version_override(module_name = "rules_android", version = "0.6.5")
+
+# rules_rust only honors rust.toolchain() from the root module, so Valdi's own
+# toolchain config doesn't apply when Widgets is the root. Mirror it here (keep
+# in sync with Valdi's MODULE.bazel).
+# -Cstrip=none for exec-config (host tool / proc-macro) builds: rustc's
+# debuginfo strip leaves a misaligned LINKEDIT string table that macOS 27 dyld
+# rejects when the dylib was linked against SDK 27 (rust-lang/rust#157750,
+# fixed in Rust 1.98.0).
+bazel_dep(name = "rules_rust", version = "0.64.0")
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2024",
+    extra_exec_rustc_flags = ["-Cstrip=none"],
+    extra_target_triples = [
+        "aarch64-apple-ios",
+        "aarch64-apple-ios-sim",
+        "aarch64-linux-android",
+        "armv7-linux-androideabi",
+        "x86_64-apple-ios",
+        "x86_64-linux-android",
+    ],
+    versions = ["1.87.0"],
+)
+use_repo(rust, "rust_toolchains")
+
+register_toolchains("@rust_toolchains//:all")
