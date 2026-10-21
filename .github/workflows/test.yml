@@ -9,7 +9,8 @@ on:
     types: [published, prereleased]
 
 jobs:
-  test:
+  run-tests:
+    name: test (${{ matrix.runner }})
     strategy:
       fail-fast: false
       matrix:
@@ -85,3 +86,13 @@ jobs:
         with:
           name: test-results-${{ matrix.runner }}
           path: bazel-testlogs/
+
+  # `test` is the required status check on main; report the matrix result under
+  # that one name so adding runners doesn't change it.
+  test:
+    needs: run-tests
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check matrix result
+        run: '[ "${{ needs.run-tests.result }}" = "success" ]'
