@@ -49,25 +49,36 @@ export class TogglesDemo extends StatefulComponent<{}, TogglesDemoState> {
       </Section>
       <SectionSeparator />
       <Section title='CoreJumboToggle'>
-        <CoreJumboToggle on={jumboOn} onTap={() => this.setState({ jumboOn: !jumboOn })} />
+        <CoreJumboToggle accessibilityId='jumbo-toggle' on={jumboOn} onTap={() => this.setState({ jumboOn: !jumboOn })} />
+        <label value={`Jumbo: ${jumboOn ? 'On' : 'Off'}`} font={TextStyleFont.BODY} color={SemanticColor.Text.SECONDARY} margin='8 0 0 0' />
       </Section>
       <SectionSeparator />
       <Section title='RadioToggle'>
         {RADIO_OPTIONS.forEach((option, index) => {
           <layout flexDirection='row' alignItems='center' padding='4 0'>
-            <RadioToggle on={index === radioIndex} onTap={() => this.setState({ radioIndex: index })} />
+            <RadioToggle
+              accessibilityId={`radio-${index}`}
+              on={index === radioIndex}
+              onTap={() => this.setState({ radioIndex: index })}
+            />
             <label value={option} font={TextStyleFont.BODY} margin='0 0 0 8' />
           </layout>;
         })}
+        <label value={`Visible to: ${RADIO_OPTIONS[radioIndex]}`} font={TextStyleFont.BODY} color={SemanticColor.Text.SECONDARY} />
       </Section>
       <SectionSeparator />
       <Section title='SelectorToggle'>
         {selected.forEach((on, index) => {
           <layout flexDirection='row' alignItems='center' padding='4 0'>
-            <SelectorToggle on={on} onTap={() => this.toggleSelected(index)} />
+            <SelectorToggle accessibilityId={`selector-${index}`} on={on} onTap={() => this.toggleSelected(index)} />
             <label value={`Option ${index + 1}`} font={TextStyleFont.BODY} margin='0 0 0 8' />
           </layout>;
         })}
+        <label
+          value={`${selected.filter(Boolean).length} selected`}
+          font={TextStyleFont.BODY}
+          color={SemanticColor.Text.SECONDARY}
+        />
       </Section>
       <SectionSeparator />
       <Section title='Slider'>

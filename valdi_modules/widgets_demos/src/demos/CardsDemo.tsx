@@ -21,7 +21,7 @@ export class CardsDemo extends StatefulComponent<{}, CardsDemoState> {
     const { cardTaps } = this.state;
     <DemoPage title='Cards & Tooltips'>
       <Section title='Card'>
-        <Card padding={16} margin='0 0 12 0' onTap={() => this.setState({ cardTaps: cardTaps + 1 })}>
+        <Card accessibilityId='tappable-card' padding={16} margin='0 0 12 0' onTap={() => this.setState({ cardTaps: cardTaps + 1 })}>
           <label value='Tappable card with default shadow' font={TextStyleFont.TITLE_4} />
           <label
             value={`Tapped ${cardTaps} time${cardTaps === 1 ? '' : 's'}`}

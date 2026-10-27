@@ -89,19 +89,25 @@ export class ButtonsDemo extends StatefulComponent<{}, ButtonsDemoState> {
         <layout flexDirection='row' flexWrap='wrap'>
           {PILLS.forEach((pill, index) => {
             <layout margin='0 8 8 0'>
-              <PillButton text={pill} selected={index === selectedPill} onTap={() => this.setState({ selectedPill: index })} />
+              <PillButton
+                accessibilityId={`pill-${pill.toLowerCase()}`}
+                text={pill}
+                selected={index === selectedPill}
+                onTap={() => this.setState({ selectedPill: index })}
+              />
             </layout>;
           })}
         </layout>
+        <label value={`Showing: ${PILLS[selectedPill]}`} font={TextStyleFont.BODY} color={SemanticColor.Text.SECONDARY} />
       </Section>
       <SectionSeparator />
       <Section title='ConfirmationButton'>
-        <ConfirmationButton text='Confirm' loading={confirming} onTap={this.onConfirm} />
+        <ConfirmationButton accessibilityId='confirmation-button' text='Confirm' loading={confirming} onTap={this.onConfirm} />
       </Section>
       <SectionSeparator />
       <Section title='Checkbox'>
         <layout flexDirection='row' alignItems='center'>
-          <Checkbox on={checked} onTap={on => this.setState({ checked: on })} />
+          <Checkbox accessibilityId='checkbox' on={checked} onTap={on => this.setState({ checked: on })} />
           <label
             value={checked ? 'Checked' : 'Unchecked'}
             font={TextStyleFont.BODY}

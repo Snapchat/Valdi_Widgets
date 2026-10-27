@@ -23,7 +23,7 @@ the registry in a sidebar and mounts the selected demo at `#/<id>`.
 | `bazel run //web_playground:serve_debug` | Serves the debug bundle at http://localhost:3030. |
 | `bazel build //web_playground:playground_bundle` | Production bundle in `bazel-bin/web_playground/dist/`. |
 | `bazel run //web_playground:serve` | Serves the production bundle at http://localhost:3030. |
-| `bazel test //web_playground:integration_test` | Opens every demo in headless Chrome and checks that it renders without errors. |
+| `bazel test //web_playground:integration_test` | In headless Chrome: opens every demo and checks it renders without errors, then taps, types into and selects widgets and checks the demo state updates. |
 | `bazel run //web_playground:analyze` | Bundle treemap (webpack-bundle-analyzer). |
 | `bazel build //web_playground:stats` | `stats.json` for the production bundle. |
 
@@ -38,6 +38,8 @@ so restart `:dev` (or rebuild a bundle) to pick them up.
 1. Add a component under `valdi_modules/widgets_demos/src/demos/`, wrapping its content in `DemoPage`.
 2. Add an entry to `WIDGET_DEMOS` in `valdi_modules/widgets_demos/src/DemoRegistry.ts`.
 3. Add the text the demo is expected to render to `EXPECTED_TEXT` in `tests/widgets.integration.test.js`.
+4. If the demo is interactive, give the widget an `accessibilityId` (the web renderer turns it into the element `id`),
+   show the resulting state in a label, and add a case to `tests/interactions.integration.test.js`.
 
 ## npm dependencies
 

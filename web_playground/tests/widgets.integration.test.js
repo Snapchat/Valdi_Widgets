@@ -8,6 +8,7 @@ const {
   waitForValdiBootstrap,
   getTestStatus,
 } = require('valdi-web-devtools/test_utils/puppeteer_helpers');
+const { demoText, openDemo, waitForDemoText } = require('./demo_helpers');
 
 // Text each demo is expected to render, keyed by DemoRegistry id.
 const EXPECTED_TEXT = {
@@ -20,23 +21,6 @@ const EXPECTED_TEXT = {
   pickers: 'IndexPicker',
   playground: 'Widgets Catalog',
 };
-
-async function demoText(page) {
-  return page.evaluate(() => {
-    const host = document.querySelector('.device > div');
-    return host && host.shadowRoot ? host.shadowRoot.textContent || '' : null;
-  });
-}
-
-async function openDemo(page, id) {
-  await page.goto(`${BASE_URL}/#/${id}`, { waitUntil: 'networkidle2', timeout: TIMEOUT });
-  await waitForValdiBootstrap(page);
-  await page.waitForFunction(
-    demoId => window.__valdiWidgetsDemo && window.__valdiWidgetsDemo.current === demoId,
-    { timeout: TIMEOUT },
-    id,
-  );
-}
 
 describe('Valdi Widgets web playground', () => {
   let browser;
@@ -76,14 +60,7 @@ describe('Valdi Widgets web playground', () => {
       const status = await getTestStatus(page);
       expect(status.valdiStatus).toBe('success');
       expect(status.bootstrapStatus.error).toBeNull();
-      await page.waitForFunction(
-        expected => {
-          const host = document.querySelector('.device > div');
-          return host && host.shadowRoot && (host.shadowRoot.textContent || '').includes(expected);
-        },
-        { timeout: TIMEOUT },
-        text,
-      );
+      await waitForDemoText(page, text);
 
       const realErrors = errorCollector.getRealErrors();
       if (realErrors.length > 0) console.error(`Errors on ${id}:`, realErrors);
