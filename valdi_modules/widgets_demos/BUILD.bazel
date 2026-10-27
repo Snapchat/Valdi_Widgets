@@ -1,0 +1,24 @@
+load("@valdi//bzl/valdi:valdi_module.bzl", "valdi_module")
+
+# One demo component per widget family. Compiled by the Valdi compiler like any
+# other module, so the same demos can be mounted natively; the web playground in
+# //web_playground mounts each one by id from DemoRegistry.
+valdi_module(
+    name = "widgets_demos",
+    srcs = glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+    ]) + [
+        "tsconfig.json",
+    ],
+    ios_module_name = "VLWidgetsDemos",
+    ios_output_target = "release",
+    android_output_target = "release",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//valdi_modules/playground",
+        "//valdi_modules/widgets",
+        "@valdi//src/valdi_modules/src/valdi/valdi_core",
+        "@valdi//src/valdi_modules/src/valdi/valdi_tsx",
+    ],
+)

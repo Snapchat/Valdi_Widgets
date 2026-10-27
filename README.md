@@ -11,6 +11,8 @@ UI widgets, styles, and patterns for apps built with [Valdi](https://github.com/
 | `valdi_modules/navigation_internal/` | Internal navigation support |
 | `valdi_modules/valdi_standalone_ui/` | Standalone UI (modals, split view, etc.) |
 | `valdi_modules/playground/` | Example app (playground) |
+| `valdi_modules/widgets_demos/` | One demo component per widget family, used by the web playground |
+| `web_playground/` | Valdi web build of the demos (webpack bundles, dev server, browser tests) |
 | `scripts/` | Helper scripts to build and run the playground |
 | `.cursor/rules/` | Cursor/IDE rules for Valdi (TypeScript, Bazel, testing) |
 | `docs/` | Additional documentation |
@@ -65,6 +67,7 @@ bazel test //valdi_modules/widgets:test //valdi_modules/navigation:test //valdi_
 - **iOS Simulator:** `./scripts/bazel_ios_install.sh` — builds and installs the iOS app on the booted simulator
 - **Android:** `./scripts/bazel_android_install.sh` — builds the APK and installs via adb
 - **Hot reload:** `./scripts/bazel_hotreload.sh` — builds and runs the hot-reload runner
+- **Web:** `bazel run //web_playground:dev` — widget demos in the browser via the Valdi web renderer; see [web_playground/README.md](web_playground/README.md)
 
 ### CI
 

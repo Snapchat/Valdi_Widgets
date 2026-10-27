@@ -1,0 +1,78 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@valdi//bzl/valdi:valdi_web_package.bzl", "valdi_web_package")
+load("@valdi//tools/valdi_web_devtools:valdi_web_playground.bzl", "valdi_web_playground")
+load("@valdi_widgets_npm//:defs.bzl", "npm_link_all_packages")
+load("@valdi_widgets_npm//web_playground:webpack/package_json.bzl", webpack_bin = "bin")
+
+npm_link_all_packages(name = "node_modules")
+
+# Web-only npm package of the demos and everything they import. valdi_exported_library(web_package_name = ...)
+# produces the same package but also declares iOS/Android export targets, which `bazel build //web_playground/...`
+# would then try to build.
+valdi_web_package(
+    name = "valdi_widgets_web_npm",
+    tags = ["web"],
+    deps = [
+        "//valdi_modules/widgets_demos",
+        "@valdi//src/valdi_modules/src/valdi/web_renderer",
+    ],
+)
+
+# Emits :playground_bundle, :analyze, :stats, :playground, :serve, :integration_test and the :dev HMR server.
+valdi_web_playground(
+    srcs = glob([
+        "playground/**/*.ts",
+        "playground/**/*.js",
+    ]) + ["tsconfig.json"],
+    hmr_config = "playground/webpack.hmr.config.js",
+    hmr_extra_data = [":node_modules/@types/node"],
+    npm_package = ":valdi_widgets_web_npm",
+    test_srcs = glob(["tests/**"]),
+    webpack_bin = webpack_bin,
+)
+
+# Unminified development-mode bundle with full source maps, written to dist_debug/ so it can coexist with the
+# production :playground_bundle (dist/) in the same package. Inputs mirror the macro's bundle target.
+webpack_bin.webpack(
+    name = "playground_bundle_debug",
+    srcs = glob([
+        "playground/**/*.ts",
+        "playground/**/*.js",
+    ]) + [
+        "tsconfig.json",
+        ":node_modules/@protobuf-ts/runtime",
+        ":node_modules/@types/node",
+        ":node_modules/file-loader",
+        ":node_modules/path-browserify",
+        ":node_modules/ts-loader",
+        ":node_modules/typescript",
+        ":node_modules/url-loader",
+        ":node_modules/valdi-compiler-js",
+        ":node_modules/valdi-web-devtools",
+        ":node_modules/valdi_widgets_web_npm",
+        ":node_modules/webpack",
+        ":node_modules/webpack-cli",
+        ":valdi_widgets_web_npm",
+    ],
+    args = [
+        "--config",
+        "playground/webpack.config.js",
+        "--mode",
+        "development",
+        "--output-path",
+        "dist_debug",
+    ],
+    chdir = package_name(),
+    out_dirs = ["dist_debug"],
+)
+
+js_binary(
+    name = "serve_debug",
+    data = [
+        "playground/index.html",
+        ":node_modules/valdi-web-devtools",
+        ":playground_bundle_debug",
+    ],
+    entry_point = "serve.js",
+    env = {"VALDI_WIDGETS_DIST_DIR": "dist_debug"},
+)
