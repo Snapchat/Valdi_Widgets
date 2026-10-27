@@ -57,12 +57,6 @@ jobs:
           disk-cache: ${{ github.workflow }}-${{ matrix.runner }}
           repository-cache: true
 
-      # valdi-web-devtools' test runner downloads the x64 macOS build of
-      # chrome-headless-shell for //web_playground:integration_test, which
-      # needs Rosetta on Apple Silicon runners.
-      - name: Install Rosetta
-        run: sudo softwareupdate --install-rosetta --agree-to-license
-
       - name: Run all tests
         run: |
           OVERRIDES=()
