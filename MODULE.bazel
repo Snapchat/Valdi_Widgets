@@ -40,6 +40,9 @@ archive_override(
     strip_prefix = VALDI_STRIP_PREFIX + "/bzl/platforms",
 )
 
+# platforms module required for transitive valdi_module() target_compatible_with resolution
+bazel_dep(name = "platforms", version = "1.1.0")
+
 bazel_dep(name = "skia_user_config")
 archive_override(
     module_name = "skia_user_config",
