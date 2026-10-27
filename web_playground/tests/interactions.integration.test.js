@@ -28,8 +28,10 @@ describe('Valdi Widgets web interactions', () => {
   });
 
   afterEach(async () => {
-    const realErrors = errorCollector.getRealErrors();
+    const realErrors = errorCollector ? errorCollector.getRealErrors() : [];
     if (page) await page.close();
+    page = undefined;
+    errorCollector = undefined;
     expect(realErrors).toHaveLength(0);
   });
 
