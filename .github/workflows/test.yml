@@ -57,28 +57,39 @@ jobs:
           disk-cache: ${{ github.workflow }}-${{ matrix.runner }}
           repository-cache: true
 
+      - name: Point Bazel at the local Valdi checkout
+        if: env.TEST_PINNED_VALDI != 'true'
+        run: |
+          VALDI=${{ github.workspace }}/.valdi
+          OVERRIDES=(
+            "--override_module=valdi=$VALDI"
+            "--override_module=android_macros=$VALDI/bzl/macros"
+            "--override_module=snap_macros=$VALDI/bzl/valdi/snap_macros"
+            "--override_module=snap_client_toolchains=$VALDI/bzl/toolchains"
+            "--override_module=snap_platforms=$VALDI/bzl/platforms"
+            "--override_module=skia_user_config=$VALDI/third-party/skia_user_config"
+            "--override_module=rules_hdrs=$VALDI/third-party/rules_hdrs"
+            "--override_module=valdi_toolchain=$VALDI/bin"
+          )
+          echo "VALDI_OVERRIDES=${OVERRIDES[*]}" >> "$GITHUB_ENV"
+
       - name: Run all tests
         run: |
-          OVERRIDES=()
-          if [ "$TEST_PINNED_VALDI" != "true" ]; then
-            VALDI=${{ github.workspace }}/.valdi
-            OVERRIDES=(
-              "--override_module=valdi=$VALDI"
-              "--override_module=android_macros=$VALDI/bzl/macros"
-              "--override_module=snap_macros=$VALDI/bzl/valdi/snap_macros"
-              "--override_module=snap_client_toolchains=$VALDI/bzl/toolchains"
-              "--override_module=snap_platforms=$VALDI/bzl/platforms"
-              "--override_module=skia_user_config=$VALDI/third-party/skia_user_config"
-              "--override_module=rules_hdrs=$VALDI/third-party/rules_hdrs"
-              "--override_module=valdi_toolchain=$VALDI/bin"
-            )
-          fi
-          bazel test --test_output=all "${OVERRIDES[@]}" \
+          # shellcheck disable=SC2086
+          bazel test --test_output=all $VALDI_OVERRIDES \
             //valdi_modules/widgets:test \
             //valdi_modules/navigation:test \
             //valdi_modules/valdi_standalone_ui:test \
             //valdi_modules/navigation_internal:test \
             //valdi_modules/playground:test
+
+      # Downstream apps consume Widgets as a dependency, not as the root module;
+      # see scripts/check_as_dependency.sh and #20.
+      - name: Analyze iOS targets as a dependency
+        if: matrix.runner == 'macos-latest'
+        run: |
+          # shellcheck disable=SC2086
+          scripts/check_as_dependency.sh $VALDI_OVERRIDES
 
       - name: Upload test results
         if: always()

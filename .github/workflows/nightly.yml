@@ -33,6 +33,11 @@ jobs:
             //valdi_modules/navigation_internal:test \
             //valdi_modules/playground:test
 
+      # Downstream apps consume Widgets as a dependency, not as the root module;
+      # see scripts/check_as_dependency.sh and #20.
+      - name: Analyze iOS targets as a dependency
+        run: scripts/check_as_dependency.sh
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
