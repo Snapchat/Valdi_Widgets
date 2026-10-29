@@ -1,0 +1,3 @@
+# Linked by rules_js, and symlinked into the workspace by `bazel run //web_playground:dev`.
+web_playground/node_modules
+valdi_modules/playground/web_app/node_modules

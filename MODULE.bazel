@@ -76,6 +76,21 @@ bazel_dep(name = "aspect_rules_ts", version = "3.7.0")
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
 use_repo(rules_ts_ext, "npm_typescript")
 
+# npm deps for the web playground (//web_playground). valdi_web_playground runs webpack through the
+# consumer's own npm tree (webpack, ts-loader and the webpack config must resolve from one store), so
+# Widgets needs a lockfile of its own rather than borrowing @valdi_npm.
+bazel_dep(name = "aspect_rules_js", version = "2.9.2")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+# No package runs lifecycle hooks (web_playground/package.json sets an empty
+# pnpm.onlyBuiltDependencies): valdi-web-devtools' test runner downloads its own
+# chrome-headless-shell, so puppeteer's postinstall Chrome download isn't needed.
+npm.npm_translate_lock(
+    name = "valdi_widgets_npm",
+    pnpm_lock = "//web_playground:pnpm-lock.yaml",
+)
+use_repo(npm, "valdi_widgets_npm")
+
 # Version pins (must match Valdi's MODULE.bazel).
 single_version_override(module_name = "protobuf", version = "29.3")
 # protobuf 29.3 references @abseil-cpp//absl/utility:if_constexpr, a target that
