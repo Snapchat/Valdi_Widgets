@@ -62,24 +62,20 @@ async function clickText(page, text) {
       const walker = document.createTreeWalker(host.shadowRoot, NodeFilter.SHOW_TEXT);
       let node;
       while ((node = walker.nextNode())) {
-        if (node.textContent.trim() === expected) return node.parentElement;
+        if (node.textContent.trim() !== expected) continue;
+        // The text's parent can be display: contents (no box), so climb to the nearest element that has one.
+        let el = node.parentElement;
+        while (el && el.getBoundingClientRect().width === 0 && el.getBoundingClientRect().height === 0) {
+          el = el.parentElement;
+        }
+        return el;
       }
       return null;
     },
     { timeout: TIMEOUT },
     text,
   );
-  // The element can be found before its first layout pass; puppeteer throws "not clickable" until it has a box.
-  const element = handle.asElement();
-  await page.waitForFunction(
-    el => {
-      const rect = el.getBoundingClientRect();
-      return el.isConnected && rect.width > 0 && rect.height > 0;
-    },
-    { timeout: TIMEOUT },
-    element,
-  );
-  await element.click();
+  await handle.asElement().click();
 }
 
 module.exports = { demoText, openDemo, waitForDemoText, waitForExactText, clickById, clickText };
