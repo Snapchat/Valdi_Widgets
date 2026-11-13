@@ -62,7 +62,13 @@ async function clickText(page, text) {
       const walker = document.createTreeWalker(host.shadowRoot, NodeFilter.SHOW_TEXT);
       let node;
       while ((node = walker.nextNode())) {
-        if (node.textContent.trim() === expected) return node.parentElement;
+        if (node.textContent.trim() !== expected) continue;
+        // The text's parent can be display: contents (no box), so climb to the nearest element that has one.
+        let el = node.parentElement;
+        while (el && el.getBoundingClientRect().width === 0 && el.getBoundingClientRect().height === 0) {
+          el = el.parentElement;
+        }
+        return el;
       }
       return null;
     },
