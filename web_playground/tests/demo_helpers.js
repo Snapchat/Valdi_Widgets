@@ -69,7 +69,17 @@ async function clickText(page, text) {
     { timeout: TIMEOUT },
     text,
   );
-  await handle.asElement().click();
+  // The element can be found before its first layout pass; puppeteer throws "not clickable" until it has a box.
+  const element = handle.asElement();
+  await page.waitForFunction(
+    el => {
+      const rect = el.getBoundingClientRect();
+      return el.isConnected && rect.width > 0 && rect.height > 0;
+    },
+    { timeout: TIMEOUT },
+    element,
+  );
+  await element.click();
 }
 
 module.exports = { demoText, openDemo, waitForDemoText, waitForExactText, clickById, clickText };
