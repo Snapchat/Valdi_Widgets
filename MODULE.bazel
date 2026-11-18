@@ -81,7 +81,9 @@ use_repo(rules_ts_ext, "npm_typescript")
 # Widgets needs a lockfile of its own rather than borrowing @valdi_npm.
 bazel_dep(name = "aspect_rules_js", version = "2.9.2")
 
-npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+# dev_dependency: only //web_playground uses this repo, so consumers of Widgets
+# shouldn't have to resolve its lockfile.
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
 # No package runs lifecycle hooks (web_playground/package.json sets an empty
 # pnpm.onlyBuiltDependencies): valdi-web-devtools' test runner downloads its own
 # chrome-headless-shell, so puppeteer's postinstall Chrome download isn't needed.

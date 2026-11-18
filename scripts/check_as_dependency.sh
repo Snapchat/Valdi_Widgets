@@ -19,8 +19,9 @@ cp "$WIDGETS/.bazelrc" "$WIDGETS/.bazelversion" "$CONSUMER/"
   echo "local_path_override(module_name = \"valdi_widgets\", path = \"$WIDGETS\")"
   echo
   # Only the root module's overrides, toolchains and version pins apply, so
-  # the consumer reuses Widgets' own.
-  sed '/^module(/d' "$WIDGETS/MODULE.bazel"
+  # the consumer reuses Widgets' own. The web playground's npm extension is
+  # dropped: its //web_playground label would resolve against the consumer.
+  sed '/^module(/d; /^npm = use_extension/,/^use_repo(npm/d' "$WIDGETS/MODULE.bazel"
 } > "$CONSUMER/MODULE.bazel"
 touch "$CONSUMER/BUILD.bazel"
 cd "$CONSUMER"
